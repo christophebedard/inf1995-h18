@@ -5,9 +5,11 @@
 * Le programme permet de faire varier les couleurs de la LED 
 * en fonction de la pression et du relachement du bouton poussoir.
 */
+
 /* Tableau des états
 
 |Etats Present |Bouton|Etats Suivant | LED         |
+|--------------|------|--------------|-------------|
 |Einit         |   0  |Einit         |rouge        |
 |Einit         |   1  |E1            |rouge        |
 |E1            |   1  |E1            |ambre        |
@@ -22,6 +24,7 @@
 |E5            |   0  |Einit         |verte        |
 
 */
+
 #define F_CPU 8000000
 #include <avr/io.h>
 #include <util/delay.h>
@@ -44,9 +47,8 @@ Etats etat = Einit;
 /********************************************************************
 * Cette fonction permet de verifier si le bouton poussoir est presse
 * 
-* \return: etat du bouton.  
+* \return etat du bouton.  
 *********************************************************************/
-
 bool lecture() {
 	bool etat_ = false;
 
@@ -61,17 +63,17 @@ bool lecture() {
 }
 
 /*********************************************************************************
-Initialisation des registres.
+* Initialisation des registres.
 **********************************************************************************/
-
 void setup()
 {
 	DDRB = SORTIE; // Port B en mode sortie.
 	DDRD = ENTREE; // Port D en mode entrée.
 	PORTB = ROUGE; // LED allume rouge à l'état initial.
 }
+
 /*********************************************************************************
-Creation de la couleur Ambre.
+* Creation de la couleur Ambre.
 **********************************************************************************/
 void couleurAmbre() {
 	PORTB = ROUGE;
@@ -79,12 +81,13 @@ void couleurAmbre() {
 	PORTB = VERT;
 	_delay_ms(DELAI_1);
 }
+
 /*******************************************************************************
 * Cette fonction permet d'implenter la machine a etat decrite dans le tableau
 * des etats ci-dessus.
 *******************************************************************************/
-void implementer() {
-
+void implementer()
+{
 	switch (etat)
 	{
 	case Einit: 
@@ -118,8 +121,8 @@ void implementer() {
 			etat = Einit;
 		break;
 	}
-
 }
+
 /*******************************************************************************
 * La fonction principale. 
 *******************************************************************************/
@@ -131,7 +134,5 @@ int main()
      implementer();
 	}
 
-
 	return 0;
 }
-
