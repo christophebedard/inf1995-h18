@@ -1,12 +1,9 @@
 /* Fichier : probleme2.cpp
 * Auteur : Bourque Bédard Christophe  & Mohamed Saddik
-* Date : 01 février 2018
+* Date : 13 février 2018
 *
-* Le programme permet de faire varier les couleurs de la LED 
-* en fonction de la pression et du relachement du bouton poussoir.
+* Le programme permet de faire un jeu de reflexe.
 */
-
-
 
 #define F_CPU 8000000
 #include <avr/io.h>
@@ -22,21 +19,18 @@ const uint8_t ROUGE = 0x02;
 const uint8_t VERT = 0x01;
 const uint8_t DELAI_1 = 10;
 
-
-
-volatile uint8_t minuterieExpiree=0;
-volatile uint8_t boutonPoussoir=0; 
+volatile uint8_t minuterieExpiree = 0;
+volatile uint8_t boutonPoussoir = 0;
 
 /********************************************************************
-* Cette fonction de rappel de l'interrruption ISR pour la minuterie
-* 
+* Fonction de rappel de l'interrruption ISR pour la minuterie
 *********************************************************************/
 ISR ( TIMER1_COMPA_vect ) {
 	minuterieExpiree = 1;
 }
+
 /********************************************************************
-* Cette fonction de rappel de l'interrruption ISR 
-* 
+* Fonction de rappel de l'interrruption ISR pour le bouton
 *********************************************************************/
 ISR ( INT0_vect) {
 	boutonPoussoir = 1;
@@ -44,9 +38,11 @@ ISR ( INT0_vect) {
 	// delai pour anti-rebond
 	//_delay_ms(30);
 }
+
 /********************************************************************
 * Fonction pour partir la minuterie
-* 
+*
+* \param duree : duree du timer en ms
 *********************************************************************/
 void partirMinuterie ( uint16_t duree ) {
 	minuterieExpiree = 0;
@@ -62,7 +58,7 @@ void partirMinuterie ( uint16_t duree ) {
 }
 
 /********************************************************************
-* Cette fonction de de l'initialisation 
+* Fonction pour l'initialisation 
 *********************************************************************/
 void initialisation ( void ) {
 	// de-activation des interruptions
@@ -72,7 +68,6 @@ void initialisation ( void ) {
 	DDRB = SORTIE; // Port B en mode sortie.
 	DDRD = ENTREE; // Port D en mode entrée.
 	
-
 	// interruption externe sur INT0
 	EIMSK |= (1 << INT0) ;
 
@@ -84,20 +79,22 @@ void initialisation ( void ) {
 }
 
 /*******************************************************************************
-* La fonction principale. 
+* Fonction principale. 
 *******************************************************************************/
 int main() {
 	initialisation();
 	
 	_delay_ms(10000);
 	
+	// fait clignoter la LED
 	cli();
-	PORTB = ROUGE; // LED allume rouge à l'état initial.
+	PORTB = ROUGE;
 	_delay_ms(100);
 	PORTB = ETEINT;
 	boutonPoussoir = 0;
 	sei();
 	
+	// part la minuterie
 	partirMinuterie(1000);
 	while ( minuterieExpiree == 0 && boutonPoussoir == 0 );
 
@@ -106,10 +103,9 @@ int main() {
 	cli ();
 	
 	// Verifier la réponse
-	if( boutonPoussoir == 1 && minuterieExpiree == 0){
+	if( boutonPoussoir == 1 && minuterieExpiree == 0) {
 		PORTB = VERT;
-	}
-	else{ 
+	} else { 
         PORTB = ROUGE;
 	}
 	
