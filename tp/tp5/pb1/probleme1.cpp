@@ -47,9 +47,7 @@ enum Etats { Einit, E1, E2, E3,E4,E5};
 volatile Etats etat = Einit;
 
 /********************************************************************
-* Cette fonction de rappel de l'interrruption  ISR 
-* 
-*
+* Cette fonction de rappel de l'interrruption ISR pour le bouton
 *********************************************************************/
 ISR ( INT0_vect ) {
 	// delai pour anti-rebond
@@ -92,7 +90,7 @@ ISR ( INT0_vect ) {
 }
 
 /********************************************************************
-* Cette fonction de de l'initialisation 
+* Fonction pour l'initialisation 
 *********************************************************************/
 void initialisation ( void ) {
 	// de-activation des interruptions
@@ -153,7 +151,7 @@ void implementer()
 }
 
 /*******************************************************************************
-* La fonction principale. 
+* Fonction principale. 
 *******************************************************************************/
 int main()
 {
