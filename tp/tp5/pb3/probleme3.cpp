@@ -69,6 +69,8 @@ void ajustementPWM ( int ratio  ) {
 	// et valeur de TOP fixe à 0xFF (mode #1 de la table 17-6
 	// page 177 +++++++++++++++++++++
 	OCR1B = ratio * 255 / 100  ;
+	OCR1A = ratio * 255 / 100  ;
+	
 }
 
 /*******************************************************************************
