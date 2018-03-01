@@ -13,3 +13,11 @@ void SetUpMinuterie()
 
     TIMSK1 |=  (1 << OCIE1A);
 }
+
+void finMinuterie()
+{
+    OCR1A = 0;
+    TCCR1A = 0;  
+    TCCR1B = 0;
+    TIMSK1 = 0;
+}
