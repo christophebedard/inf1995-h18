@@ -9,7 +9,6 @@ void initPWM()
 	TCCR1B = (1 << CS11);
 }
 
-
 void ajustementPWM(const uint8_t& pourcentage)
 {
 	// mise à un des sorties OC1A et OC1B sur comparaison

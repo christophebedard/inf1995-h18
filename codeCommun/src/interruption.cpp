@@ -33,4 +33,3 @@ void initInterruption()
 {
     initInterruption(TypesTriggerInterrupt.RisingOrFallingEdge);
 }
-
