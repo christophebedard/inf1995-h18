@@ -1,3 +1,5 @@
+#include "pwm.h"
+
 void ajustementPWM (const int& pourcentage ) {
 
 // mise à un des sorties OC1A et OC1B sur comparaison

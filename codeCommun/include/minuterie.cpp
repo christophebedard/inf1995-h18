@@ -1,3 +1,5 @@
+#include "minuterie.h"
+
 void Minuterie(const uint16_t duree)
 {
     TCNT1 =  0;

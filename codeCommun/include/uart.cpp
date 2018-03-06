@@ -1,3 +1,5 @@
+#include "uart.h"
+
 void initialisationUART ( void ) {
 	DDRB = SORTIE;
 	// 2400 bauds. Nous vous donnons la valeur des deux
