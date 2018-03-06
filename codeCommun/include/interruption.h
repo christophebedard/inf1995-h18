@@ -6,8 +6,18 @@
 #include <avr/interrupt.h>
 
 /**
+ * Declaration des types de trigger d'interruption
+ */
+enum TypesTriggerInterrupt
+{
+    RisingEdge,
+    FallingEdge,
+    RisingOrFallingEdge
+};
+
+/**
  * Initialisation de l'interruption
  */
-void initInterruption();
+void initInterruption(const TypesTriggerInterrupt type);
 
 #endif // LIB_INTERRUPTION_H
