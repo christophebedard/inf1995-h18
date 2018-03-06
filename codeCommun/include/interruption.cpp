@@ -1,11 +1,14 @@
 #include "interruption.h"
 
-void InitialisationInterruption(){
+void initInterruption()
+{
     cli();
 
+    // interruption externe sur INT0
     EIMSK |= (1 << INT0);
+    // interruption lors d'un rising ou falling edge
     EICRA |= (11 << ISC00);
-    //Configuration de l'interrupt pour detecter falling et rising edge (pour les push et release)
+
     /// \todo mettre en parametre le mode de detection desire (falling, risinf, etc...)
 
     sei();

@@ -5,8 +5,16 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void ajustementPWM (const int& pourcentage );
+/**
+ * Initialisation du PWM
+ */
+void initPWM();
 
-void SetUpPWM();
+/**
+ * Ajustement du PWM
+ * 
+ * \param pourcentage : la nouvelle valeur [0, 100] du PWM
+ */
+void ajustementPWM(const uint8_t& pourcentage);
 
 #endif // LIB_PWM_H

@@ -5,6 +5,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void InitialisationInterruption();
+/**
+ * Initialisation de l'interruption
+ */
+void initInterruption();
 
 #endif // LIB_INTERRUPTION_H

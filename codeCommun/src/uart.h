@@ -6,8 +6,16 @@
 #include <avr/interrupt.h>
 #include "memoire_24.h"
 
-void initialisationUART ( void );
+/**
+ * Initialisation du UART
+ */
+void initialisationUART();
 
-void transmissionUART ( uint8_t donnee );
+/**
+ * Transmission UART
+ * 
+ * \param donnee : l'octet a transmettre
+ */
+void transmissionUART(const uint8_t& donnee);
 
 #endif // LIB_UART_H

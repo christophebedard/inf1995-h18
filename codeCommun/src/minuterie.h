@@ -5,8 +5,21 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void Minuterie(const uint16_t duree);
+/**
+ * Initialisation de la minuterie
+ */
+void initMinuterie();
 
-void SetUpMinuterie();
+/**
+ * Initialisation de la minuterie
+ * 
+ * \param duree : la duree de la minuterie en millisecondes
+ */
+void startMinuterie(const uint16_t duree);
+
+/**
+ * Arret de la minuterie
+ */
+void stopMinuterie();
 
 #endif // LIB_MINUTERIE_H
