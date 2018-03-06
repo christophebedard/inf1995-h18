@@ -10,13 +10,13 @@ void initInterruption(const TypesTriggerInterrupt type)
     // selon type de trigger specifie
     switch (type)
     {
-        case TypesTriggerInterrupt.RisingEdge:
+        case RisingEdge:
             EICRA |= (1 << ISC00) | (1 << ISC01);
             break;
-        case TypesTriggerInterrupt.FallingEdge:
+        case FallingEdge:
             EICRA |= (1 << ISC01);
             break;
-        case TypesTriggerInterrupt.RisingOrFallingEdge:
+        case RisingOrFallingEdge:
             EICRA |= (1 << ISC00);
             break;
         default:
@@ -31,5 +31,5 @@ void initInterruption(const TypesTriggerInterrupt type)
 
 void initInterruption()
 {
-    initInterruption(TypesTriggerInterrupt.RisingOrFallingEdge);
+    initInterruption(RisingOrFallingEdge);
 }
