@@ -28,3 +28,9 @@ void initInterruption(const TypesTriggerInterrupt type)
 
     sei();
 }
+
+void initInterruption()
+{
+    initInterruption(TypesTriggerInterrupt.RisingOrFallingEdge);
+}
+

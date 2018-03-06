@@ -17,7 +17,14 @@ enum TypesTriggerInterrupt
 
 /**
  * Initialisation de l'interruption
+ * 
+ * \param type : le type de trigger de l'interruption
  */
 void initInterruption(const TypesTriggerInterrupt type);
+
+/**
+ * Initialisation de l'interruption par defaut
+ */
+void initInterruption();
 
 #endif // LIB_INTERRUPTION_H
