@@ -1,6 +1,7 @@
 #ifndef LIB_MINUTERIE_H
 #define LIB_MINUTERIE_H
 
+#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

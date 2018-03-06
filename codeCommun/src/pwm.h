@@ -1,6 +1,7 @@
 #ifndef LIB_PWM_H
 #define LIB_PWM_H
 
+#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

@@ -1,6 +1,7 @@
 #ifndef LIB_UART_H
 #define LIB_UART_H
 
+#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "memoire_24.h"
