@@ -23,13 +23,13 @@ MCU=atmega324pa
 
 # Nom de votre projet
 # (utilisez un seul mot, exemple: 'monprojet')
-PROJECTNAME=probleme1
+PROJECTNAME=codeCommun
 
 # Fichiers sources
 # Utilisez le suffixe .cpp pour les fichiers C++
 # Listez tous les fichiers a compiler, separes par
 # un espace. exemple: 'tp1.c tp2.cpp':
-PRJSRC= tp3_pb1.cpp 
+PRJSRC=  can.cpp InitialisationInterruption.cpp memoire_24.cpp Minuterie.cpp PWM.cpp UART.cpp
 
 # Inclusions additionnels (ex: -I/path/to/mydir)
 INC=
@@ -62,6 +62,7 @@ AVRDUDE_PROGRAMMERID=usbasp
 
 #compilateur utilise
 CC=avr-gcc
+OO=ar
 #pour copier le contenu d'un fichier objet vers un autre
 OBJCOPY=avr-objcopy
 #pour permettre le transfert vers le microcontroleur
@@ -80,7 +81,7 @@ CFLAGS=-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
 	-Wall                                        
-
+LFLAGS = c r s
 # Flags pour le compilateur en C++
 CXXFLAGS=-fno-exceptions     
 
@@ -92,7 +93,7 @@ LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
 ####### Cible (Target) #######
 
 #Nom des cibles par defaut
-TRG=$(PROJECTNAME).out
+TRG=$(PROJECTNAME).a
 HEXROMTRG=$(PROJECTNAME).hex
 HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 
@@ -132,7 +133,7 @@ all: $(TRG)
 
 # Implementation de la cible
 $(TRG): $(OBJDEPS)
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
+	$(OO) $(LFLAGS) -o $(TRG) $(OBJDEPS) \
 	-lm $(LIBS)
 
 # Production des fichiers object
