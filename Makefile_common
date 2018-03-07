@@ -2,18 +2,19 @@
 ################## MAKEFILE COMMON #################
 ####################################################
 
-#####      Details specifique a la cible       #####
+# dossier source (.cpp et .c)
+SRCDIR=src
+
+# tous les fichiers .cpp dans le dossier src/
+PRJSRC=$(filter %.cpp, $(shell echo $(SRCDIR)/*))
 
 # Nom du microcontroleur cible
-# (exemple: 'at90s8515')
 MCU=atmega324pa
 
 # Niveau d'optimization
-# Utilisez s (size opt), 1, 2, 3 ou 0 (off)
 OPTLEVEL=s
 
-# Programmer ID - Ne pas changer 
-# Liste complete des IDs disponible avec avrdude
+# Programmer ID
 AVRDUDE_PROGRAMMERID=usbasp
 
 
@@ -70,8 +71,6 @@ OBJDEPS= \
 
 ####### Creation des commandes du Makefile ####### 
 
-.PHONY: all clean 
-
 # Production des fichiers object
 # De C a objet
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
@@ -101,3 +100,4 @@ clean:
 	$(REMOVE) -rf $(BUILDDIR)
 	$(REMOVE) *.a
 	$(REMOVE) *.o *.d
+	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d

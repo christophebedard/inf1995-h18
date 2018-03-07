@@ -1,40 +1,48 @@
 ####################################################
-################### MAKEFILE LIB ###################
+################# MAKEFILE PROJET ##################
 ####################################################
 
-#####      Details specifique a la cible       #####
-
 # nom du projet
-LIBNAME=librobot
+PROJECTNAME=projet
 # dossier include (.h)
 INCDIR=include
 # dossier build (output)
 BUILDDIR=build
 
-# Inclusions additionnels (ex: -I/path/to/mydir)
-INC=-I $(INCDIR)/
+# Inclusions additionnels
+INC=-I ../lib/$(INCDIR)/
 
-# Libraires a lier (ex: -lmylib)
-LIBS=
+# Libraires a lier
+LIBS=-lrobot -L ../lib/$(BUILDDIR) -L ../lib/src
 
 
-####### Cible (target) #######
+####### Cibles (target) #######
 
-TRG=$(BUILDDIR)/$(LIBNAME).a
+TRG=$(BUILDDIR)/$(PROJECTNAME).out
+HEXROMTRG=$(PROJECTNAME).hex
+HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
 
 
 ####### Creation des commandes du Makefile #######
 
-.PHONY: all clean
+.PHONY: all install clean 
 
 all: $(TRG)
 
-include ../Makefile_common
+include ../Makefile_common 
 
-# target : librairie
+# target : programme pour le robot
 $(TRG): $(BUILDDIR) $(OBJDEPS)
-	@echo "\033[0;33mLibrairie!\033[0m"
-	$(AR) -crs $(TRG) $(OBJDEPS)
+	@echo "\033[0;33mProgramme pour le robot!\033[0m"
+	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
+	-lm \
+	$(LIBS)
+
+# install sur le microcontrolleur du robot
+install: $(HEXROMTRG)
+	@echo "\033[0;33mInstall!\033[0m"
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID) \
+	-p $(MCU) -P -e -U flash:w:$(HEXROMTRG)
 
 debug:
 	@echo "\033[0;33mPWD      : $(PWD)\033[0m"
@@ -46,4 +54,3 @@ debug:
 	@echo "\033[0;33mCXXFLAGS : $(CXXFLAGS)\033[0m"
 	@echo "\033[0;33mPRJSRC   : $(PRJSRC)\033[0m"
 	@echo "\033[0;33mOBJDEPS  : $(OBJDEPS)\033[0m"
-
