@@ -1,0 +1,103 @@
+####################################################
+################## MAKEFILE COMMON #################
+####################################################
+
+# dossier source (.cpp et .c)
+SRCDIR=src
+
+# tous les fichiers .cpp dans le dossier src/
+PRJSRC=$(filter %.cpp, $(shell echo $(SRCDIR)/*))
+
+# Nom du microcontroleur cible
+MCU=atmega324pa
+
+# Niveau d'optimization
+OPTLEVEL=s
+
+# Programmer ID
+AVRDUDE_PROGRAMMERID=usbasp
+
+
+####### variables #######
+
+# ar
+AR=avr-ar
+# compilateur utilise
+CC=avr-gcc
+# pour copier le contenu d'un fichier objet vers un autre
+OBJCOPY=avr-objcopy
+# pour permettre le transfert vers le microcontroleur
+AVRDUDE=avrdude
+# pour supprimer les fichiers lorsque l'on appel make clean
+REMOVE=rm -f
+# HEXFORMAT -- format pour les fichiers produient .hex
+HEXFORMAT=ihex
+
+
+####### Options de compilation #######
+
+# Flags pour le compilateur en C
+CFLAGS= \
+	-I. -MMD $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
+	-fpack-struct -fshort-enums \
+	-funsigned-bitfields -funsigned-char \
+	-Wall                                        
+
+# Flags pour le compilateur en C++
+CXXFLAGS= \
+	-fno-exceptions \
+    -DF_CPU=8000000UL
+
+# Linker pour lier les librairies utilisees
+LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)
+
+
+####### Definition de tout les fichiers objets #######
+
+# Cette fonction permet de differencier les fichiers .c
+# des fichiers .cpp
+# Fichier C
+CFILES=$(filter %.c, $(PRJSRC))
+# Fichier C++
+CPPFILES=$(filter %.cpp, $(PRJSRC))
+
+# Liste de tout les fichiers objet que nous devons creer
+# permet de prendre les fichiers .cpp et .c dans le dossier SRCDIR
+# et de generer les fichiers .o et .d dans le dossier BUILDDIR
+OBJDEPS= \
+	$(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(filter %.c, $(PRJSRC))) \
+	$(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(filter %.cpp, $(PRJSRC)))
+
+
+####### Creation des commandes du Makefile ####### 
+
+# Production des fichiers object
+# De C a objet
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
+	@echo "\033[0;33mFichier .c\033[0m"
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# De C++ a objet
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(BUILDDIR)
+	@echo "\033[0;33mFichier .cpp\033[0m"
+	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
+
+# Verification des dependances (header dependencies)
+-include *.d
+
+# Production des fichiers hex a partir des fichiers elf
+$(BUILDDIR)/%.hex: $(BUILDDIR)/%.out $(BUILDDIR)
+	@echo "\033[0;33mFichiers .hex\033[0m"
+	$(OBJCOPY) -j .text -j .data \
+	-O $(HEXFORMAT) $< $@
+
+$(BUILDDIR):
+	@echo "\033[0;33mCreation du dossier $(BUILDDIR)\033[0m"
+	mkdir $(BUILDDIR)
+
+clean:
+	@echo "\033[0;33mCleaning!\033[0m"
+	$(REMOVE) -rf $(BUILDDIR)
+	$(REMOVE) *.a
+	$(REMOVE) *.o *.d
+	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
