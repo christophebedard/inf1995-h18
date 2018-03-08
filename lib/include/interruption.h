@@ -1,9 +1,9 @@
 #ifndef LIB_INTERRUPTION_H
 #define LIB_INTERRUPTION_H
 
-#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "defines.h"
 
 /**
  * Declaration des types de trigger d'interruption

@@ -1,9 +1,9 @@
 #ifndef LIB_DELAI_H
 #define LIB_DELAI_H
 
-#include "defines.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include "defines.h"
 
 /**
  * Delai en microsecondes
