@@ -19,8 +19,8 @@ LIBS=-lrobot -L ../lib/$(BUILDDIR) -L ../lib/src
 ####### Cibles (target) #######
 
 TRG=$(BUILDDIR)/$(PROJECTNAME).out
-HEXROMTRG=$(PROJECTNAME).hex
-HEXTRG=$(HEXROMTRG) $(PROJECTNAME).ee.hex
+HEXROMTRG=$(BUILDDIR)/$(PROJECTNAME).hex
+HEXTRG=$(HEXROMTRG) $(BUILDDIR)/$(PROJECTNAME).ee.hex
 
 
 ####### Creation des commandes du Makefile #######
@@ -37,6 +37,11 @@ $(TRG): $(BUILDDIR) $(OBJDEPS)
 	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS) \
 	-lm \
 	$(LIBS)
+
+# Production des fichiers hex a partir des fichiers elf
+$(BUILDDIR)/%.hex: $(BUILDDIR)/%.out
+	$(OBJCOPY) -j .text -j .data \
+		-O $(HEXFORMAT) $< $@
 
 # install sur le microcontrolleur du robot
 install: $(HEXROMTRG)
