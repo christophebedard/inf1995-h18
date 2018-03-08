@@ -11,13 +11,22 @@
 #include <avr/interrupt.h>
 
 #include "interruption.h"
+#include "minuterie.h"
 
 /**
  * Callback pour INT0
  */
-void int0Callback()
+void callbackBouton()
 {
     PORTB = ROUGE;
+}
+
+/**
+ * Callback pour TIMER1
+ */
+void callbackMinuterie()
+{
+	PORTB = VERT;
 }
 
 /**
@@ -27,11 +36,14 @@ int main(void)
 {
     DDRB = SORTIE;
 
-	initInterruption(&int0Callback);
+	initInterruption(&callbackBouton);
+
+	initMinuterie(&callbackMinuterie);
+	startMinuterie(2000);
 	
 	for (;;)
 	{
-		//PORTB = VERT;
+		
 	}
 
 	return 0;

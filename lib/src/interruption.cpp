@@ -4,6 +4,7 @@ func_t int0FuncPtr = nullptr; /**< variable du pointeur vers le callback INT0 */
 
 ISR(INT0_vect)
 {
+    /// \todo assert != nullptr
     int0FuncPtr();
 }
 

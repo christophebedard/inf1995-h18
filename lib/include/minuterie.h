@@ -7,8 +7,10 @@
 
 /**
  * Initialisation de la minuterie
+ *
+ * \param func : le pointeur vers la fonction de callback
  */
-void initMinuterie();
+void initMinuterie(func_t func);
 
 /**
  * Initialisation de la minuterie
