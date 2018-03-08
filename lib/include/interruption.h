@@ -18,13 +18,9 @@ enum TypesTriggerInterrupt
 /**
  * Initialisation de l'interruption
  * 
- * \param type : le type de trigger de l'interruption
+ * \param func : le pointeur vers la fonction de callback
+ * \param type : le type de trigger de l'interruption (defaut : rising ou falling edge)
  */
-void initInterruption(const TypesTriggerInterrupt type);
-
-/**
- * Initialisation de l'interruption par defaut
- */
-void initInterruption();
+void initInterruption(func_t func, const TypesTriggerInterrupt type = FallingEdge);
 
 #endif // LIB_INTERRUPTION_H

@@ -10,13 +10,12 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#include "defines.h"
 #include "interruption.h"
 
 /**
  * Callback pour INT0
  */
-ISR(INT0_vect)
+void int0Callback()
 {
     PORTB = ROUGE;
 }
@@ -28,11 +27,11 @@ int main(void)
 {
     DDRB = SORTIE;
 
-	initInterruption();
+	initInterruption(&int0Callback);
 	
 	for (;;)
 	{
-
+		//PORTB = VERT;
 	}
 
 	return 0;

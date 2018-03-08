@@ -1,7 +1,17 @@
 #include "interruption.h"
 
-void initInterruption(const TypesTriggerInterrupt type)
+func_t int0FuncPtr = nullptr; /**< variable du pointeur vers le callback INT0 */
+
+ISR(INT0_vect)
 {
+    int0FuncPtr();
+}
+
+void initInterruption(func_t func, const TypesTriggerInterrupt type)
+{
+    // garde en memoire le pointeur vers la fonction de callback
+    int0FuncPtr = func;
+
     cli();
 
     // interruption externe sur INT0
@@ -27,9 +37,4 @@ void initInterruption(const TypesTriggerInterrupt type)
     /// \todo mettre en parametre le mode de detection desire (falling, risinf, etc...)
 
     sei();
-}
-
-void initInterruption()
-{
-    initInterruption(RisingOrFallingEdge);
 }
