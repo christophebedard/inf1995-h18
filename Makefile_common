@@ -101,4 +101,4 @@ clean:
 	$(REMOVE) -rf $(BUILDDIR)
 	$(REMOVE) *.a
 	$(REMOVE) *.o *.d
-	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG) *.d
+	$(REMOVE) $(TRG) $(TRG).map $(OBJDEPS) $(HEXTRG)
