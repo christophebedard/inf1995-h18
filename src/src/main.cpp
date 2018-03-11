@@ -10,15 +10,23 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#include "defines.h"
 #include "interruption.h"
+#include "minuterie.h"
 
 /**
  * Callback pour INT0
  */
-ISR(INT0_vect)
+void callbackBouton()
 {
     PORTB = ROUGE;
+}
+
+/**
+ * Callback pour TIMER1
+ */
+void callbackMinuterie()
+{
+	PORTB = VERT;
 }
 
 /**
@@ -28,11 +36,14 @@ int main(void)
 {
     DDRB = SORTIE;
 
-	initInterruption();
+	initInterruption(&callbackBouton);
+
+	initMinuterie(&callbackMinuterie);
+	startMinuterie(2000);
 	
 	for (;;)
 	{
-
+		
 	}
 
 	return 0;

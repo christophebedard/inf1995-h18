@@ -1,14 +1,16 @@
 #ifndef LIB_MINUTERIE_H
 #define LIB_MINUTERIE_H
 
-#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "defines.h"
 
 /**
  * Initialisation de la minuterie
+ *
+ * \param func : le pointeur vers la fonction de callback
  */
-void initMinuterie();
+void initMinuterie(func_t func);
 
 /**
  * Initialisation de la minuterie

@@ -46,7 +46,8 @@ CFLAGS= \
 # Flags pour le compilateur en C++
 CXXFLAGS= \
 	-fno-exceptions \
-    -DF_CPU=8000000UL
+    -DF_CPU=8000000UL \
+	-std=c++11
 
 # Linker pour lier les librairies utilisees
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU)

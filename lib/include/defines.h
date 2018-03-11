@@ -5,6 +5,9 @@
 #define F_CPU 8000000
 #endif
 
+// pointeur vers fonction sans argument et retour void
+typedef void (*func_t)();
+
 // Definition des constantes
 const uint8_t SORTIE = 0xff;
 const uint8_t ENTREE = 0X00;
