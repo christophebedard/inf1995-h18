@@ -18,7 +18,7 @@
  */
 void callbackBouton()
 {
-    PORTB = ROUGE;
+    PORTB = VERT;
 }
 
 /**
@@ -26,7 +26,7 @@ void callbackBouton()
  */
 void callbackMinuterie()
 {
-	PORTB = VERT;
+	PORTB = ROUGE;
 }
 
 /**

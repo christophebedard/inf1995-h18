@@ -6,6 +6,9 @@ ISR(INT0_vect)
 {
     /// \todo assert != nullptr
     int0FuncPtr();
+
+    // clear flag
+    EIFR |= (1 << INTF0);
 }
 
 void initInterruption(func_t func, const TypesTriggerInterrupt type)
@@ -34,8 +37,6 @@ void initInterruption(func_t func, const TypesTriggerInterrupt type)
             // interruption lors d'un rising ou falling edge
             EICRA |= (1 << ISC00);
     }
-
-    /// \todo mettre en parametre le mode de detection desire (falling, risinf, etc...)
 
     sei();
 }
