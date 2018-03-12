@@ -38,11 +38,6 @@ $(TRG): $(BUILDDIR) $(OBJDEPS)
 	-lm \
 	$(LIBS)
 
-# Production des fichiers hex a partir des fichiers elf
-$(BUILDDIR)/%.hex: $(BUILDDIR)/%.out
-	$(OBJCOPY) -j .text -j .data \
-		-O $(HEXFORMAT) $< $@
-
 # install sur le microcontrolleur du robot
 install: $(HEXROMTRG)
 	@echo "\033[0;33mInstall!\033[0m"
