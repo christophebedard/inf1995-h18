@@ -74,12 +74,12 @@ OBJDEPS= \
 
 # Production des fichiers object
 # De C a objet
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	@echo "\033[0;33mFichier .c\033[0m"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # De C++ a objet
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(BUILDDIR)
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@echo "\033[0;33mFichier .cpp\033[0m"
 	$(CC) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
 
@@ -87,7 +87,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(BUILDDIR)
 -include *.d
 
 # Production des fichiers hex a partir des fichiers elf
-$(BUILDDIR)/%.hex: $(BUILDDIR)/%.out $(BUILDDIR)
+$(BUILDDIR)/%.hex: $(BUILDDIR)/%.out
 	@echo "\033[0;33mFichiers .hex\033[0m"
 	$(OBJCOPY) -j .text -j .data \
 	-O $(HEXFORMAT) $< $@
