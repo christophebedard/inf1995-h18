@@ -1,0 +1,49 @@
+####################################################
+################### MAKEFILE LIB ###################
+####################################################
+
+#####      Details specifique a la cible       #####
+
+# nom du projet
+LIBNAME=librobot
+# dossier include (.h)
+INCDIR=include
+# dossier build (output)
+BUILDDIR=build
+
+# Inclusions additionnels (ex: -I/path/to/mydir)
+INC=-I $(INCDIR)/
+
+# Libraires a lier (ex: -lmylib)
+LIBS=
+
+
+####### Cible (target) #######
+
+TRG=$(BUILDDIR)/$(LIBNAME).a
+
+
+####### Creation des commandes du Makefile #######
+
+.PHONY: all clean
+
+all: $(TRG)
+
+include ../Makefile_common
+
+# target : librairie
+$(TRG): $(BUILDDIR) $(OBJDEPS)
+	@echo "\033[0;33mLibrairie!\033[0m"
+	$(AR) -crs $(TRG) $(OBJDEPS)
+
+debug:
+	@echo "\033[0;33mPWD      : $(PWD)\033[0m"
+	@echo "\033[0;33mLIBS     : $(LIBS)\033[0m"
+	@echo "\033[0;33mINC      : $(INC)\033[0m"
+	@echo "\033[0;33mCFILES   : $(CFILES)\033[0m"
+	@echo "\033[0;33mCPPFILES : $(CPPFILES)\033[0m"
+	@echo "\033[0;33mCFLAGS   : $(CFLAGS)\033[0m"
+	@echo "\033[0;33mCXXFLAGS : $(CXXFLAGS)\033[0m"
+	@echo "\033[0;33mPRJSRC   : $(PRJSRC)\033[0m"
+	@echo "\033[0;33mOBJDEPS  : $(OBJDEPS)\033[0m"
+
