@@ -18,4 +18,12 @@ void initialisationUART();
  */
 void transmissionUART(const uint8_t& donnee);
 
+/**
+* Reception UART
+* return uint8_t la donnee recue
+*/
+uint8_t receptionUART();
+
 #endif // LIB_UART_H
+
+

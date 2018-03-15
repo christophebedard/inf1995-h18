@@ -17,3 +17,11 @@ void transmissionUART(const uint8_t& donnee)
 	while(!(UCSR0A & (1 << UDRE0)));
 	UDR0 = donnee;
 }
+
+uint8_t receptionUART()
+{
+    uint8_t donnee;
+    while(UCSR0A & (1 << UDRE0));
+    donnee = UDR0;
+    return donnee;
+}

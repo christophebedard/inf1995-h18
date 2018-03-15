@@ -29,7 +29,7 @@ HEXTRG=$(HEXROMTRG) $(BUILDDIR)/$(PROJECTNAME).ee.hex
 
 all: $(TRG)
 
-include ../Makefile_common
+include ../Makefile_commmon
 
 # target : programme pour le robot
 $(TRG): $(BUILDDIR) $(OBJDEPS)

@@ -1,5 +1,5 @@
 #include "pwm.h"
-
+#include "delai.h"
 void initPWM()
 {
 	// compare output mode 10 (Clear OCnA/OCnB on Compare Match (Set output to low level))
@@ -17,4 +17,17 @@ void ajustementPWM(const uint8_t& pourcentage)
 	// page 177 de la description technique du ATmega324PA)
 	OCR1A = pourcentage * 255 / 100;
 	OCR1B = pourcentage * 255 / 100;
+}
+
+void virageDroit(const uint8_t& pourcentage){
+
+    OCR1B = pourcentage * 255 / 100;
+    waitForMs(2000);
+    OCR1B = 0;
+}
+
+void virageGauche(const uint8_t& pourcentage){
+    OCR1A = pourcentage * 255 / 100;
+    waitForMs(2000);
+    OCR1A = 0;
 }

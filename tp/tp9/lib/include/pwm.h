@@ -17,4 +17,8 @@ void initPWM();
  */
 void ajustementPWM(const uint8_t& pourcentage);
 
+void virageDroit(const uint8_t& pourcentage);
+
+void virageGauche(const uint8_t& pourcentage);
+
 #endif // LIB_PWM_H
