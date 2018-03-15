@@ -36,7 +36,7 @@ void startMinuterie(const uint16_t duree)
 {
     TCNT1 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
-    OCR1A = duree * (F_CPU / 1024);
+    OCR1A = duree;// * (F_CPU / 1024);
 }
 
 void stopMinuterie()
