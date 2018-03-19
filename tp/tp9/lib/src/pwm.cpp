@@ -2,6 +2,12 @@
 #include "delai.h"
 void initPWM()
 {
+	// mettre les pins en sortie (chap. "I/O ports")
+	// OC1A : port D, pin 5
+	DDRD |= _BV(5);
+	// OC1B : port D, pin 4
+	DDRD |= _BV(4);
+
 	// compare output mode 10 (Clear OCnA/OCnB on Compare Match (Set output to low level))
 	// waveform generation mode 1 (PWM, Phase Correct, 8-bit)
 	TCCR1A = (1 << COM1A1) | (1 << COM1B1)| (1 << WGM10);
