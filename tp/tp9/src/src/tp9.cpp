@@ -9,7 +9,7 @@ int main(){
     DDRA = SORTIE;
     DDRD = SORTIE;                          //Toutes les broches de A et de D sont en sortie 
     /*Ecriture des donnees*/
-    initialisationUART();
+    UART::init();
     uint8_t donnee[6];
     uint8_t taille = 8*sizeof(uint8_t);     //Valeurs numériques utilisées pour le test
     int i = 0;
@@ -22,7 +22,7 @@ int main(){
     PORTA = ROUGE;                          //Verification du debut du programme
     waitForMs(250);
     while(!(UCSR0A & (1 << UDRE0))){        //Pas certain, l'opposé de la condition dans transmissionUART()
-        donnee[i++] = receptionUART();      //Ajoute une donnee au tableau
+        donnee[i++] = UART::reception();      //Ajoute une donnee au tableau
         taille += sizeof(uint8_t);          //Incremente la taille
     }
     Memoire24CXXX M = Memoire24CXXX();      //Objet pour la lecture/ecriture
