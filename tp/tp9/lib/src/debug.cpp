@@ -11,9 +11,8 @@
  * Inversion string
  * https://www.geeksforgeeks.org/implement-itoa/
  * 
- * \param num : le nombre
- * \param str : le pointeur vers le tableau de sortie
- * \param base : la base du nombre
+ * \param str : le pointeur vers le string
+ * \param len : la longueur du string
  */
 void reverse(char* str, uint8_t len)
 {
