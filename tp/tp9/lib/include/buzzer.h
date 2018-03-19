@@ -1,12 +1,21 @@
 #ifndef LIB_BUZZER_H
 #define LIB_BUZZER_H
 
+/**
+ * \file buzzer.h
+ * \brief declaration de la classe Buzzer
+ * \author 
+ */
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "minuterie.h"
 
-
+/**
+ * \class Buzzer
+ * \brief classe qui enveloppe (wrap) le Buzzer
+ */
 class Buzzer
 {
 public:

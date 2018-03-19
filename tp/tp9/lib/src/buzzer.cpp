@@ -1,4 +1,11 @@
+/**
+ * \file buzzer.cpp
+ * \brief implementation de la classe Buzzer
+ * \author 
+ */
+
 #include "buzzer.h"
+
 
 const uint8_t Buzzer::BROCHE_BUZZER = 7;
 const uint8_t Buzzer::NOTE_MIN = 45;

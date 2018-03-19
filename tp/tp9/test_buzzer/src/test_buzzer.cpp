@@ -1,3 +1,9 @@
+/**
+ * \file test_buzzer.cpp
+ * \brief programme pour tester le buzzer
+ * \author 
+ */
+
 #include "delai.h"
 #include "buzzer.h"
 
