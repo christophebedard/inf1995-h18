@@ -73,6 +73,13 @@ void itoa(uint8_t num, char* str, const uint8_t& base)
         str[i++] = '-';
     }
 
+    // si hex, ajouter 0x
+    if (base == 16)
+    {
+        str[i++] = 'x';
+        str[i++] = '0';
+    }
+
     str[i] = '\0'; // fin du string
  
     // inversion du string
