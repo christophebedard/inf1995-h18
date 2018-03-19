@@ -13,23 +13,18 @@ void callbackNote()
     PORTB ^= _BV(Buzzer::BROCHE_BUZZER - 1);
 }
 
-Buzzer::Buzzer()
-{
-    init();
-}
-
 void Buzzer::init()
 {
     DDRB |= _BV(Buzzer::BROCHE_BUZZER - 1);
     initMinuterie(&callbackNote);
 }
 
-void Buzzer::playNote(uint8_t note)
+void Buzzer::play(uint8_t note)
 {
     startMinuterie(note);
 }
 
-void Buzzer::stopNote()
+void Buzzer::stop()
 {
     stopMinuterie();
 }

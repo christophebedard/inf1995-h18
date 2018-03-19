@@ -4,17 +4,17 @@
 
 int main()
 {
-    Buzzer buzz;
+    Buzzer::init();
 
-    buzz.playNote(45);
+    Buzzer::play(45);
     waitForMs(1000);
-    buzz.playNote(60);
+    Buzzer::play(60);
     waitForMs(1000);
-    buzz.playNote(70);
+    Buzzer::play(70);
     waitForMs(1000);
-    buzz.playNote(80);
+    Buzzer::play(80);
     waitForMs(1000);
-    buzz.stopNote();
+    Buzzer::stop();
 
     while(true);
 

@@ -10,28 +10,22 @@
 class Buzzer
 {
 public:
-
     /**
-     * Constructeur
+     * Initialisation du buzzer
      */
-    Buzzer();
-
-    /**
-     * Destructeur
-     */
-    ~Buzzer();
+    static void init();
 
     /**
      * Lecture d'une note avec le buzzer
      *
      * \param note : la note MIDI a jouer
      */
-    void playNote(uint8_t note);
+    static void play(uint8_t note);
 
     /**
      * Arret de lecture de la note avec buzzer
      */
-    void stopNote();
+    static void stop();
 
     static const uint8_t BROCHE_BUZZER; /**< la broche sur laquelle le buzzer est connecte (1-8) */
 
@@ -41,18 +35,13 @@ private:
     static const uint16_t PERIODES[]; /**< les periodes des notes */
 
     /**
-     * Initialisation du buzzer
-     */
-    void init();
-
-    /**
      * Recuperation de la periode selon la note
      * 
      * \param note : la note
      * 
      * \return la periode en microsecondes (us)
      */
-    uint16_t getPeriode(uint8_t note);
+    static uint16_t getPeriode(uint8_t note);
 
     /**
      * Callback pour la note
