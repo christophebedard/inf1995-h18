@@ -1,13 +1,14 @@
 #include "pwm.h"
 #include "uart.h"
+#include "buzzer.h"
 #include "delai.h"
 #include "memoire_24.h"
 #include "defines.h"
 
 int main(){
-
     DDRA = SORTIE;
     DDRD = SORTIE;                          //Toutes les broches de A et de D sont en sortie 
+    Buzzer::init();
     /*Ecriture des donnees*/
     UART::init();
     uint8_t donnee[6];
@@ -80,11 +81,11 @@ int main(){
                 break;}
             
                 case 0x48:{ //Son
-                   // debutSon((lire[i + 1]/0xff) * 100); Placeholder
+                    Buzzer::play(lire[i + 1]);
                 break;}
             
                 case 0x09:{ //Fin son
-                   // finSon();
+                    Buzzer::stop();
                 break;}
                 
                 case 0x60:{ //Arret moteur          //Deux commandes provoquent l'arret du moteur
