@@ -15,5 +15,4 @@ const uint8_t ETEINT = 0x00;
 const uint8_t ROUGE = 0x02;
 const uint8_t VERT = 0x01;
 
-
 #endif // LIB_DEFINES_H
