@@ -41,7 +41,7 @@ public:
 private:
     static const uint8_t NOTE_MIN; /**< la note MIDI minimale valide */
     static const uint8_t NOTE_MAX; /**< la note MIDI maximale valide */
-    static const uint16_t PERIODES[]; /**< les periodes des notes */
+    static const uint16_t DEMI_PERIODES[]; /**< les periodes des notes */
 
     /**
      * Recuperation de la periode selon la note
