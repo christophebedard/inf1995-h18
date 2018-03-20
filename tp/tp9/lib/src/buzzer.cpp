@@ -17,6 +17,10 @@ const uint16_t Buzzer::PERIODES[] = {9090, 8580, 8090, 7644, 7215, 6810, 6428, 6
                                      2863, 2702, 2551, 2407, 2272, 2145, 2024, 1911, 1803, 1702,
                                      1607, 1516, 1431, 1351, 1275, 1203, 1136}; /**< les valeurs des periodes en us (1 ms / 1000) */
 
+/**
+ * Callback pour la note
+ * \todo typedef pour pointeur vers methode de classe
+ */
 void callbackNote()
 {
     PORTB ^= _BV(Buzzer::BROCHE_BUZZER - 1);

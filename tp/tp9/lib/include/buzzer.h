@@ -52,11 +52,6 @@ private:
      */
     static uint16_t getPeriode(uint8_t note);
 
-    /**
-     * Callback pour la note
-     * \todo typedef pour pointeur vers methode de classe
-     */
-    //void callbackNote();
 };
 
 #endif // LIB_BUZZER_H
