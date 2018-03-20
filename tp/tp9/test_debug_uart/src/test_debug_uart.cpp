@@ -6,6 +6,7 @@ int main()
 
     char str1[] = "un test ";
     char str2[] = "de newline \n";
+    uint8_t buf[1] = {94};
 
     while(true)
     {
@@ -15,6 +16,8 @@ int main()
         Debug::out(", ");
         Debug::out(str1);
         Debug::out(str2);
+        Debug::out(buf[0]);
+        Debug::out("\n");
     }
 
     return 0;
