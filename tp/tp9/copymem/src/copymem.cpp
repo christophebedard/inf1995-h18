@@ -12,6 +12,7 @@
 int main()
 {
     // sequence initiale
+    DDRA = SORTIE;
     PORTA = ROUGE;
     waitForMs(250);
     PORTA = VERT;
@@ -29,19 +30,20 @@ int main()
 
     // reception des deux premiers octets (taille)
     uint8_t tailleH = UART::reception();
-    mem.ecriture(adr++, &tailleH);
+    mem.ecriture(adr++, tailleH);
     uint8_t tailleL = UART::reception();
-    mem.ecriture(adr++, &tailleL);
+    mem.ecriture(adr++, tailleL);
     
     // calcul de la taille
-    uint16_t taille |= tailleH << 8;
+    uint16_t taille = 0;
+    taille |= tailleH << 8;
     taille |= tailleL;
 
     // reception et ecriture des autres octets
     for(uint16_t i = 2; i < taille; ++i)
     {
         uint8_t val = UART::reception();
-        mem.ecriture(adr++, &val);
+        mem.ecriture(adr++, val);
     }
 
     // fin

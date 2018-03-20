@@ -11,23 +11,18 @@ int main(){
     Buzzer::init();
     /*Ecriture des donnees*/
     UART::init();
-    uint8_t donnee[6];
-    uint8_t taille = 8*sizeof(uint8_t);     //Valeurs numériques utilisées pour le test
+    uint16_t taille = 0;
     int i = 0;
-    donnee[0] = 0x01;//Test
-    donnee[1] = 0x00;
-    donnee[2] = 0x62;
-    donnee[3] = 0x80;
-    donnee[4] = 0xFF;
-    donnee[5] = 0x00;
     PORTA = ROUGE;                          //Verification du debut du programme
     waitForMs(250);
+    taille = UART::reception() - 0x10;
+    uint8_t donnee[taille];
+    waitForMs(5)
     while(!(UCSR0A & (1 << UDRE0))){        //Pas certain, l'opposé de la condition dans transmissionUART()
         donnee[i++] = UART::reception();      //Ajoute une donnee au tableau
-        taille += sizeof(uint8_t);          //Incremente la taille
     }
     Memoire24CXXX M = Memoire24CXXX();      //Objet pour la lecture/ecriture
-    M.ecriture(0x00, donnee, taille);                      
+    M.ecriture(0x00, donnee, (taille*sizeof(uint8_t)))                      
     PORTA = VERT;                    /*Vérifie la fin de l'ecriture*/
     waitForMs(250);
     /*Sequence initiale*/
@@ -41,8 +36,8 @@ int main(){
     waitForMs(250);
     PORTA = ETEINT;
     /*Debut interpretation*/
-    uint8_t lire[8];                 //Valeur numerique pour test
-    M.lecture(0x00, lire, taille);   //Lecture de la donnee ecrite en memoire
+    uint8_t lire[taille];                 
+    M.lecture(0x00, lire, (taille*sizeof(uint8_t)));   //Lecture de la donnee ecrite en memoire
     waitForMs(5);
     bool couleur = false;
     bool interpretation = false;

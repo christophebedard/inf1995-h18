@@ -13,6 +13,7 @@
 int main()
 {
     // sequence initiale
+    DDRA = SORTIE;
     PORTA = ROUGE;
     waitForMs(250);
     PORTA = VERT;
