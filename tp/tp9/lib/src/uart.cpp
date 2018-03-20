@@ -45,8 +45,6 @@ void UART::transmission(const char* str)
 
 uint8_t UART::reception()
 {
-    uint8_t donnee;
-    while(UCSR0A & _BV(UDRE0));
-    donnee = UDR0;
-    return donnee;
+    while(!(UCSR0A & _BV(RXC0)));
+    return UDR0;
 }

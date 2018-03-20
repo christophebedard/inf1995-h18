@@ -29,17 +29,17 @@ void callbackNote()
 void Buzzer::init()
 {
     DDRB |= _BV(Buzzer::BROCHE_BUZZER - 1);
-    initMinuterie(&callbackNote);
+    initMinuterie2(&callbackNote);
 }
 
 void Buzzer::play(uint8_t note)
 {
-    startMinuterie(note);
+    startMinuterie2(note);
 }
 
 void Buzzer::stop()
 {
-    stopMinuterie();
+    stopMinuterie2();
 }
 
 uint16_t Buzzer::getPeriode(uint8_t note)

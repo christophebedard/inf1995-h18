@@ -7,24 +7,8 @@
 
 int main(){
     DDRA = SORTIE;
-    DDRD = SORTIE;                          //Toutes les broches de A et de D sont en sortie 
-    Buzzer::init();
-    /*Ecriture des donnees*/
-    UART::init();
-    uint16_t taille = 0;
-    int i = 0;
-    PORTA = ROUGE;                          //Verification du debut du programme
-    waitForMs(250);
-    taille = UART::reception() - 0x10;
-    uint8_t donnee[taille];
-    waitForMs(5)
-    while(!(UCSR0A & (1 << UDRE0))){        //Pas certain, l'opposé de la condition dans transmissionUART()
-        donnee[i++] = UART::reception();      //Ajoute une donnee au tableau
-    }
-    Memoire24CXXX M = Memoire24CXXX();      //Objet pour la lecture/ecriture
-    M.ecriture(0x00, donnee, (taille*sizeof(uint8_t)))                      
-    PORTA = VERT;                    /*Vérifie la fin de l'ecriture*/
-    waitForMs(250);
+    DDRD = SORTIE;   
+    DDRB = SORTIE;                                          //Toutes les broches de A et de D sont en sortie    
     /*Sequence initiale*/
     PORTA = ROUGE;
     waitForMs(250);
@@ -35,33 +19,55 @@ int main(){
     PORTA = VERT;
     waitForMs(250);
     PORTA = ETEINT;
+    
     /*Debut interpretation*/
-    uint8_t lire[taille];                 
-    M.lecture(0x00, lire, (taille*sizeof(uint8_t)));   //Lecture de la donnee ecrite en memoire
+    Memoire24CXXX M;
+    uint16_t adr = 0x00;
+    uint8_t tailleH = 0;
+    uint8_t tailleL = 0;
+    uint16_t taille = 0;
+    
+    M.lecture(adr++, &tailleH);
     waitForMs(5);
+    M.lecture(adr++, &tailleL);
+    waitForMs(5);
+    
+    taille |= tailleH << 8;
+    taille |= tailleL;
+    taille -= 2;                                                //Permet de ne pas considerer les octets donnant la taille 
+    
+    uint8_t lire[taille];
+    
+    for (uint16_t i = 0; i < taille;i++){
+        M.lecture(adr++, &lire[i]);                             //Lecture de la donnee ecrite en memoire
+        waitForMs(5);
+    }
+    
     bool couleur = false;
     bool interpretation = false;
     bool boucle = false;
     uint8_t debutBoucle = 0;
     uint8_t incrementation = 0;
-    initPWM();                        
+    
+    initPWM();
+    Buzzer::init();
+    
     for (uint8_t i = 0; i < taille; i++){   
         if (lire[i] == 0x01)
-             interpretation = true; //S'assure que l'interpretation se fasse uniquement si la commande dbt du pseudocode est entree
+             interpretation = true;                             //S'assure que l'interpretation se fasse uniquement lorsque la commande dbt du pseudocode est entree
+             
         else if (interpretation){     
-            PORTA = ROUGE;          //test
-            waitForMs(500);
             switch (lire[i]) {                             
                 case 0xFF:{
-                    interpretation = false;     //Si fin, on arrete d'interpreter
-                
+                    interpretation = false;                     //Si fin, on arrete d'interpreter
                 break;}
+                
                 case 0x02:{
-                    waitForMs(25*lire[i+1]);    //25 ms fois l'operande en memoire
+                    waitForMs(25*(lire[i+1]));                  //25 ms fois l'operande en memoire
                 break;}
             
                 case 0x44:{
-                    if (!couleur){            //Affichage des couleurs sur la DEL, condition simplement pour alterner l'affichage
+                    if (!couleur){                              //Affichage des couleurs sur la DEL, condition simplement pour alterner l'affichage
                         PORTA = VERT;
                         couleur = true;
                     }
@@ -72,43 +78,45 @@ int main(){
                 break;}
             
                 case 0x45:{
-                    PORTA = ETEINT;            //On eteint la DEL
+                    PORTA = ETEINT;                             //On eteint la DEL
                 break;}
             
-                case 0x48:{ //Son
-                    Buzzer::play(lire[i + 1]);
+                case 0x48:{                                     //Son
+                   Buzzer::play(lire[i + 1]);
                 break;}
             
-                case 0x09:{ //Fin son
-                    Buzzer::stop();
+                case 0x09:{                                     //Fin son
+                   Buzzer::stop();
                 break;}
                 
-                case 0x60:{ //Arret moteur          //Deux commandes provoquent l'arret du moteur
+                case 0x60:{ //Arret moteur                      //Deux commandes provoquent l'arret du moteur
                     ajustementPWM(0);           
                 break;}
+                
                 case 0x61:{ //Arret moteur
                     ajustementPWM(0);
                 break;}
-                case 0x62:{ //Avancer               //Affichage de del pour test
-                    PORTA = VERT;
-                    waitForMs(250);
+                
+                case 0x62:{ //Avancer              
                     PORTD = 0x00;                               
-                    ajustementPWM((lire[i + 1]/0xff) * 100); //Operande/0xff * 100 pour obtenir valeur utilisee par la fonction
-                    
+                    ajustementPWM((lire[i + 1]/0xff) * 100);    //Operande/0xff * 100 pour obtenir valeur utilisee par la fonction
                 break;}
+                
                 case 0x63:{ //Reculer
-                    PORTD = 0x0C;                           //Meme chose que pour avancer, mais avec le bit de direction oppose
+                    PORTD = 0x0C;                               //Meme chose que pour avancer, mais avec le bit de direction oppose
                     ajustementPWM((lire[i + 1]/0xff) * 100);
-                    
                 break;}
+                
                 case 0x64:{ //Droite
                     PORTD = 0x00; 
-                    virageDroit(55);                 //55% de vitesse, voir la fonction dans la librairie, fait le virage 90 degré
+                    virageDroit(55);                            //55% de vitesse, voir la fonction dans la librairie, fait le virage 90 degré
                 break;}
+                
                 case 0x65:{ //Gauche    
-                    PORTD = 0x00;                   //55% de vitesse, voir la fonction dans la librairie, fait le virage 90 degré
+                    PORTD = 0x00;                               //55% de vitesse, voir la fonction dans la librairie, fait le virage 90 degré
                     virageGauche(55);
                 break;}
+                
                 case 0xC0:{ //DBoucle
                     if ((incrementation = 0) && (!boucle)){     //Si l'incrementation est a 0 et qu'il n'y a aucune boucle active
                      incrementation += lire[i+1];               //On passe l'operande a la variable incrementation
@@ -117,24 +125,21 @@ int main(){
                     }
                     if ((incrementation = 0) && (boucle)){
                     
-                        boucle = false;                       //Pour pouvoir faire un autre boucle après la fin de la premiere
+                        boucle = false;                         //Pour pouvoir faire un autre boucle après la fin de la premiere
                     }
-                    
-                     
                 break;}
+                
                 case 0xC1:{ //FBoucle
                     if (incrementation != 0){                   
-                        incrementation--;                      //On decremente avant de passer à la prochaine iteration 
-                        i = debutBoucle;                       //On retourne au debut de la boucle
+                        incrementation--;                       //On decremente avant de passer à la prochaine iteration 
+                        i = debutBoucle;                        //On retourne au debut de la boucle
                     }
                 break;}
-                default:
-                break;
                 
-        
+                default:
+                break;}
         }
-        }
-        i++;                                                    //Ce deuxieme i++ permet de ne pas interpreter les operandes
+    i++;                                                        //Ce deuxieme i++ permet de ne pas interpreter les operandes
     }
-    return 0;
+return 0;
 }
