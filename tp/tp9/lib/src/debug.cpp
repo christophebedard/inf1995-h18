@@ -38,7 +38,7 @@ void reverse(char* str, uint8_t len)
  * \param str : le pointeur vers le tableau de sortie
  * \param base : la base du nombre
  */
-void itoa(uint8_t num, char* str, const uint8_t& base)
+void itoa(uint16_t num, char* str, const uint8_t& base)
 {
     uint8_t i = 0;
     bool isNegative = false;
@@ -85,12 +85,12 @@ void itoa(uint8_t num, char* str, const uint8_t& base)
     reverse(str, i);
 }
 
-void Debug::out(const uint8_t& nombre)
+void Debug::out(const uint16_t& nombre)
 {
     out(nombre, 10);
 }
 
-void Debug::out(const uint8_t& nombre, const uint8_t& base)
+void Debug::out(const uint16_t& nombre, const uint8_t& base)
 {
     char str[16] = {0};
     itoa(nombre, str, base);
