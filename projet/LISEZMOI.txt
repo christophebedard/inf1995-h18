@@ -1,0 +1,40 @@
+Capteur infrarouge Sharp GP2D12 (GP2Y0A21YK0F)
+Fil Blanc : Vo
+Fil Noir  : GND
+Fil Rouge : VCC
+Analog Output --> CAN nécessaire
+PIN de notre choix sur le port A
+Vo = HIGH pour 0.1 m
+
+Range : 0.1 - 0.8 m
+Response Time : 39 ms
+Start Up Delay : 44 ms
+
+Émetteur côté fil blanc  (Haut)
+Récepteur côté fil rouge (Bas)
+Fils vers l'avant 
+
+PORTS:
+
+A:
+1 et 2 Del
+3 Vo capteur droit
+4 Vo capteur gauche
+VCC GND Capteur gauche
+
+B:
+5 6 7 8 make install
+
+C:
+7 GND Piézo TIMER2 A
+
+D:
+3 direction gauche
+4 direction droite
+5 PWM roue gauche   TIMER1 A
+6 PWM roue droite   TIMER1 B
+
+Diagnostic:
+
+
+Trajet:
