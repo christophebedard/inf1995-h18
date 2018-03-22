@@ -27,7 +27,7 @@ int main(){
     uint8_t tailleL = 0;
     uint16_t taille = 0;
     
-    M.lecture(adr++, &tailleH);
+    M.lecture(adr++, &tailleH);                                 //Lecture des deux premiers octets pour obtenir la taille
     waitForMs(5);
     M.lecture(adr++, &tailleL);
     waitForMs(5);

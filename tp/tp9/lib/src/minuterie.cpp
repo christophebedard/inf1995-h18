@@ -32,7 +32,7 @@ void initMinuterie(func_t func)
     // mode CTC du timer 1 avec horloge divisee par 128
 	// interruption apres la duree spécifiee
     TCCR1A |= (1 << COM1A1) | (1 << COM1A0);
-    // CTC et clk/1024
+    // CTC et clk/128
     TCCR1B |= (1 << WGM12)  | (1 << CS12) | (1 << CS10);
     TCCR1C = 0;
     TIMSK1 |= (1 << OCIE1A);
@@ -42,7 +42,7 @@ void initMinuterie(func_t func)
     sei();
 }
 
-void initMinuterie2(func_t func)
+void initMinuterie2(func_t func)        //Pour l'utilisation du PWM du pour le son en meme temps que le pwm pour le moteur
 {
     cli();
 
@@ -55,10 +55,10 @@ void initMinuterie2(func_t func)
     timer2FuncPtr = func;
 
     TCNT2 = 0;
-    // mode CTC du timer 1 avec horloge divisee par 128
+    // mode CTC du timer 2 avec horloge divisee par 128
 	// interruption apres la duree spécifiee
     TCCR2A |= (1 << COM2A1) | (1 << COM2A0);
-    // CTC et clk/1024
+    // CTC et clk/128
     TCCR2B |= (1 << WGM21)  | (1 << CS22) | (1 << CS20);
     TIMSK2 |= (1 << OCIE2A);
     
