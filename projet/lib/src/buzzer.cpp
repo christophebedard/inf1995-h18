@@ -23,23 +23,23 @@ const uint16_t Buzzer::DEMI_PERIODES[] = {4545, 4290, 4049, 3822, 3607, 3405, 32
  */
 void callbackNote()
 {
-    PORTB ^= _BV(Buzzer::BROCHE_BUZZER - 1);
+    PORTC ^= _BV(Buzzer::BROCHE_BUZZER - 1);
 }
 
 void Buzzer::init()
 {
-    DDRB |= _BV(Buzzer::BROCHE_BUZZER - 1);
-    initMinuterie2(&callbackNote);
+    DDRC |= _BV(Buzzer::BROCHE_BUZZER - 1);
+    initTimer2(&callbackNote);
 }
 
 void Buzzer::play(uint8_t note)
 {
-    startMinuterie2(getPeriode(note));
+    startTimer2(getPeriode(note));
 }
 
 void Buzzer::stop()
 {
-    stopMinuterie2();
+    stopTimer2();
 }
 
 uint16_t Buzzer::getPeriode(uint8_t note)

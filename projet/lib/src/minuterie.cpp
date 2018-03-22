@@ -1,22 +1,19 @@
 #include "minuterie.h"
 
 func_t timer1FuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER1 */
-func_t timer2FuncPtr = nullptr;
+func_t timer2FuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER2 */
+
 ISR(TIMER1_COMPA_vect)
 {
-    /// \todo assert != nullptr
-    timer1FuncPtr();
+    if (timer1FuncPtr != nullptr) timer1FuncPtr();
 }
 
 ISR(TIMER2_COMPA_vect)
 {
-    /// \todo assert != nullptr
-    timer2FuncPtr();
+    if (timer2FuncPtr != nullptr) timer2FuncPtr();
 }
 
-
-
-void initMinuterie(func_t func)
+void initTimer1(func_t func)
 {
     cli();
 
@@ -37,12 +34,10 @@ void initMinuterie(func_t func)
     TCCR1C = 0;
     TIMSK1 |= (1 << OCIE1A);
     
-
-
     sei();
 }
 
-void initMinuterie2(func_t func)
+void initTimer2(func_t func)
 {
     cli();
 
@@ -62,27 +57,24 @@ void initMinuterie2(func_t func)
     TCCR2B |= (1 << WGM21)  | (1 << CS22) | (1 << CS20);
     TIMSK2 |= (1 << OCIE2A);
     
-
-
     sei();
 }
 
-void startMinuterie(const uint16_t duree)
+void startTimer1(const uint16_t duree)
 {
     TCNT1 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
     OCR1A = duree;// * (F_CPU / 128);
 }
 
-void startMinuterie2(const uint16_t duree)
+void startTimer2(const uint16_t duree)
 {
     TCNT2 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
     OCR2A = duree;// * (F_CPU / 128);
 }
 
-
-void stopMinuterie()
+void stopTimer1()
 {
     OCR1A = 0;
     TCCR1A = 0;
@@ -90,7 +82,7 @@ void stopMinuterie()
     TIMSK1 = 0;
 }
 
-void stopMinuterie2()
+void stopTimer2()
 {
     OCR2A = 0;
     TCCR2A = 0;
