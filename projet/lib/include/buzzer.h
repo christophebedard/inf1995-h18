@@ -44,13 +44,13 @@ private:
     static const uint16_t DEMI_PERIODES[]; /**< les periodes des notes */
 
     /**
-     * Recuperation de la periode selon la note
+     * Recuperation de la demi periode selon la note
      * 
      * \param note : la note
      * 
      * \return la periode en microsecondes (us)
      */
-    static uint16_t getPeriode(uint8_t note);
+    static uint16_t getDemiPeriode(uint8_t note);
 
 };
 

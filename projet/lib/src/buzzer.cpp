@@ -34,7 +34,7 @@ void Buzzer::init()
 
 void Buzzer::play(uint8_t note)
 {
-    startTimer2(getPeriode(note));
+    startTimer2(getDemiPeriode(note));
 }
 
 void Buzzer::stop()
@@ -42,7 +42,7 @@ void Buzzer::stop()
     stopTimer2();
 }
 
-uint16_t Buzzer::getPeriode(uint8_t note)
+uint16_t Buzzer::getDemiPeriode(uint8_t note)
 {
     if (NOTE_MIN <= note && note <= NOTE_MAX)
     {
