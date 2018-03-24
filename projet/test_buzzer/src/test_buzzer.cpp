@@ -52,6 +52,7 @@ int main()
         Debug::out(i);
         Debug::out("\n");
         Buzzer::play(i);
+        
         waitForMs(1000);
 
         Buzzer::stop();

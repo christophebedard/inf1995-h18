@@ -44,13 +44,17 @@ NoteMidi Buzzer::DATA_NOTES[] = {
  */
 void callbackNote()
 {
+    // inverse la broche
     PORTC ^= _BV(Buzzer::BROCHE_BUZZER - 1);
 }
 
 void Buzzer::init()
 {
+    // met la broche en sortie
     DDRC |= _BV(Buzzer::BROCHE_BUZZER - 1);
-    initTimer2(&callbackNote);
+
+    initTimer2(&callbackNote, nullptr);
+    //initTimer0(&callbackNote, nullptr);
 }
 
 void Buzzer::play(uint8_t note)
@@ -80,9 +84,13 @@ void Buzzer::play(uint8_t note)
     startTimer2();
     setPrescalerTimer2(pre);
     setOCRnATimer2(val_ocrn);
+    //startTimer0();
+    //setPrescalerTimer0(pre);
+    //setOCRnATimer0(val_ocrn);
 }
 
 void Buzzer::stop()
 {
     stopTimer2();
+    //stopTimer0();
 }
