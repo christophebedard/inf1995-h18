@@ -41,21 +41,10 @@ void initTimer2(func_t func)
 {
     cli();
 
-    // interruption externe sur INT0, rising ou falling edge
-    /// \todo minuterie semble pas fonctionner sans ces deux lignes-la si initInterruption() n'est pas appele
-    EIMSK |= (1 << INT0);
-    EICRA |= (1 << ISC00);
-
     // garde en memoire le pointeur vers la fonction de callback
     timer2FuncPtr = func;
 
-    TCNT2 = 0;
-    // mode CTC du timer 1 avec horloge divisee par 128
-	// interruption apres la duree spécifiee
-    TCCR2A |= (1 << COM2A1) | (1 << COM2A0);
-    // CTC et clk/1024
-    TCCR2B |= (1 << WGM21)  | (1 << CS22) | (1 << CS20);
-    TIMSK2 |= (1 << OCIE2A);
+    startTimer2();
     
     sei();
 }
@@ -64,14 +53,60 @@ void startTimer1(const uint16_t duree)
 {
     TCNT1 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
-    OCR1A = duree;// * (F_CPU / 128);
+    OCR1A = (duree * F_CPU) / 128;
 }
 
-void startTimer2(const uint16_t duree)
+void startTimer2()
 {
     TCNT2 = 0;
-    /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
-    OCR2A = duree;// * (F_CPU / 128);
+    // mode CTC du timer 1 avec horloge divisee par 128
+	// interruption apres la duree spécifiee
+    TCCR2A |= (1 << COM2A1) | (1 << COM2A0);
+    // CTC et clk/1024
+    TCCR2B |= (1 << WGM21)  | (1 << CS22) | (1 << CS20);
+    TIMSK2 |= (1 << OCIE2A);
+}
+
+void setOCRnATimer2(const uint8_t& val_ocrn)
+{
+    TCNT2 = 0;
+    OCR2A = val_ocrn;
+}
+
+void setOCRnBTimer2(const uint8_t& val_ocrn)
+{
+    TCNT2 = 0;
+    OCR2B = val_ocrn;
+}
+
+void setPrescalerTimer2(const Prescaler& pre)
+{
+    TCCR2B &= ~(_BV(CS22) | _BV(CS21) | _BV(CS20));
+    switch(pre)
+    {
+        case Prescaler::PRE_1:
+            TCCR2B |= _BV(CS20);
+            break;
+        case Prescaler::PRE_8:
+            TCCR2B |= _BV(CS21);
+            break;
+        case Prescaler::PRE_32:
+            TCCR2B |= _BV(CS21) | _BV(CS20);
+            break;
+        case Prescaler::PRE_64:
+            TCCR2B |= _BV(CS22);
+            break;
+        default:
+        case Prescaler::PRE_128:
+            TCCR2B |= _BV(CS22) | _BV(CS20);
+            break;
+        case Prescaler::PRE_256:
+            TCCR2B |= _BV(CS22) | _BV(CS21);
+            break;
+        case Prescaler::PRE_1024:
+            TCCR2B |= _BV(CS22) | _BV(CS21) | _BV(CS20);
+            break;
+    }
 }
 
 void stopTimer1()
@@ -85,7 +120,7 @@ void stopTimer1()
 void stopTimer2()
 {
     OCR2A = 0;
-    TCCR2A = 0;
-    TCCR2B = 0;
-    TIMSK2 = 0;
+    TCCR2A &= ~((1 << COM2A1) | (1 << COM2A0));
+    TCCR2B &= ~((1 << WGM21)  | (1 << CS22) | (1 << CS20));
+    TIMSK2 &= ~(1 << OCIE2A);
 }

@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "uart.h"
+#include "minuterie.h"
 
 /**
  * \class Debug
@@ -25,6 +26,7 @@ public:
      * \param nombre : le nombre a transmettre
      */
     static void out(const uint8_t& nombre);
+    static void out(const uint16_t& nombre);
 
     /**
      * Affichage nombre
@@ -33,6 +35,9 @@ public:
      * \param base : la base du nombre
      */
     static void out(const uint8_t& nombre, const uint8_t& base);
+    static void out(const uint16_t& nombre, const uint16_t& base);
+
+    static void out(const Prescaler& pre);
 
     /**
      * Affichage string
