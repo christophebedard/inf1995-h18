@@ -17,21 +17,28 @@ int main()
 
     Debug::out("debut\n");
 
-    Buzzer::play(45);
     Debug::out("45\n");
-    waitForMs(1000);
-    Buzzer::play(60);
-    Debug::out("60\n");
-    waitForMs(1000);
-    Buzzer::play(70);
-    Debug::out("70\n");
-    waitForMs(1000);
-    Buzzer::play(80);
-    Debug::out("80\n");
+    Buzzer::play((uint16_t)45);
+    
     waitForMs(1000);
 
-    Buzzer::stop();
+    Debug::out("60\n");
+    Buzzer::play((uint16_t)60);
+    
+    waitForMs(1000);
+    
+    Debug::out("70\n");
+    Buzzer::play((uint16_t)70);
+    
+    waitForMs(1000);
+    
+    Debug::out("80\n");
+    Buzzer::play((uint16_t)80);
+    
+    waitForMs(1000);
+
     Debug::out("stop\n");
+    Buzzer::stop();
 
     while(true);
 
