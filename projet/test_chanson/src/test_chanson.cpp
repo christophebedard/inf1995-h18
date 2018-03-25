@@ -32,10 +32,26 @@ int main()
     Debug::out("stop?\n");
     Chanson::stop();
 
-    while(true)
-    {
-        //
-    }
+    Debug::out("enum NoteMusicale :\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::Carree));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::Ronde));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::Blanche));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::Noire));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::Croche));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::DoubleCroche));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::TripleCroche));
+    Debug::out("\n");
+    Debug::out(static_cast<uint8_t>(NoteMusicale::QuadrupleCroche));
+    Debug::out("\n");
+
+
+    while(true);
 
     return 0;
 }

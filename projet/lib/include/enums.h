@@ -48,14 +48,14 @@ struct NoteChanson
  */
 enum class NoteMusicale
 {
-    Carree,             /**< une duree de (8) = le double de la ronde */
-    Ronde,              /**< une duree de (4) = le double de la blanche */
-    Blanche,            /**< une duree de (2) = le double de la noire */
-    Noire,              /**< une duree de (1) = l'unite de temps */
-    Croche,             /**< une duree de (1/2) = la moitie de la noire */
-    DoubleCroche,       /**< une duree de (1/4) = la moitie de la croche */
-    TripleCroche,       /**< une duree de (1/8) = la moitie de la double croche */
-    QuadrupleCroche     /**< une duree de (1/16) = la moitie de la triple croche */
+    Carree = 8,             /**< une duree de (8) = le double de la ronde */
+    Ronde = 4,              /**< une duree de (4) = le double de la blanche */
+    Blanche = 2,            /**< une duree de (2) = le double de la noire */
+    Noire = 0,              /**< une duree de (1) = l'unite de temps */
+    Croche = 3,             /**< une duree de (1/2) = la moitie de la noire */
+    DoubleCroche = 5,       /**< une duree de (1/4) = la moitie de la croche */
+    TripleCroche = 9,       /**< une duree de (1/8) = la moitie de la double croche */
+    QuadrupleCroche = 17    /**< une duree de (1/16) = la moitie de la triple croche */
 };
 
 #endif // LIB_ENUMS_H
