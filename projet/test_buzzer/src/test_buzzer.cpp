@@ -12,7 +12,6 @@
 int main()
 {
     Debug::init();
-
     Buzzer::init();
 
     Debug::out("debut\n");
@@ -30,6 +29,11 @@ int main()
     Debug::out("80\n");
     Buzzer::play(80);
     
+    waitForMs(1000);
+
+    Debug::out("0\n");
+    Buzzer::play(0);
+
     waitForMs(1000);
     
     Debug::out("100\n");

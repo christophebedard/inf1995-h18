@@ -47,6 +47,7 @@ public:
     static void stop();
 
     static const uint8_t BROCHE_BUZZER; /**< la broche sur laquelle le buzzer est connecte (1-8) */
+    static const uint8_t NOTE_NULLE; /**< le numero de la note qui represente un silence */
 
 private:
     static const uint8_t NOTE_MIN; /**< la note MIDI minimale valide */

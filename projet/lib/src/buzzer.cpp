@@ -8,7 +8,7 @@
 
 #include "buzzer.h"
 
-
+const uint8_t Buzzer::NOTE_NULLE = 0;
 const uint8_t Buzzer::BROCHE_BUZZER = 7;
 const uint8_t Buzzer::NOTE_MIN = 12;
 const uint8_t Buzzer::NOTE_MAX = 127;
@@ -58,33 +58,42 @@ void Buzzer::init()
 
 void Buzzer::play(uint8_t note)
 {
-    // obtient la note
-    NoteMidi note_midi;
-    if (NOTE_MIN <= note && note <= NOTE_MAX)
+    // si la note est non nulle
+    if(note != NOTE_NULLE)
     {
-        note_midi = DATA_NOTES[note - NOTE_MIN];
+        // obtient la note
+        NoteMidi note_midi;
+        if (NOTE_MIN <= note && note <= NOTE_MAX)
+        {
+            note_midi = DATA_NOTES[note - NOTE_MIN];
+        }
+        else
+        {
+            note_midi = DATA_NOTES[0];
+        }
+
+        // recupere les infos
+        Prescaler pre = note_midi.pre;
+        uint8_t val_ocrn = note_midi.val_ocrn;
+
+        /*
+        Debug::out("\tval ocrn : ");
+        Debug::out(val_ocrn);
+        Debug::out("\n");
+        Debug::out("\tprescaler : ");
+        Debug::out(pre);
+        Debug::out("\n");
+        */
+
+        startTimer2();
+        setPrescalerTimer2(pre);
+        setOCRnATimer2(val_ocrn);
     }
     else
     {
-        note_midi = DATA_NOTES[0];
+        // si la note est nulle
+        stop();
     }
-
-    // recupere les infos
-    Prescaler pre = note_midi.pre;
-    uint8_t val_ocrn = note_midi.val_ocrn;
-
-    /*
-    Debug::out("\tval ocrn : ");
-    Debug::out(val_ocrn);
-    Debug::out("\n");
-    Debug::out("\tprescaler : ");
-    Debug::out(pre);
-    Debug::out("\n");
-    */
-
-    startTimer2();
-    setPrescalerTimer2(pre);
-    setOCRnATimer2(val_ocrn);
 }
 
 void Buzzer::stop()
