@@ -51,7 +51,7 @@ public:
 private:
     static const uint8_t NOTE_MIN; /**< la note MIDI minimale valide */
     static const uint8_t NOTE_MAX; /**< la note MIDI maximale valide */
-    static NoteMidi DATA_NOTES[]; /**< les informations pour les notes (prescaler et valeur de OCRn) */
+    static const NoteMidi DATA_NOTES[]; /**< les informations pour les notes (prescaler et valeur de OCRn) */
 
 };
 

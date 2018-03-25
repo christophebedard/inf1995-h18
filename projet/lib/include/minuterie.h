@@ -72,6 +72,13 @@ void startTimer1();
 void startTimer2();
 
 /**
+ * Reglage de la valeur de OCRnA du timer 0 selon le temps
+ * 
+ * \param ms : le nombre de millisecondes
+ */
+void setOCRnATimer0FromMs(const uint8_t& ms);
+
+/**
  * Reglage de la valeur de OCRnA du timer 0
  * 
  * \param val_ocrn : la valeur de OCRnA

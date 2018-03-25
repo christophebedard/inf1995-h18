@@ -12,7 +12,7 @@
 const uint8_t Buzzer::BROCHE_BUZZER = 7;
 const uint8_t Buzzer::NOTE_MIN = 12;
 const uint8_t Buzzer::NOTE_MAX = 127;
-NoteMidi Buzzer::DATA_NOTES[] = {
+const NoteMidi Buzzer::DATA_NOTES[] = {
     {Prescaler::PRE_1024, 238}, {Prescaler::PRE_1024, 225}, {Prescaler::PRE_1024, 212}, {Prescaler::PRE_1024, 200}, {Prescaler::PRE_1024, 189},
     {Prescaler::PRE_1024, 178}, {Prescaler::PRE_1024, 168}, {Prescaler::PRE_1024, 159}, {Prescaler::PRE_1024, 150}, {Prescaler::PRE_1024, 142},
     {Prescaler::PRE_1024, 134}, {Prescaler::PRE_1024, 126}, {Prescaler::PRE_1024, 119}, {Prescaler::PRE_1024, 112}, {Prescaler::PRE_1024, 106},

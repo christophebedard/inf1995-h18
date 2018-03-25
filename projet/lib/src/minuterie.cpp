@@ -116,6 +116,12 @@ void startTimer2()
     TIMSK2 |= (1 << OCIE2A) | (1 << OCIE2B);
 }
 
+void setOCRnATimer0FromMs(const uint8_t& ms)
+{
+    TCNT0 = 0;
+    OCR0A = ms * 1000 * (F_CPU / 128);
+}
+
 void setOCRnATimer0(const uint8_t& val_ocrn)
 {
     TCNT0 = 0;
