@@ -10,16 +10,24 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+#include "enums.h"
 #include "uart.h"
-#include "minuterie.h"
 
 /**
  * \class Debug
  * \brief classe qui aide pour le debug
+ * \todo implemente un buffer dans UART pour empecher que les transmissions viennent ralentir le programme
  */
 class Debug
 {
 public:
+    /**
+     * Initialisation de Debug (== initialisation du UART)
+     * (devrait etre appele au debut du programme afin 
+     *  d'etre utilise par toutes les classes)
+     */
+    static void init();
+
     /**
      * Affichage nombre de base 10
      * 
@@ -37,7 +45,12 @@ public:
     static void out(const uint8_t& nombre, const uint8_t& base);
     static void out(const uint16_t& nombre, const uint16_t& base);
 
-    static void out(const Prescaler& pre);
+    /**
+     * Affichage prescaler
+     * 
+     * \param pre : le prescaler a transmettre
+     */
+    static void out(const Prescaler pre);
 
     /**
      * Affichage string
@@ -48,4 +61,4 @@ public:
 
 };
 
-#endif // LIB_UART_H
+#endif // LIB_DEBUG_H

@@ -1,10 +1,21 @@
+/**
+ * \file minuterie.cpp
+ * \brief implementation des fonctions pour la minuterie
+ * \author 
+ */
+
 #include "minuterie.h"
+
 
 func_t timer0AFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER0 A */
 func_t timer0BFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER0 B */
 func_t timer1FuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER1 */
 func_t timer2AFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER2 A */
 func_t timer2BFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER2 B */
+
+Prescaler tim0Pres; /**< le prescaler pour le timer0 */
+Prescaler tim1Pres; /**< le prescaler pour le timer1 */
+Prescaler tim2Pres; /**< le prescaler pour le timer2 */
 
 ISR(TIMER0_COMPA_vect)
 {
@@ -33,93 +44,95 @@ ISR(TIMER2_COMPB_vect)
 
 void initTimer0(func_t funcA, func_t funcB)
 {
-    cli();
-
     // garde en memoire les pointeurs vers les fonction de callback
     timer0AFuncPtr = funcA;
     timer0BFuncPtr = funcB;
-
-    startTimer2();
-    
-    sei();
 }
 
 void initTimer1(func_t func)
 {
-    cli();
-
     // interruption externe sur INT0, rising ou falling edge
     /// \todo minuterie semble pas fonctionner sans ces deux lignes-la si initInterruption() n'est pas appele
-    EIMSK |= (1 << INT0);
-    EICRA |= (1 << ISC00);
+    EIMSK |= _BV(INT0);
+    EICRA |= _BV(ISC00);
 
     // garde en memoire le pointeur vers la fonction de callback
     timer1FuncPtr = func;
-    
-    sei();
 }
 
 void initTimer2(func_t funcA, func_t funcB)
 {
-    cli();
-
     // garde en memoire les pointeurs vers les fonction de callback
     timer2AFuncPtr = funcA;
     timer2BFuncPtr = funcB;
-
-    startTimer2();
-    
-    sei();
 }
 
 void startTimer1(const uint16_t duree)
 {
     TCNT1 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
-    OCR1A = (duree * F_CPU) / 128;
+    OCR1A = (duree * F_CPU) / static_cast<uint8_t>(Prescaler::Pres_128);
 }
 
 void startTimer0()
 {
+    cli();
+
     TCNT0 = 0;
-    // mode CTC du timer 0 avec horloge divisee par 256
-	// interruption apres la duree spécifiee
-    TCCR0A |= (1 << COM0A1) | (1 << COM0A0);
-    // CTC et clk/1024
-    TCCR0B |= (1 << WGM01)  | (1 << CS02);
-    // active A et B
-    TIMSK0 |= (1 << OCIE0A) | (1 << OCIE2B);
+
+    // mode CTC
+    TCCR0A |= _BV(WGM01);
+	// interruption apres la duree spécifiee sur OC0A
+    TCCR0A |= _BV(COM0A1) | _BV(COM0A0);
+    // interruption apres la duree spécifiee sur OC0B
+    //TCCR0A |= _BV(COM0B1) | _BV(COM0B0);
+    // clk/1024
+    TCCR0B |= _BV(CS02) | _BV(CS00);
+    // active A [et B]
+    TIMSK0 |= _BV(OCIE0A);// | _BV(OCIE0B);
+
+    sei();
 }
 
 void startTimer1()
 {
+    cli();
+
     TCNT1 = 0;
+
     // mode CTC du timer 1 avec horloge divisee par 128
 	// interruption apres la duree spécifiee
-    TCCR1A |= (1 << COM1A1) | (1 << COM1A0);
+    TCCR1A |= _BV(COM1A1) | _BV(COM1A0);
     // CTC et clk/1024
-    TCCR1B |= (1 << WGM12)  | (1 << CS12) | (1 << CS10);
+    TCCR1B |= _BV(WGM12) | _BV(CS12) | _BV(CS10);
     TCCR1C = 0;
     // active A
-    TIMSK1 |= (1 << OCIE1A);
+    TIMSK1 |= _BV(OCIE1A);
+
+    sei();
 }
 
 void startTimer2()
 {
+    cli();
+
     TCNT2 = 0;
+
     // mode CTC du timer 2 avec horloge divisee par 128
 	// interruption apres la duree spécifiee
-    TCCR2A |= (1 << COM2A1) | (1 << COM2A0);
+    TCCR2A |= _BV(COM2A1) | _BV(COM2A0);
     // CTC et clk/1024
-    TCCR2B |= (1 << WGM21)  | (1 << CS22) | (1 << CS20);
+    TCCR2B |= _BV(WGM21)  | _BV(CS22) | _BV(CS20);
     // active A et B
-    TIMSK2 |= (1 << OCIE2A) | (1 << OCIE2B);
+    TIMSK2 |= _BV(OCIE2A) | _BV(OCIE2B);
+
+    sei();
 }
 
 void setOCRnATimer0FromMs(const uint8_t& ms)
 {
     TCNT0 = 0;
-    OCR0A = ms * 1000 * (F_CPU / 128);
+    OCR0A = (ms * (F_CPU / 1000)) / static_cast<uint8_t>(tim0Pres);
 }
 
 void setOCRnATimer0(const uint8_t& val_ocrn)
@@ -160,23 +173,25 @@ void setOCRnBTimer2(const uint8_t& val_ocrn)
 
 void setPrescalerTimer0(const Prescaler& pre)
 {
+    tim0Pres = pre;
+
     TCCR0B &= ~(_BV(CS02) | _BV(CS01) | _BV(CS00));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR0B |= _BV(CS00);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR0B |= _BV(CS01);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR0B |= _BV(CS01) | _BV(CS00);
             break;
         default:
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR0B |= _BV(CS02);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR0B |= _BV(CS02) | _BV(CS00);
             break;
     }
@@ -184,23 +199,25 @@ void setPrescalerTimer0(const Prescaler& pre)
 
 void setPrescalerTimer1(const Prescaler& pre)
 {
+    tim1Pres = pre;
+    
     TCCR1B &= ~(_BV(CS12) | _BV(CS11) | _BV(CS10));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR0B |= _BV(CS10);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR0B |= _BV(CS11);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR0B |= _BV(CS11) | _BV(CS10);
             break;
         default:
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR0B |= _BV(CS12);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR0B |= _BV(CS12) | _BV(CS10);
             break;
     }
@@ -208,29 +225,31 @@ void setPrescalerTimer1(const Prescaler& pre)
 
 void setPrescalerTimer2(const Prescaler& pre)
 {
+    tim2Pres = pre;
+    
     TCCR2B &= ~(_BV(CS22) | _BV(CS21) | _BV(CS20));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR2B |= _BV(CS20);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR2B |= _BV(CS21);
             break;
-        case Prescaler::PRE_32:
+        case Prescaler::Pres_32:
             TCCR2B |= _BV(CS21) | _BV(CS20);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR2B |= _BV(CS22);
             break;
         default:
-        case Prescaler::PRE_128:
+        case Prescaler::Pres_128:
             TCCR2B |= _BV(CS22) | _BV(CS20);
             break;
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR2B |= _BV(CS22) | _BV(CS21);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR2B |= _BV(CS22) | _BV(CS21) | _BV(CS20);
             break;
     }
@@ -239,26 +258,26 @@ void setPrescalerTimer2(const Prescaler& pre)
 void stopTimer0()
 {
     OCR0A = 0;
-    OCR0A = 0;
-    TCCR0A &= ~((1 << COM0A1) | (1 << COM0A0));
-    TCCR0B &= ~((1 << WGM01)  | (1 << CS02) | (1 << CS00));
-    TIMSK0 &= ~(1 << OCIE0A);
+    OCR0B = 0;
+    TCCR0A &= ~(_BV(WGM01) | _BV(COM0A1) | _BV(COM0A0) | _BV(COM0B1) | _BV(COM0B0));
+    TCCR0B &= ~(_BV(CS02) | _BV(CS00));
+    TIMSK0 &= ~(_BV(OCIE0A) | _BV(OCIE0B));
 }
 
 void stopTimer1()
 {
     OCR1A = 0;
     OCR1B = 0;
-    TCCR1A &= ~((1 << COM1A1) | (1 << COM1A0));
-    TCCR1B &= ~((1 << WGM12)  | (1 << CS12) | (1 << CS10));
-    TIMSK1 &= ~((1 << OCIE1A));
+    TCCR1A &= ~(_BV(COM1A1) | _BV(COM1A0));
+    TCCR1B &= ~(_BV(WGM12)  | _BV(CS12) | _BV(CS10));
+    TIMSK1 &= ~(_BV(OCIE1A));
 }
 
 void stopTimer2()
 {
     OCR2A = 0;
     OCR2B = 0;
-    TCCR2A &= ~((1 << COM2A1) | (1 << COM2A0));
-    TCCR2B &= ~((1 << WGM21)  | (1 << CS22) | (1 << CS20));
-    TIMSK2 &= ~(1 << OCIE2A);
+    TCCR2A &= ~(_BV(COM2A1) | _BV(COM2A0));
+    TCCR2B &= ~(_BV(WGM21)  | _BV(CS22) | _BV(CS20));
+    TIMSK2 &= ~_BV(OCIE2A);
 }

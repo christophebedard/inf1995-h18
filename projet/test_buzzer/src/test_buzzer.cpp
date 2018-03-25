@@ -11,8 +11,7 @@
 
 int main()
 {
-    UART::init(); // pour debug
-
+    Debug::init();
     Buzzer::init();
 
     Debug::out("debut\n");
@@ -30,6 +29,11 @@ int main()
     Debug::out("80\n");
     Buzzer::play(80);
     
+    waitForMs(1000);
+
+    Debug::out("0\n");
+    Buzzer::play(0);
+
     waitForMs(1000);
     
     Debug::out("100\n");
@@ -61,6 +65,22 @@ int main()
     }
 
     Buzzer::stop();
+
+    Debug::out("enum Prescaler :\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_1));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_8));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_32));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_64));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_128));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_256));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::Pres_1024));
+    Debug::out("\n");
 
     while(true);
 
