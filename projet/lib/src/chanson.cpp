@@ -88,7 +88,7 @@ void Chanson::init()
 
     // selectionne un prescaler de 1024
     /// \todo integre avec NoteMusicale
-    setPrescalerTimer0(Prescaler::PRE_1024);
+    setPrescalerTimer0(Prescaler::Pres_1024);
 }
 
 void Chanson::play()

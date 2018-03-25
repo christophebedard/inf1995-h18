@@ -172,20 +172,20 @@ void setPrescalerTimer0(const Prescaler& pre)
     TCCR0B &= ~(_BV(CS02) | _BV(CS01) | _BV(CS00));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR0B |= _BV(CS00);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR0B |= _BV(CS01);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR0B |= _BV(CS01) | _BV(CS00);
             break;
         default:
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR0B |= _BV(CS02);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR0B |= _BV(CS02) | _BV(CS00);
             break;
     }
@@ -196,20 +196,20 @@ void setPrescalerTimer1(const Prescaler& pre)
     TCCR1B &= ~(_BV(CS12) | _BV(CS11) | _BV(CS10));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR0B |= _BV(CS10);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR0B |= _BV(CS11);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR0B |= _BV(CS11) | _BV(CS10);
             break;
         default:
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR0B |= _BV(CS12);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR0B |= _BV(CS12) | _BV(CS10);
             break;
     }
@@ -220,26 +220,26 @@ void setPrescalerTimer2(const Prescaler& pre)
     TCCR2B &= ~(_BV(CS22) | _BV(CS21) | _BV(CS20));
     switch(pre)
     {
-        case Prescaler::PRE_1:
+        case Prescaler::Pres_1:
             TCCR2B |= _BV(CS20);
             break;
-        case Prescaler::PRE_8:
+        case Prescaler::Pres_8:
             TCCR2B |= _BV(CS21);
             break;
-        case Prescaler::PRE_32:
+        case Prescaler::Pres_32:
             TCCR2B |= _BV(CS21) | _BV(CS20);
             break;
-        case Prescaler::PRE_64:
+        case Prescaler::Pres_64:
             TCCR2B |= _BV(CS22);
             break;
         default:
-        case Prescaler::PRE_128:
+        case Prescaler::Pres_128:
             TCCR2B |= _BV(CS22) | _BV(CS20);
             break;
-        case Prescaler::PRE_256:
+        case Prescaler::Pres_256:
             TCCR2B |= _BV(CS22) | _BV(CS21);
             break;
-        case Prescaler::PRE_1024:
+        case Prescaler::Pres_1024:
             TCCR2B |= _BV(CS22) | _BV(CS21) | _BV(CS20);
             break;
     }
