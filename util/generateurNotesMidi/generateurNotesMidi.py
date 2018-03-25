@@ -19,7 +19,7 @@ SECOND_TO_MICROSECOND = 1000000.0
 PRESCALERS = [1, 8, 32, 64, 128, 256, 1024]
 # nom des enums correspondant aux valeurs de prescalers
 PRESCALERS_ENUMS_PREFIX = 'Prescaler::'
-PRESCALERS_ENUMS = ['PRE_1', 'PRE_8', 'PRE_32', 'PRE_64', 'PRE_128', 'PRE_256', 'PRE_1024']
+PRESCALERS_ENUMS = ['Pres_1', 'Pres_8', 'Pres_32', 'Pres_64', 'Pres_128', 'Pres_256', 'Pres_1024']
 # nombre de bits du registre
 NB_BITS = 8
 # valeur maximale pour OCRn (8 bits)
