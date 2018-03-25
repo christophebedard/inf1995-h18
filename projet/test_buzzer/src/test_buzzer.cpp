@@ -66,6 +66,21 @@ int main()
 
     Buzzer::stop();
 
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_1));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_8));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_32));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_64));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_128));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_256));
+    Debug::out("\n");
+    Debug::out(static_cast<uint16_t>(Prescaler::PRE_1024));
+    Debug::out("\n");
+
     while(true);
 
     return 0;

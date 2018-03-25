@@ -13,13 +13,13 @@
  */
 enum class Prescaler
 {
-    PRE_1,      /**< une division par 1 */
-    PRE_8,      /**< une division par 8 */
-    PRE_32,     /**< une division par 32 */
-    PRE_64,     /**< une division par 64 */
-    PRE_128,    /**< une division par 128 */
-    PRE_256,    /**< une division par 256 */
-    PRE_1024    /**< une division par 1024 */
+    PRE_1 = 1,          /**< une division par 1 */
+    PRE_8 = 8,          /**< une division par 8 */
+    PRE_32 = 32,        /**< une division par 32 */
+    PRE_64 = 64,        /**< une division par 64 */
+    PRE_128 = 128,      /**< une division par 128 */
+    PRE_256 = 256,      /**< une division par 256 */
+    PRE_1024 = 1024     /**< une division par 1024 */
 };
 
 /**
