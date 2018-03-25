@@ -26,10 +26,11 @@ int main()
 
     Debug::out("play\n");
     Chanson::play();
+
     waitForMs(5000);
+
     Debug::out("stop?\n");
     Chanson::stop();
-    
 
     while(true)
     {
