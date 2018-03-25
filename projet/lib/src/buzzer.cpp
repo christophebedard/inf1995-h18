@@ -75,7 +75,7 @@ void Buzzer::play(uint8_t note)
     }
     else
     {
-        // si la note est nulle
+        // si la note est nulle : silence
         stop();
     }
 }

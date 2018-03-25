@@ -13,6 +13,10 @@ func_t timer1FuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER
 func_t timer2AFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER2 A */
 func_t timer2BFuncPtr = nullptr; /**< variable du pointeur vers le callback TIMER2 B */
 
+Prescaler tim0Pres; /**< le prescaler pour le timer0 */
+Prescaler tim1Pres; /**< le prescaler pour le timer1 */
+Prescaler tim2Pres; /**< le prescaler pour le timer2 */
+
 ISR(TIMER0_COMPA_vect)
 {
     if (timer0AFuncPtr != nullptr) timer0AFuncPtr();
@@ -67,7 +71,7 @@ void startTimer1(const uint16_t duree)
 {
     TCNT1 = 0;
     /// \todo verifier si c'est la bonne formule (le temps ne semble pas etre exact)
-    OCR1A = (duree * F_CPU) / 128;
+    OCR1A = (duree * F_CPU) / static_cast<uint8_t>(Prescaler::Pres_128);
 }
 
 void startTimer0()
@@ -128,7 +132,7 @@ void startTimer2()
 void setOCRnATimer0FromMs(const uint8_t& ms)
 {
     TCNT0 = 0;
-    OCR0A = (ms * (F_CPU / 1000)) / 1024;
+    OCR0A = (ms * (F_CPU / 1000)) / static_cast<uint8_t>(tim0Pres);
 }
 
 void setOCRnATimer0(const uint8_t& val_ocrn)
@@ -169,6 +173,8 @@ void setOCRnBTimer2(const uint8_t& val_ocrn)
 
 void setPrescalerTimer0(const Prescaler& pre)
 {
+    tim0Pres = pre;
+
     TCCR0B &= ~(_BV(CS02) | _BV(CS01) | _BV(CS00));
     switch(pre)
     {
@@ -193,6 +199,8 @@ void setPrescalerTimer0(const Prescaler& pre)
 
 void setPrescalerTimer1(const Prescaler& pre)
 {
+    tim1Pres = pre;
+    
     TCCR1B &= ~(_BV(CS12) | _BV(CS11) | _BV(CS10));
     switch(pre)
     {
@@ -217,6 +225,8 @@ void setPrescalerTimer1(const Prescaler& pre)
 
 void setPrescalerTimer2(const Prescaler& pre)
 {
+    tim2Pres = pre;
+    
     TCCR2B &= ~(_BV(CS22) | _BV(CS21) | _BV(CS20));
     switch(pre)
     {
