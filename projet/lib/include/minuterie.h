@@ -10,21 +10,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+#include "enums.h"
+#include "debug.h"
 
-/**
- * Valeurs possibles pour le prescaler
- * Attention : certains timers ne supportent pas tous les prescalers
- */
-enum class Prescaler
-{
-    PRE_1,      /**< une division par 1 */
-    PRE_8,      /**< une division par 8 */
-    PRE_32,     /**< une division par 32 */
-    PRE_64,     /**< une division par 64 */
-    PRE_128,    /**< une division par 128 */
-    PRE_256,    /**< une division par 256 */
-    PRE_1024    /**< une division par 1024 */
-};
 
 /**
  * Initialisation du timer 0
@@ -73,7 +61,7 @@ void startTimer2();
 
 /**
  * Reglage de la valeur de OCRnA du timer 0 selon le temps
- * 
+ * Utilisant un prescaler de 1024, la periode maximale est 32.64 ms
  * \param ms : le nombre de millisecondes
  */
 void setOCRnATimer0FromMs(const uint8_t& ms);

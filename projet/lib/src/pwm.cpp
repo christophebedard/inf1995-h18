@@ -10,9 +10,9 @@ void initPWM()
 
 	// compare output mode 10 (Clear OCnA/OCnB on Compare Match (Set output to low level))
 	// waveform generation mode 1 (PWM, Phase Correct, 8-bit)
-	TCCR1A = (1 << COM1A1) | (1 << COM1B1)| (1 << WGM10);
+	TCCR1A = _BV(COM1A1) | _BV(COM1B1)| _BV(WGM10);
 	// division d'horloge par 8
-	TCCR1B = (1 << CS11);
+	TCCR1B = _BV(CS11);
 }
 
 void ajustementPWM(const uint8_t& pourcentage)

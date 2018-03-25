@@ -38,53 +38,6 @@ void reverse(char* str, uint8_t len)
  * \param str : le pointeur vers le tableau de sortie
  * \param base : la base du nombre
  */
-void itoa(uint8_t num, char* str, const uint8_t& base)
-{
-    uint8_t i = 0;
-    bool isNegative = false;
- 
-    // cas special pour 0
-    if (num == 0)
-    {
-        str[i++] = '0';
-        str[i] = '\0';
-        return;
-    }
- 
-    // support des nombres negatifs seulement pour la base 10
-    if (num < 0 && base == 10)
-    {
-        isNegative = true;
-        num = -num;
-    }
- 
-    // chiffres
-    while (num != 0)
-    {
-        int rem = num % base;
-        str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
-        num = num/base;
-    }
- 
-    // si nombre est negatif
-    if (isNegative)
-    {
-        str[i++] = '-';
-    }
-
-    // si hex, ajouter 0x
-    if (base == 16)
-    {
-        str[i++] = 'x';
-        str[i++] = '0';
-    }
-
-    str[i] = '\0'; // fin du string
- 
-    // inversion du string
-    reverse(str, i);
-}
-
 void itoa(uint16_t num, char* str, const uint16_t& base)
 {
     uint16_t i = 0;
@@ -132,6 +85,11 @@ void itoa(uint16_t num, char* str, const uint16_t& base)
     reverse(str, i);
 }
 
+void itoa(uint8_t num, char* str, const uint8_t& base)
+{
+    itoa((uint16_t)num, str, (uint16_t)base);
+}
+
 void Debug::out(const uint8_t& nombre)
 {
     out(nombre, 10);
@@ -156,7 +114,7 @@ void Debug::out(const uint16_t& nombre, const uint16_t& base)
     UART::transmission(str);
 }
 
-void Debug::out(const Prescaler& pre)
+void Debug::out(const Prescaler pre)
 {
     switch(pre)
     {
@@ -190,4 +148,9 @@ void Debug::out(const Prescaler& pre)
 void Debug::out(const char* str)
 {
     UART::transmission(str);
+}
+
+void Debug::init()
+{
+    UART::init();
 }
