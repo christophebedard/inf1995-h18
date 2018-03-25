@@ -10,17 +10,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+#include "enums.h"
 #include "buzzer.h"
 #include "debug.h"
 
-/**
- * Definition d'une note de chanson
- */
-struct NoteChanson
-{
-    uint8_t duree; /**< la duree de la note (en millisecondes) */
-    uint8_t noteMidi; /**< la note MIDI */
-};
 
 /**
  * \class Chanson
@@ -52,6 +45,14 @@ public:
     static uint16_t compteurNotesChanson; /**< le compteur qui garde en memoire la note courante */
     static const uint16_t NOMBRE_NOTES_CHANSON; /**< le nombre total de notes pour la chanson */
     static const NoteChanson NOTES_CHANSON[]; /**< les informations pour les notes de la chanson */
+
+    /**
+     * Lecture d'une note
+     * donne la note MIDI au buzzer et regle le timer pour la duree
+     * \todo rendre private (apres avoir change le callback pour etre une methode)
+     * \param note : la NoteChanson a jouer
+     */
+    static void playNote(NoteChanson note);
 
 private:
 

@@ -11,7 +11,7 @@
 
 int main()
 {
-    UART::init(); // pour debug
+    Debug::init();
 
     Buzzer::init();
 

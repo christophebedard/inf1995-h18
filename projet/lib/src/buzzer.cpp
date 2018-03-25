@@ -54,7 +54,6 @@ void Buzzer::init()
     DDRC |= _BV(Buzzer::BROCHE_BUZZER - 1);
 
     initTimer2(&callbackNote, nullptr);
-    //initTimer0(&callbackNote, nullptr);
 }
 
 void Buzzer::play(uint8_t note)
@@ -74,23 +73,21 @@ void Buzzer::play(uint8_t note)
     Prescaler pre = note_midi.pre;
     uint8_t val_ocrn = note_midi.val_ocrn;
 
+    /*
     Debug::out("\tval ocrn : ");
     Debug::out(val_ocrn);
     Debug::out("\n");
     Debug::out("\tprescaler : ");
     Debug::out(pre);
     Debug::out("\n");
+    */
 
     startTimer2();
     setPrescalerTimer2(pre);
     setOCRnATimer2(val_ocrn);
-    //startTimer0();
-    //setPrescalerTimer0(pre);
-    //setOCRnATimer0(val_ocrn);
 }
 
 void Buzzer::stop()
 {
     stopTimer2();
-    //stopTimer0();
 }
