@@ -23,12 +23,21 @@ enum class Prescaler
 };
 
 /**
+ * Definition d'une note MIDI
+ */
+struct NoteMidi
+{
+    Prescaler pre; /**< la valeur du prescaler pour la note */
+    uint8_t val_ocrn; /**< la valeur de OCRn pour la note */
+};
+
+/**
  * Definition d'une note de chanson (note MIDI et duree)
  */
 struct NoteChanson
 {
     uint8_t noteMidi;   /**< la note MIDI */
-    uint8_t duree; /**< la duree de la note (selon une figure de note) */
+    uint16_t duree; /**< la duree de la note (selon une figure de note) */
     //NoteMusicale duree; /**< la duree de la note (selon une figure de note) */
 };
 
