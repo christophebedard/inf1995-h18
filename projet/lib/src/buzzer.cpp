@@ -62,29 +62,13 @@ void Buzzer::play(uint8_t note)
     if(note != NOTE_NULLE)
     {
         // obtient la note
-        NoteMidi note_midi;
-        if (NOTE_MIN <= note && note <= NOTE_MAX)
-        {
-            note_midi = DATA_NOTES[note - NOTE_MIN];
-        }
-        else
-        {
-            note_midi = DATA_NOTES[0];
-        }
+        NoteMidi note_midi = (NOTE_MIN <= note && note <= NOTE_MAX) ? DATA_NOTES[note - NOTE_MIN] : DATA_NOTES[0];
 
         // recupere les infos
         Prescaler pre = note_midi.pre;
         uint8_t val_ocrn = note_midi.val_ocrn;
 
-        /*
-        Debug::out("\tval ocrn : ");
-        Debug::out(val_ocrn);
-        Debug::out("\n");
-        Debug::out("\tprescaler : ");
-        Debug::out(pre);
-        Debug::out("\n");
-        */
-
+        // execute
         startTimer2();
         setPrescalerTimer2(pre);
         setOCRnATimer2(val_ocrn);

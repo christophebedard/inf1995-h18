@@ -14,6 +14,10 @@
 #include "buzzer.h"
 #include "debug.h"
 
+/**
+ * Unite de temps standard pour une note (en millisecondes)
+ */
+#define UNITE_TEMPS_MS 100
 
 /**
  * \class Chanson
@@ -42,9 +46,12 @@ public:
      */
     static void stop();
 
-    static uint16_t compteurNotesChanson; /**< le compteur qui garde en memoire la note courante */
+    static uint16_t compteurNotesChanson; /**< le comcompteurMsNotepteur qui garde en memoire la note courante */
     static const uint16_t NOMBRE_NOTES_CHANSON; /**< le nombre total de notes pour la chanson */
     static const NoteChanson NOTES_CHANSON[]; /**< les informations pour les notes de la chanson */
+
+    static uint16_t compteurMsNote; /**< le nombre de millisecondes restants a jouer pour la note courante */
+    static const uint16_t PERIODE_MAX; /**< la longueur maximale de la periode selon le prescaler choisi */
 
     /**
      * Lecture d'une note
@@ -52,7 +59,7 @@ public:
      * \todo rendre private (apres avoir change le callback pour etre une methode)
      * \param note : la NoteChanson a jouer
      */
-    static void playNote(NoteChanson note);
+    static void playNote(uint8_t noteMidi, uint8_t duree);
 
 private:
 
