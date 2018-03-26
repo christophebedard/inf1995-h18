@@ -8,7 +8,16 @@
  */
 
 /**
- * Representer COMNAx et COMNBx (voir doc pour precisions selon mode)
+ * Represente la direction des moteurs individuellement
+ */
+enum class DirectionMoteur
+{
+    Moteur_avant,   ///< vers l'avant
+    Moteur_arriere  ///< vers l'arriere
+};
+
+/**
+ * Represente COMNAx et COMNBx (voir doc pour precisions selon mode)
  */
 enum class COM
 {
@@ -47,7 +56,7 @@ enum class WGM
  */
 enum class Prescaler
 {
-    Pres_no_clk = 0,        ///< no clock source
+    Pres_no_clk = 0,    ///< no clock source
     Pres_1 = 1,         ///< une division par 1
     Pres_8 = 8,         ///< une division par 8
     Pres_32 = 32,       ///< une division par 32

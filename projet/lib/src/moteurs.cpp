@@ -10,6 +10,40 @@
 void Moteurs::init()
 {
     PWM::init();
+
+    // direction initiale : avant
+    setDirection(DirectionMoteur::Moteur_avant);
+}
+
+void Moteurs::setDirection(const DirectionMoteur& dir)
+{
+    setDirectionMoteurGauche(dir);
+    setDirectionMoteurDroit(dir);
+}
+
+void Moteurs::setDirectionMoteurGauche(const DirectionMoteur& dirG)
+{
+    setDirectionBroche(dirG, BROCHE_MOTEUR_GAUCHE_DIRECTION);
+}
+
+void Moteurs::setDirectionMoteurDroit(const DirectionMoteur& dirD)
+{
+    setDirectionBroche(dirD, BROCHE_MOTEUR_DROIT_DIRECTION);
+}
+
+void Moteurs::setDirectionBroche(const DirectionMoteur& dir, uint8_t b)
+{
+    /// \todo verifier directions
+    switch(dir)
+    {
+        default:
+        case DirectionMoteur::Moteur_avant:
+            DDRD |= _BV(_BROCHE_TO_PIN(b));
+            break;
+        case DirectionMoteur::Moteur_arriere:
+            DDRD &= ~(_BV(_BROCHE_TO_PIN(b)));
+            break;
+    }
 }
 
 void Moteurs::setPourcentage(const uint8_t& pourcentage)

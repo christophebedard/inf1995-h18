@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "enums.h"
 #include "pwm.h"
 
 /**
@@ -22,6 +23,27 @@ public:
      * Initialisation des moteurs
      */
     static void init();
+
+    /**
+     * Reglage de la direction des deux moteurs
+     * 
+     * \param dir : la direction des moteurs selon DirectionMoteur
+     */
+    static void setDirection(const DirectionMoteur& dir);
+
+    /**
+     * Reglage de la direction du moteur gauche
+     * 
+     * \param dir : la direction du moteur selon DirectionMoteur
+     */
+    static void setDirectionMoteurGauche(const DirectionMoteur& dirG);
+
+    /**
+     * Reglage de la direction du moteur droit
+     * 
+     * \param dir : la direction du moteur selon DirectionMoteur
+     */
+    static void setDirectionMoteurDroit(const DirectionMoteur& dirD);
 
     /**
      * Ajustement des moteurs (gauche et droit)
@@ -59,7 +81,13 @@ public:
     static void virageGauche(const uint8_t& pourcentage);
 
 private:
-
+    /**
+     * Reglage de la direction selon la broche
+     * 
+     * \param dir : la direction du moteur selon DirectionMoteur
+     * \param b : la broche a ajuster
+     */
+    static void setDirectionBroche(const DirectionMoteur& dir, uint8_t b);
 
 };
 
