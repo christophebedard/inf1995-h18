@@ -1,5 +1,5 @@
 /**
- * \file test_pwm.cpp
+ * \file test_moteurs.cpp
  * \brief programme pour tester les moteurs/PWM
  * \author 
  */
