@@ -8,10 +8,11 @@
  */
 
 #ifndef F_CPU
+/// la frequence du CPU
 #define F_CPU 8000000
 #endif
 
-// pointeur vers fonction sans argument et retour void
+/// pointeur vers fonction sans argument et retour void
 typedef void (*func_t)();
 
 // Definition des constantes
@@ -22,10 +23,10 @@ const uint8_t ROUGE = 0x02;
 const uint8_t VERT = 0x01;
 
 // Informations sur l'equipe
-const char INFO_NOM_ROBOT[] = "Thinky Winky";
-const char INFO_EQUIPE[] = "68116";
-const char INFO_GROUPE[] = "03";
-const char INFO_SESSION[] = "18-1";
+const char INFO_NOM_ROBOT[] = "Thinky Winky";   ///< le nom du robot
+const char INFO_EQUIPE[] = "68116";             ///< le numero de l'equipe
+const char INFO_GROUPE[] = "03";                ///< le numero du groupe
+const char INFO_SESSION[] = "18-1";             ///< l'annee-session
 
 
 #endif // LIB_DEFINES_H

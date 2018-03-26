@@ -29,20 +29,33 @@ public:
     static void init();
 
     /**
-     * Affichage nombre de base 10
+     * Affichage nombre (8 bits) de base 10
      * 
      * \param nombre : le nombre a transmettre
      */
     static void out(const uint8_t& nombre);
+
+    /**
+     * Affichage nombre (16 bits) de base 10
+     * 
+     * \param nombre : le nombre a transmettre
+     */
     static void out(const uint16_t& nombre);
 
     /**
-     * Affichage nombre
+     * Affichage nombre (8 bits)
      * 
      * \param nombre : le nombre a transmettre
      * \param base : la base du nombre
      */
     static void out(const uint8_t& nombre, const uint8_t& base);
+
+    /**
+     * Affichage nombre (16 bits)
+     * 
+     * \param nombre : le nombre a transmettre
+     * \param base : la base du nombre
+     */
     static void out(const uint16_t& nombre, const uint16_t& base);
 
     /**

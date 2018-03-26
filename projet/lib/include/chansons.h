@@ -19,8 +19,8 @@
 class Chansons
 {
 public:
-    static ChansonMusique chansonMario;
-    static ChansonMusique chansonTeletubbies;
+    static ChansonMusique chansonMario;         ///< chanson theme de Mario
+    static ChansonMusique chansonTeletubbies;   ///< chanson theme des Teletubbies (mais non reconnaissable)
 };
 
 #endif // LIB_CHANSONS_H

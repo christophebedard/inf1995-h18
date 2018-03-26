@@ -73,7 +73,8 @@ public:
      * 
      * \todo rendre private (apres avoir change le callback pour etre une methode)
      * 
-     * \param note : la NoteChanson a jouer
+     * \param noteMidi : la NoteChanson a jouer
+     * \param duree : la duree en millisecondes
      */
     static void playNote(uint8_t noteMidi, uint8_t duree);
 

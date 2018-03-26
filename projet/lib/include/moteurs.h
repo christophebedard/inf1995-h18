@@ -34,14 +34,14 @@ public:
     /**
      * Reglage de la direction du moteur gauche
      * 
-     * \param dir : la direction du moteur selon DirectionMoteur
+     * \param dirG : la direction du moteur selon DirectionMoteur
      */
     static void setDirectionMoteurGauche(const DirectionMoteur& dirG);
 
     /**
      * Reglage de la direction du moteur droit
      * 
-     * \param dir : la direction du moteur selon DirectionMoteur
+     * \param dirD : la direction du moteur selon DirectionMoteur
      */
     static void setDirectionMoteurDroit(const DirectionMoteur& dirD);
 
