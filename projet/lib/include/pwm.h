@@ -66,6 +66,8 @@ private:
      * Calcul de la valeur du registre OCRn (16 bit) selon le pourcentage
      * 
      * \param pourcentage : la nouvelle valeur [0, 100] du PWM
+     * 
+     * \return la valeur de OCRn correspondante
      */
     static uint16_t getValOCRnFromPourcentage(const uint8_t& pourcentage);
 
