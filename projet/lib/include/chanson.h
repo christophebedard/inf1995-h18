@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "enums_structs.h"
+#include "chansons.h"
 #include "timer0.h"
 #include "buzzer.h"
 #include "debug.h"
@@ -38,6 +39,13 @@ public:
     static void play();
 
     /**
+     * Reglage de la chanson
+     * 
+     * \param chanson : la chanson
+     */
+    static void setChanson(const ChansonMusique& chanson);
+
+    /**
      * Arret de lecture de la chanson
      */
     static void pause();
@@ -47,12 +55,10 @@ public:
      */
     static void stop();
 
-    static uint16_t compteurNotesChanson; /**< le comcompteurMsNotepteur qui garde en memoire la note courante */
-    static const uint16_t NOMBRE_NOTES_CHANSON; /**< le nombre total de notes pour la chanson */
-    static const NoteChanson NOTES_CHANSON[]; /**< les informations pour les notes de la chanson */
-
-    static uint16_t compteurMsNote; /**< le nombre de millisecondes restants a jouer pour la note courante */
-    static const uint16_t PERIODE_MAX; /**< la longueur maximale de la periode selon le prescaler choisi */
+    static uint16_t compteurNotesChanson;   ///< le comcompteurMsNotepteur qui garde en memoire la note courante */
+    static uint16_t compteurMsNote;         ///< le nombre de millisecondes restants a jouer pour la note courante */
+    static ChansonMusique chansonCourante_; ///< la chanson courante
+    static const uint16_t PERIODE_MAX;      ///< la longueur maximale de la periode selon le prescaler choisi */
 
     /**
      * Lecture d'une note
@@ -62,8 +68,25 @@ public:
      */
     static void playNote(uint8_t noteMidi, uint8_t duree);
 
-private:
+    /**
+     * Calcule la duree en millisecondes d'une note
+     * \todo rendre private (apres avoir change le callback pour etre une methode)
+     * \param note : la note musicale
+     * \param tempo : le tempo
+     * 
+     * \return la duree en millisecondes
+     */
+    static uint16_t getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo);
 
+private:
+    /**
+     * Calcule la valeur du registre OCRn selon le nombre de millisecondes
+     * 
+     * \param ms : le nombre de millisecondes
+     * 
+     * \return la valeur du registre OCRn
+     */
+    static uint8_t getValOCRnFromMs(const uint8_t& ms);
 };
 
 #endif // LIB_CHANSON_H

@@ -7,6 +7,10 @@
  * \author 
  */
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "defines.h"
+
 /**
  * Represente la direction des moteurs individuellement
  */
@@ -100,8 +104,8 @@ enum class NoteMusicale
 struct NoteChanson
 {
     uint8_t noteMidi;       ///< la note MIDI
-    uint16_t duree;         ///< la duree de la note (selon une figure de note)
-    //NoteMusicale duree;     ///< la duree de la note (selon une figure de note)
+    //uint16_t duree;         ///< la duree de la note (selon une figure de note)
+    NoteMusicale duree;     ///< la duree de la note (selon une figure de note)
 };
 
 /**
@@ -127,9 +131,9 @@ enum class Tempo
  */
 struct ChansonMusique
 {
-    uint8_t nbNotes;    ///< le nombre de notes
-    NoteChanson notes;  ///< les notes
-    Tempo tempo;        ///< le tempo
+    uint8_t nbNotes;        ///< le nombre de notes
+    NoteChanson notes[100];    ///< les notes
+    Tempo tempo;            ///< le tempo
 };
 
 #endif // LIB_ENUMS_STRUCTS_H

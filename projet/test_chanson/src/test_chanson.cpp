@@ -15,6 +15,7 @@ int main()
     Chanson::init();
 
     Debug::out("play\n");
+    Chanson::setChanson(Chansons::chansonTeletubbies);
     Chanson::play();
 
     waitForMs(5000);
@@ -25,6 +26,7 @@ int main()
     waitForMs(1000);
 
     Debug::out("play\n");
+    Chanson::setChanson(Chansons::chansonMario);
     Chanson::play();
 
     waitForMs(5000);
