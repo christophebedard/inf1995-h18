@@ -2,7 +2,7 @@
 
 int main()
 {
-    UART::init();
+    Debug::init();
 
     char str1[] = "un test ";
     char str2[] = "de newline \n";
@@ -10,9 +10,9 @@ int main()
 
     while(true)
     {
-        Debug::out(0x62, 16);
+        Debug::out((uint8_t)0x62, 16);
         Debug::out(", ");
-        Debug::out(44);
+        Debug::out((uint8_t)44);
         Debug::out(", ");
         Debug::out(str1);
         Debug::out(str2);
