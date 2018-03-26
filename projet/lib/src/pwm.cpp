@@ -1,39 +1,42 @@
 #include "pwm.h"
-#include "delai.h"
+
+
 void initPWM()
 {
 	// mettre les pins en sortie (chap. "I/O ports")
-	// OC1A : port D, pin 5
+	// OC1A : port D, pin 5/broche 6
 	DDRD |= _BV(5);
-	// OC1B : port D, pin 4
+	// OC1B : port D, pin 4/broche 5
 	DDRD |= _BV(4);
 
-	// compare output mode 10 (Clear OCnA/OCnB on Compare Match (Set output to low level))
-	// waveform generation mode 1 (PWM, Phase Correct, 8-bit)
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1)| _BV(WGM10);
-	// division d'horloge par 8
-	TCCR1B = _BV(CS11);
+	Timer1::setCompareOutputMode(COM::COM_clear, COM::COM_clear);
+	Timer1::setWaveformGenerationMode(WGM::WGM_1);
+	Timer1::setPrescaler(Prescaler::Pres_8);
 }
 
 void ajustementPWM(const uint8_t& pourcentage)
 {
-	// mise à un des sorties OC1A et OC1B sur comparaison
-	// réussie en mode PWM 8 bits, phase correcte
-	// et valeur de TOP fixe à 0xFF (mode #1 de la table 17-6
-	// page 177 de la description technique du ATmega324PA)
-	OCR1A = pourcentage * 255 / 100;
-	OCR1B = pourcentage * 255 / 100;
+	uint16_t val = (uint16_t)pourcentage * 255 / 100;
+	Timer1::setOCRnA(val);
+	Timer1::setOCRnB(val);
 }
 
-void virageDroit(const uint8_t& pourcentage){
+void virageDroit(const uint8_t& pourcentage)
+{
+	uint16_t val = (uint16_t)pourcentage * 255 / 100;
+	Timer1::setOCRnB(val);
 
-    OCR1B = pourcentage * 255 / 100;
     waitForMs(2000);
-    OCR1B = 0;
+
+	Timer1::setOCRnB(0);
 }
 
-void virageGauche(const uint8_t& pourcentage){
-    OCR1A = pourcentage * 255 / 100;
+void virageGauche(const uint8_t& pourcentage)
+{
+	uint16_t val = (uint16_t)pourcentage * 255 / 100;
+	Timer1::setOCRnA(val);
+
     waitForMs(2000);
-    OCR1A = 0;
+
+	Timer1::setOCRnA(0);
 }

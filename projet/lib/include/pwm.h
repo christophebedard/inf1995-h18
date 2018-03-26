@@ -4,6 +4,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+#include "delai.h"
+#include "timer1.h"
 
 /**
  * Initialisation du PWM
