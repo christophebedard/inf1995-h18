@@ -10,7 +10,7 @@
 func_t timer2CompACallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPA
 func_t timer2CompBCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPB
 
-Prescaler Timer2::timPres = Prescaler::Pres_no_clk;
+Prescaler Timer2::timPres = Prescaler::No_clk;
 
 ISR(TIMER2_COMPA_vect)
 {
@@ -27,10 +27,10 @@ void Timer2::start()
     cli();
 
     resetTCNTn();
-    setWaveformGenerationMode(WGM::WGM_2);
-    setCompareOutputMode(COM::COM_set, COM::COM_normal);
+    setWaveformGenerationMode(WGM::Mode_2);
+    setCompareOutputMode(COM::Set, COM::Normal);
     setInterruptEnable(true, false);
-    setPrescaler(Prescaler::Pres_128);
+    setPrescaler(Prescaler::Div_128);
 
     sei();
 }
@@ -40,10 +40,10 @@ void Timer2::stop()
     setOCRnA(0);
     setOCRnB(0);
     resetTCNTn();
-    setWaveformGenerationMode(WGM::WGM_0);
-    setCompareOutputMode(COM::COM_normal, COM::COM_normal);
+    setWaveformGenerationMode(WGM::Mode_0);
+    setCompareOutputMode(COM::Normal, COM::Normal);
     setInterruptEnable(0, 0);
-    setPrescaler(Prescaler::Pres_no_clk);
+    setPrescaler(Prescaler::No_clk);
 }
 
 void Timer2::setCompareOutputMode(COM a, COM b)
@@ -53,16 +53,16 @@ void Timer2::setCompareOutputMode(COM a, COM b)
     switch(a)
     {
         default:
-        case COM::COM_normal:
+        case COM::Normal:
             //TCCR2A |= 0;
             break;
-        case COM::COM_toggle:
+        case COM::Toggle:
             TCCR2A |= _BV(COM2A0);
             break;
-        case COM::COM_clear:
+        case COM::Clear:
             TCCR2A |= _BV(COM2A1);
             break;
-        case COM::COM_set:
+        case COM::Set:
             TCCR2A |= _BV(COM2A1) | _BV(COM2A0);
             break;
     }
@@ -70,16 +70,16 @@ void Timer2::setCompareOutputMode(COM a, COM b)
     switch(b)
     {
         default:
-        case COM::COM_normal:
+        case COM::Normal:
             //TCCR2A |= 0;
             break;
-        case COM::COM_toggle:
+        case COM::Toggle:
             TCCR2A |= _BV(COM2B0);
             break;
-        case COM::COM_clear:
+        case COM::Clear:
             TCCR2A |= _BV(COM2B1);
             break;
-        case COM::COM_set:
+        case COM::Set:
             TCCR2A |= _BV(COM2B1) | _BV(COM2B0);
             break;
     }
@@ -93,31 +93,31 @@ void Timer2::setWaveformGenerationMode(WGM mode)
     switch(mode)
     {
         default:
-        case WGM::WGM_0:
+        case WGM::Mode_0:
             //TCCR2A |= 0;
             //TCCR2B |= 0;
             break;
-        case WGM::WGM_1:
+        case WGM::Mode_1:
             TCCR2A |= _BV(WGM20);
             break;
-        case WGM::WGM_2:
+        case WGM::Mode_2:
             TCCR2A |= _BV(WGM21);
             break;
-        case WGM::WGM_3:
+        case WGM::Mode_3:
             TCCR2A |= _BV(WGM21) | _BV(WGM20);
             break;
-        case WGM::WGM_4:
+        case WGM::Mode_4:
             TCCR2B |= _BV(WGM22);
             break;
-        case WGM::WGM_5:
+        case WGM::Mode_5:
             TCCR2A |= _BV(WGM20);
             TCCR2B |= _BV(WGM22);
             break;
-        case WGM::WGM_6:
+        case WGM::Mode_6:
             TCCR2A |= _BV(WGM21);
             TCCR2B |= _BV(WGM22);
             break;
-        case WGM::WGM_7:
+        case WGM::Mode_7:
             TCCR2A |= _BV(WGM21) | _BV(WGM20);
             TCCR2B |= _BV(WGM22);
             break;
@@ -133,28 +133,28 @@ void Timer2::setPrescaler(const Prescaler pre)
     switch(pre)
     {
         default:
-        case Prescaler::Pres_no_clk:
+        case Prescaler::No_clk:
             //TCCR2B |= 0;
             break;
-        case Prescaler::Pres_1:
+        case Prescaler::Div_1:
             TCCR2B |= _BV(CS20);
             break;
-        case Prescaler::Pres_8:
+        case Prescaler::Div_8:
             TCCR2B |= _BV(CS21);
             break;
-        case Prescaler::Pres_32:
+        case Prescaler::Div_32:
             TCCR2B |= _BV(CS21) | _BV(CS20);
             break;
-        case Prescaler::Pres_64:
+        case Prescaler::Div_64:
             TCCR2B |= _BV(CS22);
             break;
-        case Prescaler::Pres_128:
+        case Prescaler::Div_128:
             TCCR2B |= _BV(CS22) | _BV(CS20);
             break;
-        case Prescaler::Pres_256:
+        case Prescaler::Div_256:
             TCCR2B |= _BV(CS22) | _BV(CS21);
             break;
-        case Prescaler::Pres_1024:
+        case Prescaler::Div_1024:
             TCCR2B |= _BV(CS22) | _BV(CS21) | _BV(CS20);
             break;
     }

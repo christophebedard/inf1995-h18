@@ -40,7 +40,7 @@ int main()
 
     Debug::out("arriere\n");
 
-    Moteurs::setDirection(DirectionMoteur::Moteur_arriere);
+    Moteurs::setDirection(DirectionMoteur::Arriere);
 
     Debug::out("25\n");
     Moteurs::setPourcentage(25);

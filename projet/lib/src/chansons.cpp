@@ -46,7 +46,7 @@ ChansonMusique Chansons::chansonMario = {
         {74, NoteMusicale::DoubleCroche}, {71, NoteMusicale::DoubleCroche},
         {20, NoteMusicale::Croche}
     },
-    Tempo::Tempo_Vivace
+    Tempo::Vivace
 };
 
 ChansonMusique Chansons::chansonTeletubbies = {
@@ -74,5 +74,5 @@ ChansonMusique Chansons::chansonTeletubbies = {
         {91, NoteMusicale::DoubleCroche}, {0, NoteMusicale::DoubleCroche},
         {103, NoteMusicale::DoubleCroche}
     },
-    Tempo::Tempo_Prestissimo
+    Tempo::Prestissimo
 };

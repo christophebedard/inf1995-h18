@@ -67,19 +67,19 @@ int main()
     Buzzer::stop();
 
     Debug::out("enum Prescaler :\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_1));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_1));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_8));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_8));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_32));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_32));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_64));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_64));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_128));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_128));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_256));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_256));
     Debug::out("\n");
-    Debug::out(static_cast<uint16_t>(Prescaler::Pres_1024));
+    Debug::out(static_cast<uint16_t>(Prescaler::Div_1024));
     Debug::out("\n");
 
     while(true);

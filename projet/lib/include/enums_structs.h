@@ -16,8 +16,8 @@
  */
 enum class DirectionMoteur
 {
-    Moteur_avant,   ///< vers l'avant
-    Moteur_arriere  ///< vers l'arriere
+    Avant,   ///< vers l'avant
+    Arriere  ///< vers l'arriere
 };
 
 /**
@@ -25,10 +25,10 @@ enum class DirectionMoteur
  */
 enum class COM
 {
-    COM_normal, ///< normal port operation, OCnA/OCnB disconnected
-    COM_toggle, ///< toggle OCnA/OCnB on compare match
-    COM_clear,  ///< clear OCnA/OCnB on compare match
-    COM_set     ///< set OCnA/OCnB on compare match
+    Normal, ///< normal port operation, OCnA/OCnB disconnected
+    Toggle, ///< toggle OCnA/OCnB on compare match
+    Clear,  ///< clear OCnA/OCnB on compare match
+    Set     ///< set OCnA/OCnB on compare match
 };
 
 /**
@@ -36,22 +36,22 @@ enum class COM
  */
 enum class WGM
 {
-    WGM_0,      ///< normal (tim0 & tim1 & tim2)
-    WGM_1,      ///< PWM, phase correct 8-bit (tim0 & tim1 & tim2)
-    WGM_2,      ///< CTC (tim0 & tim2) / PWM, phase correct 9-bit (tim1)
-    WGM_3,      ///< fast PWM (tim0 & tim2) / PWM, phase correct 10-bit (tim1)
-    WGM_4,      ///< reserved (tim0 & tim2) / CTC (tim1)
-    WGM_5,      ///< PWM, phase correct OCRA (tim0 & tim2) / fast PWM 8-bit (tim1)
-    WGM_6,      ///< reserved (tim0 & tim2) / fast PWM 9-bit (tim1)
-    WGM_7,      ///< fast PWM OCRA (tim0 & tim2) / fast PWM 10-bit (tim1)
-    WGM_8,      ///< PWM, phase and frequency correct ICRn (tim1)
-    WGM_9,      ///< PWM, phase and frequency correct OCRnA (tim1)
-    WGM_10,     ///< PWM, phase correct ICRn (tim1)
-    WGM_11,     ///< PWM, phase correct OCRnA (tim1)
-    WGM_12,     ///< CTC ICRn (tim1)
-    WGM_13,     ///< reserved
-    WGM_14,     ///< fast PWM ICRn (tim1)
-    WGM_15,     ///< fast PWM OCRnA (tim1)
+    Mode_0,      ///< normal (tim0 & tim1 & tim2)
+    Mode_1,      ///< PWM, phase correct 8-bit (tim0 & tim1 & tim2)
+    Mode_2,      ///< CTC (tim0 & tim2) / PWM, phase correct 9-bit (tim1)
+    Mode_3,      ///< fast PWM (tim0 & tim2) / PWM, phase correct 10-bit (tim1)
+    Mode_4,      ///< reserved (tim0 & tim2) / CTC (tim1)
+    Mode_5,      ///< PWM, phase correct OCRA (tim0 & tim2) / fast PWM 8-bit (tim1)
+    Mode_6,      ///< reserved (tim0 & tim2) / fast PWM 9-bit (tim1)
+    Mode_7,      ///< fast PWM OCRA (tim0 & tim2) / fast PWM 10-bit (tim1)
+    Mode_8,      ///< PWM, phase and frequency correct ICRn (tim1)
+    Mode_9,      ///< PWM, phase and frequency correct OCRnA (tim1)
+    Mode_10,     ///< PWM, phase correct ICRn (tim1)
+    Mode_11,     ///< PWM, phase correct OCRnA (tim1)
+    Mode_12,     ///< CTC ICRn (tim1)
+    Mode_13,     ///< reserved
+    Mode_14,     ///< fast PWM ICRn (tim1)
+    Mode_15,     ///< fast PWM OCRnA (tim1)
 };
 
 /**
@@ -60,16 +60,16 @@ enum class WGM
  */
 enum class Prescaler
 {
-    Pres_no_clk = 0,    ///< no clock source
-    Pres_1 = 1,         ///< une division par 1
-    Pres_8 = 8,         ///< une division par 8
-    Pres_32 = 32,       ///< une division par 32
-    Pres_64 = 64,       ///< une division par 64
-    Pres_128 = 128,     ///< une division par 128
-    Pres_256 = 256,     ///< une division par 256
-    Pres_1024 = 1024,   ///< une division par 1024
-    Pres_ext_falling,   ///< external clock source, falling edge
-    Pres_ext_rising,    ///< external clock source, rising edge
+    No_clk = 0,         ///< no clock source
+    Div_1 = 1,          ///< une division par 1
+    Div_8 = 8,          ///< une division par 8
+    Div_32 = 32,        ///< une division par 32
+    Div_64 = 64,        ///< une division par 64
+    Div_128 = 128,      ///< une division par 128
+    Div_256 = 256,      ///< une division par 256
+    Div_1024 = 1024,    ///< une division par 1024
+    Ext_falling = 1025, ///< external clock source, falling edge
+    Ext_rising = 1026   ///< external clock source, rising edge
 };
 
 /**
@@ -104,7 +104,6 @@ enum class NoteMusicale
 struct NoteChanson
 {
     uint8_t noteMidi;       ///< la note MIDI
-    //uint16_t duree;         ///< la duree de la note (selon une figure de note)
     NoteMusicale duree;     ///< la duree de la note (selon une figure de note)
 };
 
@@ -114,16 +113,16 @@ struct NoteChanson
  */
 enum class Tempo
 {
-    Tempo_Largo = 50,       ///< un tempo large
-    Tempo_Lento = 60,       ///< un tempo lent
-    Tempo_Adagio = 70,      ///< un tempo a l'aise
-    Tempo_Andante = 88,     ///< un tempo allant
-    Tempo_Moderato = 100,   ///< un tempo modere
-    Tempo_Allegreto = 114,  ///< un tempo assez allegre
-    Tempo_Allegro = 136,    ///< un tempo allegre
-    Tempo_Vivace = 140,     ///< un tempo vif
-    Tempo_Presto = 170,     ///< un tempo rapide
-    Tempo_Prestissimo = 188 ///< un tempo tres rapide
+    Largo = 50,       ///< un tempo large
+    Lento = 60,       ///< un tempo lent
+    Adagio = 70,      ///< un tempo a l'aise
+    Andante = 88,     ///< un tempo allant
+    Moderato = 100,   ///< un tempo modere
+    Allegreto = 114,  ///< un tempo assez allegre
+    Allegro = 136,    ///< un tempo allegre
+    Vivace = 140,     ///< un tempo vif
+    Presto = 170,     ///< un tempo rapide
+    Prestissimo = 188 ///< un tempo tres rapide
 };
 
 /**
@@ -132,7 +131,7 @@ enum class Tempo
 struct ChansonMusique
 {
     uint8_t nbNotes;        ///< le nombre de notes
-    NoteChanson notes[100];    ///< les notes
+    NoteChanson notes[100]; ///< les notes, avec initialisation a 100 notes
     Tempo tempo;            ///< le tempo
 };
 

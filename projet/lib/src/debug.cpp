@@ -118,25 +118,25 @@ void Debug::out(const Prescaler pre)
 {
     switch(pre)
     {
-        case Prescaler::Pres_1:
+        case Prescaler::Div_1:
             out((uint8_t)1);
             break;
-        case Prescaler::Pres_8:
+        case Prescaler::Div_8:
             out((uint8_t)8);
             break;
-        case Prescaler::Pres_32:
+        case Prescaler::Div_32:
             out((uint8_t)32);
             break;
-        case Prescaler::Pres_64:
+        case Prescaler::Div_64:
             out((uint8_t)64);
             break;
-        case Prescaler::Pres_128:
+        case Prescaler::Div_128:
             out((uint8_t)128);
             break;
-        case Prescaler::Pres_256:
+        case Prescaler::Div_256:
             out((uint16_t)256);
             break;
-        case Prescaler::Pres_1024:
+        case Prescaler::Div_1024:
             out((uint16_t)1024);
             break;
         default:

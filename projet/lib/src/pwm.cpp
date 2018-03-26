@@ -18,9 +18,9 @@ void PWM::init()
 
 	cli();
 
-	Timer1::setCompareOutputMode(COM::COM_clear, COM::COM_clear);
-	Timer1::setWaveformGenerationMode(WGM::WGM_1);
-	Timer1::setPrescaler(Prescaler::Pres_8);
+	Timer1::setCompareOutputMode(COM::Clear, COM::Clear);
+	Timer1::setWaveformGenerationMode(WGM::Mode_1);
+	Timer1::setPrescaler(Prescaler::Div_8);
 
 	sei();
 }

@@ -59,7 +59,7 @@ void LecteurChanson::init()
 
     // selectionne un prescaler de 1024
     /// \todo integre avec NoteMusicale
-    Timer0::setPrescaler(Prescaler::Pres_1024);
+    Timer0::setPrescaler(Prescaler::Div_1024);
 }
 
 void LecteurChanson::setChanson(const ChansonMusique& chanson)
@@ -113,7 +113,7 @@ bool LecteurChanson::isPlaying()
 
 uint8_t LecteurChanson::getValOCRnFromMs(const uint8_t& ms)
 {
-    return (ms * (F_CPU / 1000)) / static_cast<uint16_t>(Prescaler::Pres_1024);
+    return (ms * (F_CPU / 1000)) / static_cast<uint16_t>(Prescaler::Div_1024);
 }
 
 uint16_t LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo)
