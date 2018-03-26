@@ -18,34 +18,58 @@ int main()
 
     waitForMs(500);
 
-    Moteurs::setPourcentage(25);
     Debug::out("25\n");
+    Moteurs::setPourcentage(25);
 
     waitForMs(1000);
 
-    Moteurs::setPourcentage(50);
     Debug::out("50\n");
+    Moteurs::setPourcentage(50);
 
     waitForMs(1000);
 
-    Moteurs::setPourcentage(75);
     Debug::out("75\n");
-
+    Moteurs::setPourcentage(75);
+    
     waitForMs(1000);
 
-    Moteurs::setPourcentage(100);
     Debug::out("100\n");
+    Moteurs::setPourcentage(100);
+    
+    waitForMs(2000);
+
+    Debug::out("arriere\n");
+
+    Moteurs::setDirection(DirectionMoteur::Moteur_arriere);
+
+    Debug::out("25\n");
+    Moteurs::setPourcentage(25);
 
     waitForMs(1000);
 
-    Moteurs::setPourcentage(0);
+    Debug::out("50\n");
+    Moteurs::setPourcentage(50);
+
+    waitForMs(1000);
+
+    Debug::out("75\n");
+    Moteurs::setPourcentage(75);
+    
+    waitForMs(1000);
+
+    Debug::out("100\n");
+    Moteurs::setPourcentage(100);
+    
+    waitForMs(1000);
+
     Debug::out("0\n");
+    Moteurs::setPourcentage(0);
 
-    Moteurs::virageGauche(50);
     Debug::out("virage gauche\n");
+    Moteurs::virageGauche(50);
 
-    Moteurs::virageDroit(50);
     Debug::out("virage droit\n");
+    Moteurs::virageDroit(50);
 
     Debug::out("fin\n");
 

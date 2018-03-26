@@ -11,6 +11,9 @@ void Moteurs::init()
 {
     PWM::init();
 
+    // broches de direction en sortie
+    DDRD |= _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_GAUCHE_DIRECTION)) | _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_DROIT_DIRECTION));
+
     // direction initiale : avant
     setDirection(DirectionMoteur::Moteur_avant);
 }
@@ -33,15 +36,15 @@ void Moteurs::setDirectionMoteurDroit(const DirectionMoteur& dirD)
 
 void Moteurs::setDirectionBroche(const DirectionMoteur& dir, uint8_t b)
 {
-    /// \todo verifier directions
+    /// \todo verifier directions selon sens de connexion des moteurs
     switch(dir)
     {
         default:
         case DirectionMoteur::Moteur_avant:
-            DDRD |= _BV(_BROCHE_TO_PIN(b));
+            PORTD |= _BV(_BROCHE_TO_PIN(b));
             break;
         case DirectionMoteur::Moteur_arriere:
-            DDRD &= ~(_BV(_BROCHE_TO_PIN(b)));
+            PORTD &= ~(_BV(_BROCHE_TO_PIN(b)));
             break;
     }
 }
@@ -64,8 +67,10 @@ void Moteurs::setPourcentageDroite(const uint8_t& pourcentage)
 
 void Moteurs::virageDroit(const uint8_t& pourcentage)
 {
+    setDirection(DirectionMoteur::Moteur_avant);
 	setPourcentageGauche(pourcentage);
 
+    /// \todo tester et ameliorer les virages
     waitForMs(2000);
 
 	setPourcentageGauche(0);
@@ -73,8 +78,10 @@ void Moteurs::virageDroit(const uint8_t& pourcentage)
 
 void Moteurs::virageGauche(const uint8_t& pourcentage)
 {
+    setDirection(DirectionMoteur::Moteur_avant);
 	setPourcentageDroite(pourcentage);
 
+    /// \todo tester et ameliorer les virages
     waitForMs(2000);
 
 	setPourcentageDroite(0);
