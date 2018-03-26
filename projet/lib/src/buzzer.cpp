@@ -9,7 +9,6 @@
 #include "buzzer.h"
 
 const uint8_t Buzzer::NOTE_NULLE = 0;
-const uint8_t Buzzer::BROCHE_BUZZER = 7;
 const uint8_t Buzzer::NOTE_MIN = 12;
 const uint8_t Buzzer::NOTE_MAX = 127;
 const NoteMidi Buzzer::DATA_NOTES[] = {
@@ -45,13 +44,13 @@ const NoteMidi Buzzer::DATA_NOTES[] = {
 void callbackNote()
 {
     // inverse la broche
-    PORTC ^= _BV(Buzzer::BROCHE_BUZZER - 1);
+    PORTC ^= _BV(BROCHE_BUZZER - 1);
 }
 
 void Buzzer::init()
 {
     // met la broche en sortie
-    DDRC |= _BV(Buzzer::BROCHE_BUZZER - 1);
+    DDRC |= _BV(BROCHE_BUZZER - 1);
 
     Timer2::setCompACallback(&callbackNote);
 }

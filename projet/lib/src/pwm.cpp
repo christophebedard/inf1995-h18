@@ -3,21 +3,18 @@
  * \brief implementation de la classe PWM
  * \author 
  * 
- * Brancher le moteur gauche entre BROCHE_MOTEUR_GAUCHE et BROCHE_MOTEUR_GAUCHE+2
- * Brancher le moteur droit entre BROCHE_MOTEUR_DROIT et BROCHE_MOTEUR_DROIT+2
+ * Brancher le moteur gauche entre BROCHE_MOTEUR_GAUCHE_PWM et BROCHE_MOTEUR_GAUCHE_DIRECTION
+ * Brancher le moteur droit entre BROCHE_MOTEUR_DROIT_PWM et BROCHE_MOTEUR_DROIT_DIRECTION
  */
 
 #include "pwm.h"
 
 
-const uint8_t PWM::BROCHE_MOTEUR_GAUCHE = 6;
-const uint8_t PWM::BROCHE_MOTEUR_DROIT = 5;
-
 void PWM::init()
 {
 	// mettre les pins en sortie
-	DDRD |= _BV(BROCHE_MOTEUR_GAUCHE - 1);
-	DDRD |= _BV(BROCHE_MOTEUR_DROIT - 1);
+	DDRD |= _BV(BROCHE_MOTEUR_GAUCHE_PWM - 1);
+	DDRD |= _BV(BROCHE_MOTEUR_DROIT_PWM - 1);
 
 	cli();
 

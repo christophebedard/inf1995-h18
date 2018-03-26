@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+#include "broches.h"
 #include "delai.h"
 #include "timer1.h"
 
@@ -45,9 +46,6 @@ public:
      * \param pourcentage : la nouvelle valeur [0, 100] du PWM
      */
     static void virageGauche(const uint8_t& pourcentage);
-
-    static const uint8_t BROCHE_MOTEUR_GAUCHE; ///< la broche PWM associee au moteur gauche (OC1A : port D, pin 5/broche 6)
-    static const uint8_t BROCHE_MOTEUR_DROIT; ///< la broche PWM associee au moteur droit (OC1B : port D, pin 4/broche 5)
 
 };
 
