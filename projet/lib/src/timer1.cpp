@@ -10,6 +10,8 @@
 func_t timer1CompACallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER1_COMPA
 func_t timer1CompBCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER1_COMPB
 
+Prescaler Timer1::timPres = Prescaler::Pres_no_clk;
+
 ISR(TIMER1_COMPA_vect)
 {
     if (timer1CompACallback != nullptr) timer1CompACallback();
@@ -154,7 +156,7 @@ void Timer1::setWaveformGenerationMode(WGM mode)
     }
 }
 
-void Timer1::setPrescaler(Prescaler pre)
+void Timer1::setPrescaler(const Prescaler pre)
 {
     timPres = pre;
 

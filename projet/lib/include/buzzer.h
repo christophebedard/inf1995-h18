@@ -11,7 +11,8 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "enums.h"
-#include "minuterie.h"
+//#include "minuterie.h"
+#include "timer2.h"
 #include "debug.h"
 
 

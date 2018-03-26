@@ -132,7 +132,7 @@ void startTimer2()
 void setOCRnATimer0FromMs(const uint8_t& ms)
 {
     TCNT0 = 0;
-    OCR0A = (ms * (F_CPU / 1000)) / static_cast<uint8_t>(tim0Pres);
+    OCR0A = (ms * (F_CPU / 1000)) / static_cast<uint16_t>(tim0Pres);
 }
 
 void setOCRnATimer0(const uint8_t& val_ocrn)

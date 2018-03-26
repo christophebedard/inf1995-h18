@@ -9,7 +9,7 @@
 const uint16_t Chanson::PERIODE_MAX = 32;
 uint16_t Chanson::compteurNotesChanson = 0;
 uint16_t Chanson::compteurMsNote = 0;
-
+/*
 const uint16_t Chanson::NOMBRE_NOTES_CHANSON = 66;
 const NoteChanson Chanson::NOTES_CHANSON[] = {
     {76, UNITE_TEMPS_MS}, {76, UNITE_TEMPS_MS}, {20, UNITE_TEMPS_MS}, {76, UNITE_TEMPS_MS}, {20, UNITE_TEMPS_MS},
@@ -27,7 +27,8 @@ const NoteChanson Chanson::NOTES_CHANSON[] = {
     {76, UNITE_TEMPS_MS}, {20, UNITE_TEMPS_MS}, {72, UNITE_TEMPS_MS}, {74, UNITE_TEMPS_MS}, {71, UNITE_TEMPS_MS},
     {20, UNITE_TEMPS_MS}
 };
-/*
+*/
+/**/
 const uint16_t Chanson::NOMBRE_NOTES_CHANSON = 41;
 const NoteChanson Chanson::NOTES_CHANSON[] = {
     {98, UNITE_TEMPS_MS}, {0, UNITE_TEMPS_MS}, {98, UNITE_TEMPS_MS}, {0, UNITE_TEMPS_MS}, {62, UNITE_TEMPS_MS},
@@ -40,7 +41,7 @@ const NoteChanson Chanson::NOTES_CHANSON[] = {
     {98, UNITE_TEMPS_MS}, {0, UNITE_TEMPS_MS}, {98, UNITE_TEMPS_MS}, {91, UNITE_TEMPS_MS}, {0, UNITE_TEMPS_MS},
     {103, UNITE_TEMPS_MS}
 };
-*/
+/**/
 
 /**
  * Callback pour les notes de la chanson
@@ -84,11 +85,11 @@ void Chanson::init()
     Buzzer::init();
 
     // initialise le timer0
-    initTimer0(&callbackNoteChanson, nullptr);
+    Timer0::setCompACallback(&callbackNoteChanson);
 
     // selectionne un prescaler de 1024
     /// \todo integre avec NoteMusicale
-    setPrescalerTimer0(Prescaler::Pres_1024);
+    Timer0::setPrescaler(Prescaler::Pres_1024);
 }
 
 void Chanson::play()
@@ -100,7 +101,12 @@ void Chanson::play()
     compteurMsNote = NOTES_CHANSON[compteurNotesChanson].duree;
 
     // part le timer pour la note
-    startTimer0();
+    Timer0::start();
+}
+
+uint8_t getValOCRnFromMs(const uint8_t& ms)
+{
+    return (ms * (F_CPU / 1000)) / static_cast<uint16_t>(Prescaler::Pres_1024);
 }
 
 void Chanson::playNote(uint8_t noteMidi, uint8_t duree)
@@ -109,13 +115,13 @@ void Chanson::playNote(uint8_t noteMidi, uint8_t duree)
     Buzzer::play(noteMidi);
 
     // regle le timer pour la note
-    setOCRnATimer0FromMs(duree);
+    Timer0::setOCRnA(getValOCRnFromMs(duree));
 }
 
 void Chanson::pause()
 {
     Buzzer::stop();
-    stopTimer0();
+    Timer0::stop();
 }
 
 void Chanson::stop()

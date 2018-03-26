@@ -53,7 +53,7 @@ void Buzzer::init()
     // met la broche en sortie
     DDRC |= _BV(Buzzer::BROCHE_BUZZER - 1);
 
-    initTimer2(&callbackNote, nullptr);
+    Timer2::setCompACallback(&callbackNote);
 }
 
 void Buzzer::play(uint8_t note)
@@ -69,9 +69,9 @@ void Buzzer::play(uint8_t note)
         uint8_t val_ocrn = note_midi.val_ocrn;
 
         // execute
-        startTimer2();
-        setPrescalerTimer2(pre);
-        setOCRnATimer2(val_ocrn);
+        Timer2::start();
+        Timer2::setPrescaler(pre);
+        Timer2::setOCRnA(val_ocrn);
     }
     else
     {
@@ -82,5 +82,5 @@ void Buzzer::play(uint8_t note)
 
 void Buzzer::stop()
 {
-    stopTimer2();
+    Timer2::stop();
 }

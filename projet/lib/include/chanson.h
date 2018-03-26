@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "enums.h"
+#include "timer0.h"
 #include "buzzer.h"
 #include "debug.h"
 
