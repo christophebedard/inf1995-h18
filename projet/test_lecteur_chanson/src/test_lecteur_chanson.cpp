@@ -29,7 +29,7 @@ int main()
     LecteurChanson::setChanson(Chansons::chansonMario);
     LecteurChanson::play();
 
-    waitForMs(5000);
+    waitForMs(10000);
 
     Debug::out("stop?\n");
     LecteurChanson::stop();
