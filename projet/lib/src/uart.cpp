@@ -48,3 +48,12 @@ uint8_t UART::reception()
     while(!(UCSR0A & _BV(RXC0)));
     return UDR0;
 }
+
+void UART::stop()
+{
+	UBRR0H = 0;
+	UBRR0L = 0;
+	UCSR0A = 0;
+	UCSR0B &= ~(_BV(RXEN0) | _BV(TXEN0));
+	UCSR0C &= ~(_BV(UCSZ01) | _BV(UCSZ00));
+}

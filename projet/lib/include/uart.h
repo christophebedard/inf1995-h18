@@ -52,6 +52,11 @@ public:
     */
     static uint8_t reception();
 
+    /**
+     * Arret du UART
+     */
+    static void stop();
+
 };
 
 #endif // LIB_UART_H
