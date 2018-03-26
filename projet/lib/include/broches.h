@@ -14,27 +14,32 @@
 
 
 /**
- * la broche sur laquelle le buzzer est connecte (1-8)
+ * Macro pour transformer un numero de broche en numero de pin
+ */
+#define _BROCHE_TO_PIN(b) (b - 1)
+
+/**
+ * Broche sur laquelle le buzzer est connecte (1-8)
  */
 #define BROCHE_BUZZER 7
 
 /**
- * la broche PWM associee au moteur gauche (OC1A)
+ * Broche PWM associee au moteur gauche (OC1A)
  */
 #define BROCHE_MOTEUR_GAUCHE_PWM 6
 
 /**
- * la broche PWM associee au moteur droit (OC1B)
+ * Broche PWM associee au moteur droit (OC1B)
  */
 #define BROCHE_MOTEUR_DROIT_PWM 5
 
 /**
- * la broche de direction associee au moteur gauche
+ * Broche de direction associee au moteur gauche
  */
 #define BROCHE_MOTEUR_GAUCHE_DIRECTION 8
 
 /**
- * la broche de direction associee au moteur droit
+ * Broche de direction associee au moteur droit
  */
 #define BROCHE_MOTEUR_DROIT_DIRECTION 7
 

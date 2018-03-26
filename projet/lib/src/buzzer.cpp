@@ -44,13 +44,13 @@ const NoteMidi Buzzer::DATA_NOTES[] = {
 void callbackNote()
 {
     // inverse la broche
-    PORTC ^= _BV(BROCHE_BUZZER - 1);
+    PORTC ^= _BV(_BROCHE_TO_PIN(BROCHE_BUZZER));
 }
 
 void Buzzer::init()
 {
     // met la broche en sortie
-    DDRC |= _BV(BROCHE_BUZZER - 1);
+    DDRC |= _BV(_BROCHE_TO_PIN(BROCHE_BUZZER));
 
     Timer2::setCompACallback(&callbackNote);
 }

@@ -13,8 +13,8 @@
 void PWM::init()
 {
 	// mettre les pins en sortie
-	DDRD |= _BV(BROCHE_MOTEUR_GAUCHE_PWM - 1);
-	DDRD |= _BV(BROCHE_MOTEUR_DROIT_PWM - 1);
+	DDRD |= _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_GAUCHE_PWM));
+	DDRD |= _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_DROIT_PWM));
 
 	cli();
 
