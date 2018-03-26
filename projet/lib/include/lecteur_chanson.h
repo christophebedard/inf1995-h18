@@ -1,9 +1,9 @@
-#ifndef LIB_CHANSON_H
-#define LIB_CHANSON_H
+#ifndef LIB_LECTEURCHANSON_H
+#define LIB_LECTEURCHANSON_H
 
 /**
- * \file chanson.h
- * \brief declaration de la classe Chanson
+ * \file lecteur_chanson.h
+ * \brief declaration de la classe LecteurChanson
  * \author 
  */
 
@@ -22,10 +22,10 @@
 #define UNITE_TEMPS_MS 100
 
 /**
- * \class Chanson
+ * \class LecteurChanson
  * \brief classe qui enveloppe (wrap) le Buzzer pour lui faire jouer des chansons
  */
-class Chanson
+class LecteurChanson
 {
 public:
     /**
@@ -89,4 +89,4 @@ private:
     static uint8_t getValOCRnFromMs(const uint8_t& ms);
 };
 
-#endif // LIB_CHANSON_H
+#endif // LIB_LECTEURCHANSON_H

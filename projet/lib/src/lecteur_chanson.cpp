@@ -1,15 +1,15 @@
 /**
- * \file chanson.cpp
- * \brief implementation de la classe Chanson
+ * \file lecteur_chanson.cpp
+ * \brief implementation de la classe LecteurChanson
  * \author 
  */
 
-#include "chanson.h"
+#include "lecteur_chanson.h"
 
-const uint16_t Chanson::PERIODE_MAX = 32;
-uint16_t Chanson::compteurNotesChanson = 0;
-uint16_t Chanson::compteurMsNote = 0;
-ChansonMusique Chanson::chansonCourante_ = Chansons::chansonTeletubbies; // chanson par defaut
+const uint16_t LecteurChanson::PERIODE_MAX = 32;
+uint16_t LecteurChanson::compteurNotesChanson = 0;
+uint16_t LecteurChanson::compteurMsNote = 0;
+ChansonMusique LecteurChanson::chansonCourante_ = Chansons::chansonTeletubbies; // chanson par defaut
 
 /**
  * Callback pour les notes de la chanson
@@ -18,38 +18,38 @@ ChansonMusique Chanson::chansonCourante_ = Chansons::chansonTeletubbies; // chan
 void callbackNoteChanson()
 {
     // si la chanson n'est pas finie
-    if(Chanson::compteurNotesChanson < Chanson::chansonCourante_.nbNotes)
+    if(LecteurChanson::compteurNotesChanson < LecteurChanson::chansonCourante_.nbNotes)
     {
         // recupere la note
-        NoteChanson note = Chanson::chansonCourante_.notes[Chanson::compteurNotesChanson];
+        NoteChanson note = LecteurChanson::chansonCourante_.notes[LecteurChanson::compteurNotesChanson];
         // calcule la duree instantanee
-        uint8_t duree = (Chanson::compteurMsNote > Chanson::PERIODE_MAX) ? Chanson::PERIODE_MAX : Chanson::compteurMsNote;
+        uint8_t duree = (LecteurChanson::compteurMsNote > LecteurChanson::PERIODE_MAX) ? LecteurChanson::PERIODE_MAX : LecteurChanson::compteurMsNote;
         // decremente le compteur de duree
-        Chanson::compteurMsNote -= duree;
+        LecteurChanson::compteurMsNote -= duree;
 
         // joue la note
-        Chanson::playNote(note.noteMidi, duree);
+        LecteurChanson::playNote(note.noteMidi, duree);
 
         // si la note a finie de jouer
-        if(Chanson::compteurMsNote == 0)
+        if(LecteurChanson::compteurMsNote == 0)
         {
             // incremente compteur
-            Chanson::compteurNotesChanson++;
+            LecteurChanson::compteurNotesChanson++;
             // initialise le compteur de temps pour la prochaine note
-            Chanson::compteurMsNote = Chanson::getDureeMsNoteSelonNoteMusicaleEtTempo(
-                                        Chanson::chansonCourante_.notes[Chanson::compteurNotesChanson].duree,
-                                        Chanson::chansonCourante_.tempo);
+            LecteurChanson::compteurMsNote = LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(
+                                        LecteurChanson::chansonCourante_.notes[LecteurChanson::compteurNotesChanson].duree,
+                                        LecteurChanson::chansonCourante_.tempo);
         }
     }
     else
     {
         // chanson terminee
         Debug::out("chanson terminee\n");
-        Chanson::stop();
+        LecteurChanson::stop();
     }
 }
 
-void Chanson::init()
+void LecteurChanson::init()
 {
     // initialise le buzzer
     Buzzer::init();
@@ -62,12 +62,12 @@ void Chanson::init()
     Timer0::setPrescaler(Prescaler::Pres_1024);
 }
 
-void Chanson::setChanson(const ChansonMusique& chanson)
+void LecteurChanson::setChanson(const ChansonMusique& chanson)
 {
     chansonCourante_ = chanson;
 }
 
-void Chanson::play()
+void LecteurChanson::play()
 {
     // reinitialise compteur de notes
     compteurNotesChanson = 0;
@@ -81,7 +81,7 @@ void Chanson::play()
     Timer0::start();
 }
 
-void Chanson::playNote(uint8_t noteMidi, uint8_t duree)
+void LecteurChanson::playNote(uint8_t noteMidi, uint8_t duree)
 {
     // joue la note
     Buzzer::play(noteMidi);
@@ -90,25 +90,25 @@ void Chanson::playNote(uint8_t noteMidi, uint8_t duree)
     Timer0::setOCRnA(getValOCRnFromMs(duree));
 }
 
-void Chanson::pause()
+void LecteurChanson::pause()
 {
     Buzzer::stop();
     Timer0::stop();
 }
 
-void Chanson::stop()
+void LecteurChanson::stop()
 {
     pause();
     compteurNotesChanson = 0;
     Debug::out("chanson stop\n");
 }
 
-uint8_t Chanson::getValOCRnFromMs(const uint8_t& ms)
+uint8_t LecteurChanson::getValOCRnFromMs(const uint8_t& ms)
 {
     return (ms * (F_CPU / 1000)) / static_cast<uint16_t>(Prescaler::Pres_1024);
 }
 
-uint16_t Chanson::getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo)
+uint16_t LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo)
 {
     // 1000 [ms/s] * 60 [s/min] / tempo [BPM]
     //    = le nombre de millisecondes d'un beat selon le tempo

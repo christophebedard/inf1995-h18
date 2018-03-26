@@ -1,10 +1,10 @@
 /**
- * \file test_buzzer.cpp
- * \brief programme pour tester le buzzer
+ * \file test_lecteur_chanson.cpp
+ * \brief programme pour tester le lecteur de chanson
  * \author 
  */
 
-#include "chanson.h"
+#include "lecteur_chanson.h"
 #include "debug.h"
 #include "delai.h"
 
@@ -12,27 +12,27 @@
 int main()
 {
     Debug::init(); // pour debug
-    Chanson::init();
+    LecteurChanson::init();
 
     Debug::out("play\n");
-    Chanson::setChanson(Chansons::chansonTeletubbies);
-    Chanson::play();
+    LecteurChanson::setChanson(Chansons::chansonTeletubbies);
+    LecteurChanson::play();
 
     waitForMs(5000);
     
     Debug::out("stop?\n");
-    Chanson::stop();
+    LecteurChanson::stop();
 
     waitForMs(1000);
 
     Debug::out("play\n");
-    Chanson::setChanson(Chansons::chansonMario);
-    Chanson::play();
+    LecteurChanson::setChanson(Chansons::chansonMario);
+    LecteurChanson::play();
 
     waitForMs(5000);
 
     Debug::out("stop?\n");
-    Chanson::stop();
+    LecteurChanson::stop();
 
     Debug::out("enum NoteMusicale :\n");
     Debug::out(static_cast<uint8_t>(NoteMusicale::Carree));
