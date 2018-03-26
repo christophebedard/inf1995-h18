@@ -1,50 +1,50 @@
 /**
  * \file test_pwm.cpp
- * \brief programme pour tester le PWM
+ * \brief programme pour tester les moteurs/PWM
  * \author 
  */
 
 #include "delai.h"
 #include "debug.h"
-#include "pwm.h"
+#include "moteurs.h"
 
 
 int main()
 {
     Debug::init();
-    PWM::init();
+    Moteurs::init();
 
     Debug::out("debut\n");
 
     waitForMs(500);
 
-    PWM::setPourcentage(25);
+    Moteurs::setPourcentage(25);
     Debug::out("25\n");
 
     waitForMs(1000);
 
-    PWM::setPourcentage(50);
+    Moteurs::setPourcentage(50);
     Debug::out("50\n");
 
     waitForMs(1000);
 
-    PWM::setPourcentage(75);
+    Moteurs::setPourcentage(75);
     Debug::out("75\n");
 
     waitForMs(1000);
 
-    PWM::setPourcentage(100);
+    Moteurs::setPourcentage(100);
     Debug::out("100\n");
 
     waitForMs(1000);
 
-    PWM::setPourcentage(0);
+    Moteurs::setPourcentage(0);
     Debug::out("0\n");
 
-    PWM::virageGauche(50);
+    Moteurs::virageGauche(50);
     Debug::out("virage gauche\n");
 
-    PWM::virageDroit(50);
+    Moteurs::virageDroit(50);
     Debug::out("virage droit\n");
 
     Debug::out("fin\n");

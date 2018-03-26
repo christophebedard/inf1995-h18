@@ -25,38 +25,14 @@ void PWM::init()
 	sei();
 }
 
-void PWM::setPourcentage(const uint8_t& pourcentage)
-{
-	setPourcentageGauche(pourcentage);
-	setPourcentageGauche(pourcentage);
-}
-
-void PWM::setPourcentageGauche(const uint8_t& pourcentage)
+void PWM::setPourcentageOCRnB(const uint8_t& pourcentage)
 {
 	Timer1::setOCRnB(getValOCRnFromPourcentage(pourcentage));
 }
 
-void PWM::setPourcentageDroite(const uint8_t& pourcentage)
+void PWM::setPourcentageOCRnA(const uint8_t& pourcentage)
 {
 	Timer1::setOCRnA(getValOCRnFromPourcentage(pourcentage));
-}
-
-void PWM::virageDroit(const uint8_t& pourcentage)
-{
-	PWM::setPourcentageGauche(pourcentage);
-
-    waitForMs(2000);
-
-	PWM::setPourcentageGauche(0);
-}
-
-void PWM::virageGauche(const uint8_t& pourcentage)
-{
-	PWM::setPourcentageDroite(pourcentage);
-
-    waitForMs(2000);
-
-	PWM::setPourcentageDroite(0);
 }
 
 uint16_t PWM::getValOCRnFromPourcentage(const uint8_t& pourcentage)
