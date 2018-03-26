@@ -9,7 +9,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "enums.h"
+#include "enums_structs.h"
 #include "pwm.h"
 
 /**

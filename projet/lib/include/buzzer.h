@@ -11,7 +11,7 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "broches.h"
-#include "enums.h"
+#include "enums_structs.h"
 
 #include "timer2.h"
 #include "debug.h"

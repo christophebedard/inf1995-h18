@@ -10,7 +10,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
-#include "enums.h"
+#include "enums_structs.h"
 #include "debug.h"
 
 /**
