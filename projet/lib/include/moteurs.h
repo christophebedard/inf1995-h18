@@ -80,6 +80,34 @@ public:
      */
     static void virageGauche(const uint8_t& pourcentage);
 
+    /**
+     * Recuperation de la direction du moteur gauche
+     * 
+     * \return la direction
+     */
+    static DirectionMoteur getDirectionMoteurGauche();
+
+    /**
+     * Recuperation de la direction du moteur droit
+     * 
+     * \return la direction
+     */
+    static DirectionMoteur getDirectionMoteurDroite();
+
+    /**
+     * Recuperation du pourcentage du moteur gauche
+     * 
+     * \return le pourcentage (absolu) [0,100]
+     */
+    static uint8_t getPourcentageMoteurGauche();
+
+    /**
+     * Recuperation du pourcentage du moteur droit
+     * 
+     * \return le pourcentage (absolu) [0,100]
+     */
+    static uint8_t getPourcentageMoteurDroite();
+
 private:
     /**
      * Reglage de la direction selon la broche
@@ -88,6 +116,11 @@ private:
      * \param b : la broche a ajuster
      */
     static void setDirectionBroche(const DirectionMoteur& dir, uint8_t b);
+
+    static uint8_t pourcentageMoteurGauche_;        ///< le pourcentage du moteur gauche
+    static uint8_t pourcentageMoteurDroit_;         ///< le pourcentage du moteur droit
+    static DirectionMoteur directionMoteurGauche_;  ///< la direction du moteur gauche
+    static DirectionMoteur directionMoteurDroit_;   ///< la direction du moteur droit
 
 };
 
