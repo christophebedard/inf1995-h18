@@ -24,24 +24,24 @@
 #define BROCHE_BUZZER 7
 
 /**
- * Broche PWM associee au moteur gauche (OC1A)
+ * Broche PWM associee au moteur gauche (OC1B)
  */
-#define BROCHE_MOTEUR_GAUCHE_PWM 6
+#define BROCHE_MOTEUR_GAUCHE_PWM 5
 
 /**
- * Broche PWM associee au moteur droit (OC1B)
+ * Broche PWM associee au moteur droit (OC1A)
  */
-#define BROCHE_MOTEUR_DROIT_PWM 5
+#define BROCHE_MOTEUR_DROIT_PWM 6
 
 /**
  * Broche de direction associee au moteur gauche
  */
-#define BROCHE_MOTEUR_GAUCHE_DIRECTION 8
+#define BROCHE_MOTEUR_GAUCHE_DIRECTION 7
 
 /**
  * Broche de direction associee au moteur droit
  */
-#define BROCHE_MOTEUR_DROIT_DIRECTION 7
+#define BROCHE_MOTEUR_DROIT_DIRECTION 8
 
 
 #endif // LIB_BROCHES_H
