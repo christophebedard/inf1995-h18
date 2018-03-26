@@ -69,6 +69,34 @@ enum class Prescaler
 };
 
 /**
+ * Definition d'une chanson
+ */
+struct Chanson
+{
+    uint8_t nbNotes;    ///< le nombre de notes
+    NoteChanson notes;  ///< les notes
+    Tempo tempo;        ///< le tempo
+};
+
+/**
+ * Valeurs possibles pour le tempo (nombre de pulsations par minute)
+ * https://fr.wikipedia.org/wiki/Tempo#Termes_conventionnels_italiens_et_allemands_des_principaux_tempos
+ */
+enum class Tempo
+{
+    Tempo_Largo = 50,       ///< un tempo large
+    Tempo_Lento = 60,       ///< un tempo lent
+    Tempo_Adagio = 70,      ///< un tempo a l'aise
+    Tempo_Andante = 88,     ///< un tempo allant
+    Tempo_Moderato = 100,   ///< un tempo modere
+    Tempo_Allegreto = 114,  ///< un tempo assez allegre
+    Tempo_Allegro = 136,    ///< un tempo allegre
+    Tempo_Vivace = 140,     ///< un tempo vif
+    Tempo_Presto = 170,     ///< un tempo rapide
+    Tempo_Prestissimo = 188 ///< un tempo tres rapide
+};
+
+/**
  * Definition d'une note MIDI
  */
 struct NoteMidi
