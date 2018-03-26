@@ -34,16 +34,16 @@ public:
     static void init();
 
     /**
-     * Lecture de la chanson
-     */
-    static void play();
-
-    /**
      * Reglage de la chanson
      * 
      * \param chanson : la chanson
      */
     static void setChanson(const ChansonMusique& chanson);
+
+    /**
+     * Lecture de la chanson
+     */
+    static void play();
 
     /**
      * Arret de lecture de la chanson
@@ -55,6 +55,13 @@ public:
      */
     static void stop();
 
+    /**
+     * Etat de lecture de la chanson
+     * 
+     * \return lecture en cours/lecture en pause (true) ou non (false)
+     */
+    static bool isPlaying();
+
     static uint16_t compteurNotesChanson;   ///< le comcompteurMsNotepteur qui garde en memoire la note courante */
     static uint16_t compteurMsNote;         ///< le nombre de millisecondes restants a jouer pour la note courante */
     static ChansonMusique chansonCourante_; ///< la chanson courante
@@ -63,14 +70,18 @@ public:
     /**
      * Lecture d'une note
      * donne la note MIDI au buzzer et regle le timer pour la duree
+     * 
      * \todo rendre private (apres avoir change le callback pour etre une methode)
+     * 
      * \param note : la NoteChanson a jouer
      */
     static void playNote(uint8_t noteMidi, uint8_t duree);
 
     /**
      * Calcule la duree en millisecondes d'une note
+     * 
      * \todo rendre private (apres avoir change le callback pour etre une methode)
+     * 
      * \param note : la note musicale
      * \param tempo : le tempo
      * 
@@ -87,6 +98,9 @@ private:
      * \return la valeur du registre OCRn
      */
     static uint8_t getValOCRnFromMs(const uint8_t& ms);
+
+    static bool isPlaying_; ///< l'etat de lecture
+
 };
 
 #endif // LIB_LECTEURCHANSON_H

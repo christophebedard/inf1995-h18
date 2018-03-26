@@ -11,17 +11,15 @@
 
 int main()
 {
-    Debug::init(); // pour debug
+    Debug::init();
     LecteurChanson::init();
 
     Debug::out("play\n");
     LecteurChanson::setChanson(Chansons::chansonTeletubbies);
     LecteurChanson::play();
 
-    waitForMs(5000);
-    
-    Debug::out("stop?\n");
-    LecteurChanson::stop();
+    while(LecteurChanson::isPlaying());
+    Debug::out("chanson finie\n");
 
     waitForMs(1000);
 
@@ -29,10 +27,8 @@ int main()
     LecteurChanson::setChanson(Chansons::chansonMario);
     LecteurChanson::play();
 
-    waitForMs(10000);
-
-    Debug::out("stop?\n");
-    LecteurChanson::stop();
+    while(LecteurChanson::isPlaying());
+    Debug::out("chanson finie\n");
 
     Debug::out("enum NoteMusicale :\n");
     Debug::out(static_cast<uint8_t>(NoteMusicale::Carree));

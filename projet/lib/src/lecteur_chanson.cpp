@@ -10,6 +10,7 @@ const uint16_t LecteurChanson::PERIODE_MAX = 32;
 uint16_t LecteurChanson::compteurNotesChanson = 0;
 uint16_t LecteurChanson::compteurMsNote = 0;
 ChansonMusique LecteurChanson::chansonCourante_ = Chansons::chansonTeletubbies; // chanson par defaut
+bool LecteurChanson::isPlaying_ = false;
 
 /**
  * Callback pour les notes de la chanson
@@ -44,7 +45,6 @@ void callbackNoteChanson()
     else
     {
         // chanson terminee
-        Debug::out("chanson terminee\n");
         LecteurChanson::stop();
     }
 }
@@ -79,6 +79,9 @@ void LecteurChanson::play()
 
     // part le timer pour la note
     Timer0::start();
+
+    // set le flag de lecture en cours
+    isPlaying_ = true;
 }
 
 void LecteurChanson::playNote(uint8_t noteMidi, uint8_t duree)
@@ -100,7 +103,12 @@ void LecteurChanson::stop()
 {
     pause();
     compteurNotesChanson = 0;
-    Debug::out("chanson stop\n");
+    isPlaying_ = false;
+}
+
+bool LecteurChanson::isPlaying()
+{
+    return isPlaying_;
 }
 
 uint8_t LecteurChanson::getValOCRnFromMs(const uint8_t& ms)
