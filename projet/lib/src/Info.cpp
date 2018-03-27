@@ -3,7 +3,7 @@
 
 static void transmission(int id)
 {
-    UART::transmit(0xf0); //Nom
+        UART::transmit(0xf0); //Nom
         waitForMs(5);
         for (uint8_t i = 0; i < 12; i++){
             UART::transmit(INFO_NOM_ROBOT[i]);
