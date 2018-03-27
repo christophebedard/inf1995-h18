@@ -43,5 +43,15 @@
  */
 #define BROCHE_MOTEUR_DROIT_DIRECTION 4
 
+/**
+ * Broche CAN pour le Vo du capteur de distance gauche
+ */
+#define BROCHE_CAPTEUR_DISTANCE_GAUCHE 3
+
+/**
+ * Broche CAN pour le Vo du capteur de distance droit
+ */
+#define BROCHE_CAPTEUR_DISTANCE_DROIT 4
+
 
 #endif // LIB_BROCHES_H
