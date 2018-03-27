@@ -14,7 +14,9 @@ int main()
 
     while(true)
     {
-        Debug::out(CapteurDistance::getDistance());
+        Debug::out(CapteurDistance::getDistanceGauche());
+        Debug::out(", ");
+        Debug::out(CapteurDistance::getDistanceDroit());
         Debug::out("\n");
     }
 

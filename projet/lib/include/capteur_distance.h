@@ -9,13 +9,14 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include "enums_structs.h"
 //#include "pwm.h"
+#include "broches.h"
+#include "can.h"
 #include "debug.h"
 
 /**
  * \class CapteurDistance
- * \brief classe qui enveloppe (wrap) le 
+ * \brief classe qui drive les capteurs de distance
  */
 class CapteurDistance
 {
@@ -26,13 +27,21 @@ public:
     static void init();
 
     /**
-     * Accesseur pour la distance lue la plus recente
+     * Accesseur pour la distance la plus recente (gauche)
      * 
      * \return la distance []
      */
-    static uint8_t getDistance();
+    static uint16_t getDistanceGauche();
+
+    /**
+     * Accesseur pour la distance la plus recente (droit)
+     * 
+     * \return la distance []
+     */
+    static uint16_t getDistanceDroit();
 
 private:
+    static can can_; ///< l'objet pour le CAN
 
 };
 
