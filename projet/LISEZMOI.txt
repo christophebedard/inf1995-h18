@@ -18,8 +18,8 @@ PORTS:
 
 A:
 1 et 2 Del
-3 Vo capteur droit
-4 Vo capteur gauche
+3 Vo capteur gauche
+4 Vo capteur droit
 VCC GND Capteur gauche
 
 B:
