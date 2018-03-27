@@ -15,7 +15,7 @@ int main()
     LecteurChanson::init();
 
     Debug::out("play\n");
-    LecteurChanson::setChanson(Chansons::chansonTeletubbies);
+    LecteurChanson::setChanson(Chansons::starWarsMarcheImperiale);
     LecteurChanson::play();
 
     while(LecteurChanson::isPlaying());
@@ -24,28 +24,28 @@ int main()
     waitForMs(1000);
 
     Debug::out("play\n");
-    LecteurChanson::setChanson(Chansons::chansonMario);
+    LecteurChanson::setChanson(Chansons::mario);
     LecteurChanson::play();
 
     while(LecteurChanson::isPlaying());
     Debug::out("chanson finie\n");
 
-    Debug::out("enum NoteMusicale :\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::Carree));
+    Debug::out("enum FigureDeNote :\n");
+    Debug::out(static_cast<uint8_t>(FigureDeNote::Carree));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::Ronde));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::Ronde));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::Blanche));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::Blanche));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::Noire));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::Noire));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::Croche));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::Croche));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::DoubleCroche));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::DoubleCroche));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::TripleCroche));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::TripleCroche));
     Debug::out("\n");
-    Debug::out(static_cast<uint8_t>(NoteMusicale::QuadrupleCroche));
+    Debug::out(static_cast<uint8_t>(FigureDeNote::QuadrupleCroche));
     Debug::out("\n");
 
 

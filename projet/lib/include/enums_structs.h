@@ -82,11 +82,11 @@ struct NoteMidi
 };
 
 /**
- * Definition d'une note musicale (duree)
+ * Definition d'une figure de note (== duree)
  * voir : https://fr.wikipedia.org/wiki/Repr%C3%A9sentation_des_dur%C3%A9es_en_musique#Figures_de_note
  * on assume qu'une noire vaut 1 unite de temps
  */
-enum class NoteMusicale
+enum class FigureDeNote
 {
     Carree = 8,             ///< une duree de (8) = le double de la ronde
     Ronde = 4,              ///< une duree de (4) = le double de la blanche
@@ -104,7 +104,7 @@ enum class NoteMusicale
 struct NoteChanson
 {
     uint8_t noteMidi;       ///< la note MIDI
-    NoteMusicale duree;     ///< la duree de la note (selon une figure de note)
+    FigureDeNote duree;     ///< la duree de la note (selon une figure de note)
 };
 
 /**

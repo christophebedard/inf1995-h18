@@ -6,6 +6,10 @@
 
 #include "moteurs.h"
 
+uint8_t Moteurs::pourcentageMoteurGauche_ = 0;
+uint8_t Moteurs::pourcentageMoteurDroit_ = 0;
+DirectionMoteur Moteurs::directionMoteurGauche_ = DirectionMoteur::Avant;
+DirectionMoteur Moteurs::directionMoteurDroit_ = DirectionMoteur::Avant;
 
 void Moteurs::init()
 {
@@ -15,6 +19,7 @@ void Moteurs::init()
     DDRD |= _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_GAUCHE_DIRECTION)) | _BV(_BROCHE_TO_PIN(BROCHE_MOTEUR_DROIT_DIRECTION));
 
     // direction initiale : avant
+    /// \todo remarque : redondant avec l'initialisation des attributs statiques
     setDirection(DirectionMoteur::Avant);
 }
 
@@ -57,11 +62,13 @@ void Moteurs::setPourcentage(const uint8_t& pourcentage)
 
 void Moteurs::setPourcentageGauche(const uint8_t& pourcentage)
 {
+    pourcentageMoteurGauche_ = pourcentage;
     PWM::setPourcentageOCRnB(pourcentage);
 }
 
 void Moteurs::setPourcentageDroite(const uint8_t& pourcentage)
 {
+    pourcentageMoteurDroit_ = pourcentage;
     PWM::setPourcentageOCRnA(pourcentage);
 }
 
@@ -85,4 +92,24 @@ void Moteurs::virageGauche(const uint8_t& pourcentage)
     waitForMs(2000);
 
 	setPourcentageDroite(0);
+}
+
+DirectionMoteur Moteurs::getDirectionMoteurGauche()
+{
+    return directionMoteurGauche_;
+}
+
+DirectionMoteur Moteurs::getDirectionMoteurDroite()
+{
+    return directionMoteurDroit_;
+}
+
+uint8_t Moteurs::getPourcentageMoteurGauche()
+{
+    return pourcentageMoteurGauche_;
+}
+
+uint8_t Moteurs::getPourcentageMoteurDroite()
+{
+    return pourcentageMoteurDroit_;
 }

@@ -31,7 +31,7 @@ void reverse(char* str, uint8_t len)
 }
 
 /**
- * Conversion entier a string
+ * Conversion entier a string (16 bits)
  * https://www.geeksforgeeks.org/implement-itoa/
  * 
  * \param num : le nombre
@@ -85,6 +85,14 @@ void itoa(uint16_t num, char* str, const uint16_t& base)
     reverse(str, i);
 }
 
+/**
+ * Conversion entier a string (8 bits)
+ * https://www.geeksforgeeks.org/implement-itoa/
+ * 
+ * \param num : le nombre
+ * \param str : le pointeur vers le tableau de sortie
+ * \param base : la base du nombre
+ */
 void itoa(uint8_t num, char* str, const uint8_t& base)
 {
     itoa((uint16_t)num, str, (uint16_t)base);
