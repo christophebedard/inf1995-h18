@@ -4,6 +4,7 @@
 #include "delai.h"
 #include "memoire_24.h"
 #include "defines.h"
+#include "Info.h"
 
 int main()
 {
@@ -11,44 +12,15 @@ int main()
     DDRB = SORTIE;
     DDRA = SORTIE;
     UART::init();
-    uint8_t instruction[1] = UART::reception()
-    for(;;){
-        switch (){
-        
-            case 0xf0:
-                
-            break;
-            
-            case 0xf1:
-                
-            break;
-            
-            case 0xf2:
-                
-            break;
-            
-            case 0xf3:
-                
-            break;
-                
-            case 0xf4:
-                
-            break;
-            
-            case 0xf5:
-                
-            break;
-            
-            case 0xf6:
-                
-            break;
-                
-            case 0xf7:
-                
-            break;
-            
-            default:
-            break;}
+    for (int i = 0; i < 2; i++){
+        uint8_t instruction[i] = UART::reception();
+        waitForMs(5)
     }
+    if (instruction[0] == 0x00)
+        for(;;){
+            Info::transmission(1); 
+            //Changer parametre à 0 si on utilise le robot vert
+        }
+    
    return 0;
 }
