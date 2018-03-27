@@ -11,6 +11,8 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "enums_structs.h"
+#include "notes_midi.h"
+
 
 /**
  * \class Chansons
@@ -19,8 +21,9 @@
 class Chansons
 {
 public:
-    static ChansonMusique chansonMario;         ///< chanson theme de Mario
-    static ChansonMusique chansonTeletubbies;   ///< chanson theme des Teletubbies (mais non reconnaissable)
+    static ChansonMusique mario;                     ///< chanson theme de Mario
+    static ChansonMusique starWarsMarcheImperiale;   ///< chanson de Star Wars : Marche Imperiale
+    static ChansonMusique twentieth;
 };
 
 #endif // LIB_CHANSONS_H

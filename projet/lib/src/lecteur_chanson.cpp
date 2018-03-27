@@ -9,7 +9,7 @@
 const uint16_t LecteurChanson::PERIODE_MAX = 32;
 uint16_t LecteurChanson::compteurNotesChanson = 0;
 uint16_t LecteurChanson::compteurMsNote = 0;
-ChansonMusique LecteurChanson::chansonCourante_ = Chansons::chansonTeletubbies; // chanson par defaut
+ChansonMusique LecteurChanson::chansonCourante_ = Chansons::twentieth; // chanson par defaut
 bool LecteurChanson::isPlaying_ = false;
 
 /**

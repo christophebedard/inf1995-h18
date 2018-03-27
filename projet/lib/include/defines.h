@@ -28,5 +28,4 @@ const char INFO_EQUIPE[] = "68116";             ///< le numero de l'equipe
 const char INFO_GROUPE[] = "03";                ///< le numero du groupe
 const char INFO_SESSION[] = "18-1";             ///< l'annee-session
 
-
 #endif // LIB_DEFINES_H

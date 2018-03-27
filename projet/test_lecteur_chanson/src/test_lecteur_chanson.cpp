@@ -15,7 +15,7 @@ int main()
     LecteurChanson::init();
 
     Debug::out("play\n");
-    LecteurChanson::setChanson(Chansons::chansonTeletubbies);
+    LecteurChanson::setChanson(Chansons::starWarsMarcheImperiale);
     LecteurChanson::play();
 
     while(LecteurChanson::isPlaying());
@@ -24,7 +24,7 @@ int main()
     waitForMs(1000);
 
     Debug::out("play\n");
-    LecteurChanson::setChanson(Chansons::chansonMario);
+    LecteurChanson::setChanson(Chansons::mario);
     LecteurChanson::play();
 
     while(LecteurChanson::isPlaying());
