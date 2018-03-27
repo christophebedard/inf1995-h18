@@ -1,3 +1,9 @@
+/**
+ * \file test_debug_uart.cpp
+ * \brief programme pour tester le debug via UART
+ * \author 
+ */
+
 #include "debug.h"
 
 int main()
