@@ -37,7 +37,7 @@ void callbackNoteChanson()
             // incremente compteur
             LecteurChanson::compteurNotesChanson++;
             // initialise le compteur de temps pour la prochaine note
-            LecteurChanson::compteurMsNote = LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(
+            LecteurChanson::compteurMsNote = LecteurChanson::getDureeMsNoteSelonFigureDeNoteEtTempo(
                                         LecteurChanson::chansonCourante_.notes[LecteurChanson::compteurNotesChanson].duree,
                                         LecteurChanson::chansonCourante_.tempo);
         }
@@ -58,7 +58,7 @@ void LecteurChanson::init()
     Timer0::setCompACallback(&callbackNoteChanson);
 
     // selectionne un prescaler de 1024
-    /// \todo integre avec NoteMusicale
+    /// \todo integre avec FigureDeNote
     Timer0::setPrescaler(Prescaler::Div_1024);
 }
 
@@ -73,7 +73,7 @@ void LecteurChanson::play()
     compteurNotesChanson = 0;
 
     // initialise le compteur de temps pour la premiere note
-    compteurMsNote = getDureeMsNoteSelonNoteMusicaleEtTempo(
+    compteurMsNote = getDureeMsNoteSelonFigureDeNoteEtTempo(
                         chansonCourante_.notes[compteurNotesChanson].duree,
                         chansonCourante_.tempo);
 
@@ -116,7 +116,7 @@ uint8_t LecteurChanson::getValOCRnFromMs(const uint8_t& ms)
     return (ms * (F_CPU / 1000)) / static_cast<uint16_t>(Prescaler::Div_1024);
 }
 
-uint16_t LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo)
+uint16_t LecteurChanson::getDureeMsNoteSelonFigureDeNoteEtTempo(const FigureDeNote& note, const Tempo& tempo)
 {
     // 1000 [ms/s] * 60 [s/min] / tempo [BPM]
     //    = le nombre de millisecondes d'un beat selon le tempo
@@ -125,29 +125,29 @@ uint16_t LecteurChanson::getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusica
 
     switch(note)
     {
-        case NoteMusicale::Carree:
+        case FigureDeNote::Carree:
             duree = (beatMs * 8);
             break;
-        case NoteMusicale::Ronde:
+        case FigureDeNote::Ronde:
             duree = (beatMs * 4);
             break;
-        case NoteMusicale::Blanche:
+        case FigureDeNote::Blanche:
             duree = (beatMs * 2);
             break;
         default:
-        case NoteMusicale::Noire:
+        case FigureDeNote::Noire:
             duree = (beatMs * 1);
             break;
-        case NoteMusicale::Croche:
+        case FigureDeNote::Croche:
             duree = (beatMs / 2);
             break;
-        case NoteMusicale::DoubleCroche:
+        case FigureDeNote::DoubleCroche:
             duree = (beatMs / 4);
             break;
-        case NoteMusicale::TripleCroche:
+        case FigureDeNote::TripleCroche:
             duree = (beatMs / 8);
             break;
-        case NoteMusicale::QuadrupleCroche:
+        case FigureDeNote::QuadrupleCroche:
             duree = (beatMs / 16);
             break;
     }

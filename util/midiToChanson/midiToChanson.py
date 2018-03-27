@@ -15,10 +15,10 @@ import itertools
 TEMPO_ENUMS_PREFIX = 'Tempo::'
 TEMPO_ENUMS = ['Largo', 'Lento', 'Adagio', 'Andante', 'Moderato', 'Allegreto', 'Allegro', 'Vivace', 'Presto', 'Prestissimo']
 TEMPO_ENUMS_VALEURS = [50.0, 60.0, 70.0, 88.0, 100.0, 114.0, 136.0, 140.0, 170.0, 188.0]
-# nom des enums correspondant aux NoteMusicale
-NOTE_MUSICALE_ENUMS_PREFIX = 'NoteMusicale::'
-NOTE_MUSICALE_ENUMS = ['Carree', 'Ronde', 'Blanche', 'Noire', 'Croche', 'DoubleCroche', 'TripleCroche', 'QuadrupleCroche']
-NOTE_MUSICALE_ENUMS_VALEURS = [8.0, 4.0, 2.0, 1.0, 0.5, 0.25, 0.125, 0.0625]
+# nom des enums correspondant aux FigureDeNote
+FIGURE_DE_NOTE_ENUMS_PREFIX = 'FigureDeNote::'
+FIGURE_DE_NOTE_ENUMS = ['Carree', 'Ronde', 'Blanche', 'Noire', 'Croche', 'DoubleCroche', 'TripleCroche', 'QuadrupleCroche']
+FIGURE_DE_NOTE_ENUMS_VALEURS = [8.0, 4.0, 2.0, 1.0, 0.5, 0.25, 0.125, 0.0625]
 # nombre de resultats par ligne
 NB_VAL_PAR_LIGNE = 5
 # notes
@@ -84,7 +84,7 @@ def midi2Chanson(nom_fichier, nom_chanson, channel):
     for i in range(0, len(durees)):
         # \todo choisir la bonne mesure  
         #print("{", notes[i], ", ", durees[i], "},", sep="")
-        print(espaces_tab, espaces_tab, "{", notes[i], ", ", "NoteMusicale::TripleCroche", "}", sep="", end="")
+        print(espaces_tab, espaces_tab, "{", notes[i], ", ", "FigureDeNote::TripleCroche", "}", sep="", end="")
         
         # print une virgule si pas la derniere note
         if i == (len(durees) - 1):

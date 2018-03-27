@@ -83,12 +83,12 @@ public:
      * 
      * \todo rendre private (apres avoir change le callback pour etre une methode)
      * 
-     * \param note : la note musicale
+     * \param note : la figure de note
      * \param tempo : le tempo
      * 
      * \return la duree en millisecondes
      */
-    static uint16_t getDureeMsNoteSelonNoteMusicaleEtTempo(const NoteMusicale& note, const Tempo& tempo);
+    static uint16_t getDureeMsNoteSelonFigureDeNoteEtTempo(const FigureDeNote& note, const Tempo& tempo);
 
 private:
     /**
