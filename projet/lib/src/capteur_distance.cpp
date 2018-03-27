@@ -19,12 +19,12 @@ void CapteurDistance::init()
 
 uint16_t CapteurDistance::getDistanceGauche()
 {
-    return can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE));
+    return canToDistance(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE)));
 }
 
 uint16_t CapteurDistance::getDistanceDroit()
 {
-    return can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT));
+    return canToDistance(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)));
 }
 
 uint16_t CapteurDistance::canToDistance(const uint16_t canVal)
@@ -37,6 +37,5 @@ uint16_t CapteurDistance::canToDistance(const uint16_t canVal)
     distance selon courbe dans la datasheet du capteur
     distance [mm] = 
     */
-    
-    return 0;
+    return (2914 / ((5 * canVal / 1023) + 5)) - 1;
 }
