@@ -29,19 +29,28 @@ public:
     /**
      * Accesseur pour la distance la plus recente (gauche)
      * 
-     * \return la distance []
+     * \return la distance [mm]
      */
     static uint16_t getDistanceGauche();
 
     /**
      * Accesseur pour la distance la plus recente (droit)
      * 
-     * \return la distance []
+     * \return la distance [mm]
      */
     static uint16_t getDistanceDroit();
 
 private:
     static can can_; ///< l'objet pour le CAN
+
+    /**
+     * Conversion de la valeur de lecture du CAN vers la distance
+     * 
+     * \param canVal : la valeur lue par le CAN [0, 2^10 - 1]
+     * 
+     * \return la distance [mm]
+     */
+    static uint16_t canToDistance(const uint16_t canVal);
 
 };
 
