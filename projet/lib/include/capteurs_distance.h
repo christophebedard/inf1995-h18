@@ -1,9 +1,9 @@
-#ifndef LIB_CAPTEUR_DISTANCE_H
-#define LIB_CAPTEUR_DISTANCE_H
+#ifndef LIB_CAPTEURS_DISTANCE_H
+#define LIB_CAPTEURS_DISTANCE_H
 
 /**
- * \file capteur_distance.h
- * \brief declaration de la classe CapteurDistance
+ * \file capteurs_distance.h
+ * \brief declaration de la classe CapteursDistance
  * \author 
  */
 
@@ -29,10 +29,10 @@
 
 
 /**
- * \class CapteurDistance
- * \brief classe qui drive les capteurs de distance
+ * \class CapteursDistance
+ * \brief classe qui pilote les capteurs de distance
  */
-class CapteurDistance
+class CapteursDistance
 {
 public:
     /**
@@ -68,4 +68,4 @@ private:
 
 };
 
-#endif // LIB_CAPTEUR_DISTANCE_H
+#endif // LIB_CAPTEURS_DISTANCE_H

@@ -1,23 +1,23 @@
 /**
- * \file test_capteur_distance.cpp
- * \brief programme pour tester le capteur de distance
+ * \file test_capteurs_distance.cpp
+ * \brief programme pour tester les capteurs de distance
  * \author 
  */
 
 #include "debug.h"
 #include "buzzer.h"
-#include "capteur_distance.h"
+#include "capteurs_distance.h"
 
 int main()
 {
     Debug::init();
-    CapteurDistance::init();
+    CapteursDistance::init();
     Buzzer::init();
 
     while(true)
     {
-        uint16_t g = CapteurDistance::getDistanceGauche();
-        uint16_t d = CapteurDistance::getDistanceDroit();
+        uint16_t g = CapteursDistance::getDistanceGauche();
+        uint16_t d = CapteursDistance::getDistanceDroit();
         
         Buzzer::play(d);
 
