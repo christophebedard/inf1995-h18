@@ -9,10 +9,24 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include "pwm.h"
 #include "broches.h"
 #include "can.h"
 #include "debug.h"
+
+
+/**
+ *  distance [cm] minimale pour une lecture valide
+ */
+#define CAPTEUR_DISTANCE_MIN 10
+/**
+ * distance [cm] maximale pour une lecture valide
+ */
+#define CAPTEUR_DISTANCE_MAX 80
+/**
+ * distance [cm] maximale pour une lecture valide
+ */
+#define CAPTEUR_DISTANCE_INVALIDE 0
+
 
 /**
  * \class CapteurDistance
@@ -29,14 +43,14 @@ public:
     /**
      * Accesseur pour la distance la plus recente (gauche)
      * 
-     * \return la distance [mm]
+     * \return la distance [cm]
      */
     static uint16_t getDistanceGauche();
 
     /**
      * Accesseur pour la distance la plus recente (droit)
      * 
-     * \return la distance [mm]
+     * \return la distance [cm]
      */
     static uint16_t getDistanceDroit();
 
@@ -48,7 +62,7 @@ private:
      * 
      * \param canVal : la valeur lue par le CAN [0, 2^10 - 1]
      * 
-     * \return la distance [mm]
+     * \return la distance [cm]
      */
     static uint16_t canToDistance(const uint16_t canVal);
 

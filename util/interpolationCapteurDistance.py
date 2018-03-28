@@ -35,9 +35,10 @@ data = np.array([(2.6, 10),
                  (0.44, 75),
                  (0.41, 80)])
 
+
 def fit(degre):
     # separe les donnees
-    voltage = data[:,0]
+    voltage = data[:,0] * (1023.0 / 5.0)
     distance = data[:,1]
 
     # polyfit
@@ -47,20 +48,25 @@ def fit(degre):
     # calcul des valeurs interpolees
     voltage_fit = np.linspace(voltage[0], voltage[-1], 50)
     distance_fit = eq(voltage_fit)
+    # formule specifique
+    distance_formule = (6787.0 / (voltage_fit - 3.0)) - 4.0
 
     # plot
-    plt.plot(voltage, distance, 'o', voltage_fit, distance_fit)
-    plt.xlim([0, 3.0])
+    plt.plot(voltage, distance, 'o', label='points datasheet')
+    plt.plot(voltage_fit, distance_fit, 'g', label='interpolation deg='+str(degre))
+    plt.plot(voltage_fit, distance_formule, 'b-.', label='formule')
+    plt.xlim([0, 1023.0])
     plt.ylim([0, 90.0])
     plt.title("degre = " + str(degre), fontsize=12)
-    plt.xlabel("voltage (V)")
+    plt.xlabel("voltage [0, 1023]")
     plt.ylabel("distance (cm)")
+    plt.legend(loc="upper right", fontsize=8)
     plt.grid()
     
     # infos
-    print("degre    =", degre)
-    print("coefs    =", fit)
-    print("equation =\n", eq)
+    print("degre            =", degre)
+    print("coefs            =", fit)
+    print("equation         =\n", eq)
     print()
 
 

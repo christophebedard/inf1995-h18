@@ -29,13 +29,12 @@ uint16_t CapteurDistance::getDistanceDroit()
 
 uint16_t CapteurDistance::canToDistance(const uint16_t canVal)
 {
-    /*
-    canVal : sur 10 bits, donc [0, 2^10 - 1] = [0, 1023]
-    voltage [V] = 5   * canval / 1023
-                = 0x5 * canVal / 0x3FF
-    
-    distance selon courbe dans la datasheet du capteur
-    distance [mm] = 
-    */
-    return (2914 / ((5 * canVal / 1023) + 5)) - 1;
+    // voir util/python/interpolationCapteurDistance
+    uint16_t dist = (6787.0 / ((double)canVal - 3.0)) - 4.0;
+
+    // validation
+    dist = (CAPTEUR_DISTANCE_MIN <= dist && dist <= CAPTEUR_DISTANCE_MAX)
+            ? dist : CAPTEUR_DISTANCE_INVALIDE;
+
+    return dist;
 }
