@@ -5,18 +5,25 @@
  */
 
 #include "debug.h"
+#include "buzzer.h"
 #include "capteur_distance.h"
 
 int main()
 {
     Debug::init();
     CapteurDistance::init();
+    Buzzer::init();
 
     while(true)
     {
-        Debug::out(CapteurDistance::getDistanceGauche());
+        uint16_t g = CapteurDistance::getDistanceGauche();
+        uint16_t d = CapteurDistance::getDistanceDroit();
+        
+        Buzzer::play(d);
+
+        Debug::out(g);
         Debug::out(", ");
-        Debug::out(CapteurDistance::getDistanceDroit());
+        Debug::out(d);
         Debug::out("\n");
     }
 
