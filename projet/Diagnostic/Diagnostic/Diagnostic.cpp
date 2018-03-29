@@ -18,7 +18,7 @@ for(;;){
     UART::transmission(0xf5);
     waitForMs(5);
     //etat interrupt
-    UART:transmission(info::etat);
+    UART:transmission(info::getEtat());
     /*
     if (info::etat == Enfonce)
         UART:transmission(0x00);
