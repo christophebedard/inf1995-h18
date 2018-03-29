@@ -1,44 +1,48 @@
-#include "info.h"
-#include "uart.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "info.h"
+#include "uart.h"
+#include "delai.h"
+#include "enums_structs.h"
+#include "moteurs.h"
+
 /*
  * Transmet les informations d'identification du robot 
  * \param id:  l'identificateur du robot, 0 pour le robot 2 et 1 pour le robot 1 
  */
-static void info::transmission(int id)
+void info::transmission(int id)
 {
-        UART::transmit(0xf0); //Nom
+        UART::transmission(0xf0); //Nom
         waitForMs(5);
         for (uint8_t i = 0; i < 12; i++){
-            UART::transmit(INFO_NOM_ROBOT[i]);
+            UART::transmission(INFO_NOM_ROBOT[i]);
             waitForMs(5);
         }
-        UART::transmit(0xf1); //Equipe
+        UART::transmission(0xf1); //Equipe
         waitForMs(5);
         for (uint8_t i = 0; i < 5; i++){
-            UART::transmit(INFO_EQUIPE[i]);
+            UART::transmission(INFO_EQUIPE[i]);
             waitForMs(5);
         }
-        UART::transmit(0xf2); //Groupe
+        UART::transmission(0xf2); //Groupe
         waitForMs(5);
         for (uint8_t i = 0; i < 2; i++){
-            UART::transmit(INFO_GROUPE[i]);
+            UART::transmission(INFO_GROUPE[i]);
             waitForMs(5);
         }
-        UART::transmit(0xf3); //Session
+        UART::transmission(0xf3); //Session
         waitForMs(5);
         for (uint8_t i = 0; i < 4; i++){
-            UART::transmit(INFO_SESSION[i]);
+            UART::transmission(INFO_SESSION[i]);
             waitForMs(5);
         }
-        UART::transmit(0xf4); //Couleur
+        UART::transmission(0xf4); //Couleur
         waitForMs(5);
         if (id == 1)
             couleur = COULEUR_ROBOT1;
         else if (id == 0)
             couleur = COULEUR_ROBOT2;
-        UART::transmit(couleur);
+        UART::transmission(couleur);
 }
 
 /*
@@ -46,13 +50,13 @@ static void info::transmission(int id)
  */
 void info::receiveInterrupt()
 {
-    switch etat:{
-        case Enfonce:
-            etat = Relache;
+    switch (etat) {
+        case Interrupteur::Enfonce:
+            etat = Interrupteur::Relache;
         break;
         
-        case Relache:
-            etat = Enfonce;
+        case Interrupteur::Relache:
+            etat = Interrupteur::Enfonce;
         break;
         
         default:
@@ -65,13 +69,14 @@ void info::interrupt()
     cli();
     DDRA = SORTIE;
     DDRD = SORTIE;
+    uint8_t instruction[2] = {0x00, 0x00};
     for (int i = 0; i < 2; i++){
-        uint8_t instruction[i] = UART::reception();
+        instruction[i] = UART::reception();
         waitForMs(5);
     }
-    switch instruction[0]:{
+    switch (instruction[0]){
         case 0xfb:
-            Info::transmission(1); 
+            info::transmission(1); 
             //Changer parametre à 0 si on utilise le robot vert, 1 pour gris
             break;
             
@@ -82,21 +87,21 @@ void info::interrupt()
             
         case 0xf9://droite
             if (instruction[1] >> 7 == 1){ 
-                instruction[1] = ~instruction[1] + 0x01;
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::arriere);            
+                instruction[1] = ~instruction[1] + 0x01;
+                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);            
             }
             else
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::avant);
+                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
             Moteurs::setPourcentageDroite(instruction[1]);
             break;
     
         case 0xf8://gauche
             if (instruction[1] >> 7 == 1){ 
-                instruction[1] = ~instruction[1] + 0x01;
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::arriere); 
+                instruction[1] = ~instruction[1] + 0x01;
+                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere); 
             }
             else
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::avant);
+                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
             Moteurs::setPourcentageGauche(instruction[1]);
             break;
     }
