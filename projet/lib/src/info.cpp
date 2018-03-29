@@ -1,11 +1,10 @@
 #include "info.h"
-#include "defines.h"
 #include "uart.h"
 /*
  * Transmet les informations d'identification du robot 
  * \param id:  l'identificateur du robot, 0 pour le robot 2 et 1 pour le robot 1 
  */
-static void transmission(int id)
+static void info::transmission(int id)
 {
         UART::transmit(0xf0); //Nom
         waitForMs(5);
@@ -43,7 +42,7 @@ static void transmission(int id)
 /*
  * Change l'etat de l'interrupteur pour 
  */
-void receiveInterrupt()
+void info::receiveInterrupt()
 {
     switch etat:{
         case Enfonce:
@@ -59,7 +58,7 @@ void receiveInterrupt()
     }
 }
     
-void interrupt()
+void info::interrupt()
 {
     cli();
     DDRA = SORTIE;
@@ -80,8 +79,8 @@ void interrupt()
             break;
             
         case 0xf9://droite
-            if (instruction[1] < 0){ //A tester
-                instruction[1] *= -1;
+            if (instruction[1] >> 7 == 1){ 
+                instruction[1] = ~instruction[1] + 0x01;
                 Moteurs::setDirectionMoteurDroit(DirectionMoteur::arriere);            
             }
             else
@@ -90,8 +89,8 @@ void interrupt()
             break;
     
         case 0xf8://gauche
-            if (instruction[1] < 0){
-                instruction[1] *= -1;
+            if (instruction[1] >> 7 == 1){ 
+                instruction[1] = ~instruction[1] + 0x01;
                 Moteurs::setDirectionMoteurGauche(DirectionMoteur::arriere); 
             }
             else
@@ -100,4 +99,9 @@ void interrupt()
             break;
     }
     sei();
+}
+
+Interrupteur info::getEtat()
+{
+    return etat;
 }
