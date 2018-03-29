@@ -30,7 +30,14 @@ public:
      * \param rate : le baud rate
      */
     static void init(uint16_t rate);
-
+    
+    /**
+     * Initialisation de l'interruption pour le UART
+     * 
+     *  \param func : la fonction qui gère l'interruption
+     */
+    static void initInterruption(func_t func);
+    
     /**
      * Transmission UART
      * 

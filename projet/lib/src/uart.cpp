@@ -5,7 +5,13 @@
  */
 
 #include "uart.h"
+func_t uartRxcCallback = nullptr;
 
+ISR(UART_RXC)
+{
+       if (uartRxcCallback != nullptr) uartRxcCallback();
+}
+    
 void UART::init()
 {
 	init(2400);
@@ -20,11 +26,16 @@ void UART::init(uint16_t rate)
 
 	// reception et transmission
 	UCSR0A = 0;
-	UCSR0B |= _BV(RXEN0) | _BV(TXEN0);
+	UCSR0B |= _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIEN0);
 
 	// format des trames : 8 bits
 	// (asynchronous, 1 stop bit, none parity)
 	UCSR0C |= _BV(UCSZ01) | _BV(UCSZ00);
+}
+
+void UART::initInterruption(func_t func){
+
+    uartRxcCallback = func;
 }
 
 void UART::transmission(const uint8_t& donnee)
