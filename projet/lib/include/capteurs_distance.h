@@ -45,14 +45,14 @@ public:
      * 
      * \return la distance [cm]
      */
-    static uint16_t getDistanceGauche();
+    static uint8_t getDistanceGauche();
 
     /**
      * Accesseur pour la distance la plus recente (droit)
      * 
      * \return la distance [cm]
      */
-    static uint16_t getDistanceDroit();
+    static uint8_t getDistanceDroit();
 
 private:
     static can can_; ///< l'objet pour le CAN
@@ -64,7 +64,7 @@ private:
      * 
      * \return la distance [cm]
      */
-    static uint16_t canToDistance(const uint16_t canVal);
+    static uint8_t canToDistance(const uint8_t canVal);
 
 };
 
