@@ -1,6 +1,8 @@
 #include "info.h"
 #include "defines.h"
 #include "uart.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 /*
  * Transmet les informations d'identification du robot 
  * \param id:  l'identificateur du robot, 0 pour le robot 2 et 1 pour le robot 1 
