@@ -1,5 +1,8 @@
 #include "defines.h"
 #include "enums_structs.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 class info
 {
 public:
