@@ -1,22 +1,19 @@
 /**
  * \file test_wav.cpp
- * \brief programme pour tester la lecture de donnees de fichiers
+ * \brief programme pour tester la lecture de donnees de fichiers wav
  * \author 
  */
-//#define F_CPU 8000000
-#include <stdint.h>
+
 #include <avr/io.h>
 #include <avr/pgmspace.h>
-#include "samples.h"
 #include <avr/interrupt.h>
-
-#define SAMPLE_RATE 8000
+#include "samples.h"
 
 
 volatile uint16_t sample;
 int sample_count;
 
-/* initialise the PWM */
+
 void init(void)
 {
     cli();
@@ -48,7 +45,7 @@ void init(void)
     TIMSK0 |= (1 << TOIE0);
     sample_count = 4;
 
-    sei(); //Enable interrupts
+    sei();
 }
 
 ISR(TIMER0_OVF_vect)
@@ -64,16 +61,9 @@ ISR(TIMER0_OVF_vect)
 
 int main(void)
 {
-    /*
-    DDRA |= 0x03;
-    PORTA = 0x1;
-    _delay_ms(500);
-    PORTA = 0x2;
-    */
-
     init();
     
-    while(1);
+    while(true);
 
     return 0;
 }
