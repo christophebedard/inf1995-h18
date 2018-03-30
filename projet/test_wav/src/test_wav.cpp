@@ -9,9 +9,9 @@
 #include <avr/pgmspace.h>
 #include "samples.h"
 #include <avr/interrupt.h>
-#include <util/delay.h>
 
 #define SAMPLE_RATE 8000
+
 
 volatile uint16_t sample;
 int sample_count;
@@ -41,9 +41,9 @@ void init(void)
     /* set initial duty cycle to zero */
     OCR1A = 0;
     
-    /* Setup Timer0 */
-  
-    TCCR0A |= (1 << CS00) | (1 << COM0A0) | (1 << COM0A1);
+    /* Setup Timer0 */  
+    TCCR0A |= (1 << CS00);
+    TCCR0B |= (1 << CS00);
     TCNT0 = 0;
     TIMSK0 |= (1 << TOIE0);
     sample_count = 4;
@@ -58,18 +58,22 @@ ISR(TIMER0_OVF_vect)
     {
         sample_count = 4;           
         OCR1A = pgm_read_byte(&pcm_samples[sample++]);
-        if(sample>pcm_length)sample=0;
+        if(sample>=pcm_length)sample=0;
     }
 } 
 
 int main(void)
 {
+    /*
     DDRA |= 0x03;
     PORTA = 0x1;
     _delay_ms(500);
     PORTA = 0x2;
+    */
 
     init();
     
     while(1);
+
+    return 0;
 }
