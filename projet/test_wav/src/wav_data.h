@@ -1,6 +1,6 @@
-const long pcm_length = 8437;
+const uint16_t pcm_length = 8437;
 
-const unsigned char pcm_samples[] PROGMEM = {
+const uint8_t pcm_samples[] PROGMEM = {
 	127, 126, 127, 126, 127,
 	126, 127, 127, 126, 127,
 	126, 127, 126, 126, 127,

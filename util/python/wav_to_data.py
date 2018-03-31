@@ -74,9 +74,9 @@ def export_wav_data(data, nom_fichier_export):
     """
     print("\necriture dans le fichier :", nom_fichier_export)
     with open(nom_fichier_export, 'w') as f:
-        print('const long pcm_length = ', len(data), ';', sep='', file=f)
+        print('const uint16_t pcm_length = ', len(data), ';', sep='', file=f)
         print(file=f)
-        print('const unsigned char pcm_samples[] PROGMEM = {', file=f)
+        print('const uint8_t pcm_samples[] PROGMEM = {', file=f)
         for i, d in enumerate(data):
             # tab
             if (i % NB_VAL_PAR_LIGNE) == 0:
