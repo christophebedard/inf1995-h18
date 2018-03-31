@@ -59,8 +59,9 @@ public:
      * 
      * \param a : la valeur pour le channel A (false ou true)
      * \param b : la valeur pour le channel B  (false ou true)
+     * \param overflow : la valeur pour l'activation du interrupt d'overflow (false ou true)
      */
-    static void setInterruptEnable(bool a, bool b);
+    static void setInterruptEnable(bool a, bool b, bool overflow);
 
     /**
      * Reglage du output compare register A (OCRnA)
@@ -89,6 +90,13 @@ public:
      * \param func : le pointeur vers la fonction de callback
      */
     static void setCompBCallback(func_t func);
+
+    /**
+     * Reglage de la fonction de callback pour OVF
+     * 
+     * \param func : le pointeur vers la fonction de callback
+     */
+    static void setOverflowCallback(func_t func);
 
     /**
      * Reset de TCNTn a 0

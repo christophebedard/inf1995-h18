@@ -9,6 +9,7 @@
 /// \todo deplacer vers classe static
 func_t timer2CompACallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPA
 func_t timer2CompBCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPB
+func_t timer2OverflowCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_OVF
 
 Prescaler Timer2::timPres = Prescaler::No_clk;
 
@@ -22,6 +23,11 @@ ISR(TIMER2_COMPB_vect)
     if (timer2CompBCallback != nullptr) timer2CompBCallback();
 }
 
+ISR(TIMER2_OVF_vect)
+{
+    if (timer2OverflowCallback != nullptr) timer2OverflowCallback();
+}
+
 void Timer2::start()
 {
     cli();
@@ -29,7 +35,7 @@ void Timer2::start()
     resetTCNTn();
     setWaveformGenerationMode(WGM::Mode_2);
     setCompareOutputMode(COM::Set, COM::Normal);
-    setInterruptEnable(true, false);
+    setInterruptEnable(true, false, false);
     setPrescaler(Prescaler::Div_128);
 
     sei();
@@ -42,7 +48,7 @@ void Timer2::stop()
     resetTCNTn();
     setWaveformGenerationMode(WGM::Mode_0);
     setCompareOutputMode(COM::Normal, COM::Normal);
-    setInterruptEnable(0, 0);
+    setInterruptEnable(false, false, false);
     setPrescaler(Prescaler::No_clk);
 }
 
@@ -160,9 +166,9 @@ void Timer2::setPrescaler(const Prescaler pre)
     }
 }
 
-void Timer2::setInterruptEnable(bool a, bool b)
+void Timer2::setInterruptEnable(bool a, bool b, bool overflow)
 {
-    TIMSK2 &= ~(_BV(OCIE2A) | _BV(OCIE2B));
+    TIMSK2 &= ~(_BV(OCIE2A) | _BV(OCIE2B) | _BV(TOIE2));
 
     switch(a)
     {
@@ -185,6 +191,17 @@ void Timer2::setInterruptEnable(bool a, bool b)
             TIMSK2 |= _BV(OCIE2B);
             break;
     }
+
+    switch(overflow)
+    {
+        default:
+        case false:
+            //TIMSK2 |= 0;
+            break;
+        case true:
+            TIMSK2 |= _BV(TOIE2);
+            break;
+    }
 }
 
 void Timer2::setOCRnA(uint8_t val)
@@ -205,6 +222,11 @@ void Timer2::setCompACallback(func_t func)
 void Timer2::setCompBCallback(func_t func)
 {
     timer2CompBCallback = func;
+}
+
+void Timer2::setOverflowCallback(func_t func)
+{
+    timer2OverflowCallback = func;
 }
 
 void Timer2::resetTCNTn()
