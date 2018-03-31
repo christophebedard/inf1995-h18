@@ -13,7 +13,8 @@
 #include "timer0.h"
 #include "timer1.h"
 
-#define UPDATE_COUNT_STEP 2
+///< constante pour l'intervalle d'upate de la valeur
+#define INTERVALLE_MISE_A_JOUR 2
 
 /**
  * \class LecteurWav
@@ -40,7 +41,7 @@ public:
      * 
      * \param loop : le choix pour la lecture en boucle
      */
-    static void play(bool loop);
+    static void play(bool loop = false);
 
     /**
      * Arret de lecture et reinitialisation des compteurs
@@ -54,12 +55,12 @@ public:
      */
     static bool isPlaying();
 
-    static volatile uint16_t position_;     ///< la position actuelle de la lecture
-    static volatile uint8_t updateCount_;   ///< le compteur pour l'update de la valeur
-    static bool loop_;                      ///< l'option de lecture en boucle
-    static bool isPlaying_;                 ///< l'etat de lecture
-    static const uint8_t* donnees_;         ///< le pointeur vers le tableau de donnees
-    static uint16_t longueurDonnees_;       ///< le nombre de donnees
+    static volatile uint16_t position_;         ///< la position actuelle de la lecture
+    static volatile uint8_t compteurUpdate_;    ///< le compteur pour l'update de la valeur
+    static bool loop_;                          ///< l'option de lecture en boucle
+    static bool isPlaying_;                     ///< l'etat de lecture
+    static const uint8_t* donnees_;             ///< le pointeur vers le tableau de donnees
+    static uint16_t longueurDonnees_;           ///< le nombre de donnees
 
 private:
 

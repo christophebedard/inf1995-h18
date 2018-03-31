@@ -8,7 +8,7 @@
 
 
 volatile uint16_t LecteurWav::position_ = 0;
-volatile uint8_t LecteurWav::updateCount_ = UPDATE_COUNT_STEP;
+volatile uint8_t LecteurWav::compteurUpdate_ = INTERVALLE_MISE_A_JOUR;
 bool LecteurWav::loop_ = false;
 bool LecteurWav::isPlaying_ = false;
 const uint8_t* LecteurWav::donnees_ = nullptr;
@@ -23,12 +23,12 @@ void callbackDonnee()
 {
     if(LecteurWav::isPlaying_)
     {
-        LecteurWav::updateCount_--;
+        LecteurWav::compteurUpdate_--;
         
-        if(LecteurWav::updateCount_ == 0) 
+        if(LecteurWav::compteurUpdate_ == 0) 
         {
             // reset le compteur de mise a jour
-            LecteurWav::updateCount_ = UPDATE_COUNT_STEP;
+            LecteurWav::compteurUpdate_ = INTERVALLE_MISE_A_JOUR;
             
             // update la valeur
             OCR1A = pgm_read_byte(&LecteurWav::donnees_[LecteurWav::position_++]);
@@ -88,7 +88,7 @@ void LecteurWav::play(bool loop)
         sei();
 
         // initialisation du compteur de mise a jour
-        updateCount_ = UPDATE_COUNT_STEP;
+        compteurUpdate_ = INTERVALLE_MISE_A_JOUR;
         // set le flag de lecture en cours
         isPlaying_ = true;
         // reset la position de lecture
