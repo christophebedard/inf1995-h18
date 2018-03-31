@@ -6,7 +6,7 @@ fichier .h pour lecture avec le buzzer du robot
 @author: Christophe Bourque Bedard
 @date: 2018-03-29
 
-Utilisation : python wav_to_data.py input.wav [output.h]
+Utilisation : python wav_to_data.py input.wav [nom]
 """
 from __future__ import print_function # pour avoir print() de python 3
 import sys
@@ -20,8 +20,8 @@ import soundfile as sf
 TAUX_ECHANTILLONNAGE = 8000
 # nombre de resultats par ligne
 NB_VAL_PAR_LIGNE = 5
-# nom du fichier header des donnees exportees
-NOM_FICHIER_DATA_DEFAULT = "wav_data.h"
+# nom d'identifiant par defaut 
+IDENTIFIANT_DEFAULT = "wav"
 
 
 def wav_to_data(nom_fichier):
@@ -65,18 +65,19 @@ def wav_to_data(nom_fichier):
     return frames_int
 
 
-def export_wav_data(data, nom_fichier_export):
+def export_wav_data(data, nom):
     """
     Formatage des donnees pour ecriture dans un fichier
     :param data: donnees
-    :param nom_fichier_export: nom du fichier d'exportation
+    :param nom: prefixe d'identification
     :
     """
+    nom_fichier_export = "data_" + nom + ".h"
     print("\necriture dans le fichier :", nom_fichier_export)
     with open(nom_fichier_export, 'w') as f:
-        print('const uint16_t pcm_length = ', len(data), ';', sep='', file=f)
+        print('const uint16_t ', nom, '_longueur = ', len(data), ';', sep='', file=f)
         print(file=f)
-        print('const uint8_t pcm_samples[] PROGMEM = {', file=f)
+        print('const uint8_t ', nom, '_data[] PROGMEM = {', sep='', file=f)
         for i, d in enumerate(data):
             # tab
             if (i % NB_VAL_PAR_LIGNE) == 0:
@@ -106,13 +107,13 @@ def main():
         # parse les arguments des noms de fichier
         nom_fichier_wav = sys.argv[1]
         if narg == 2:
-            nom_fichier_data = NOM_FICHIER_DATA_DEFAULT
+            identifiant = IDENTIFIANT_DEFAULT
         else:
-            nom_fichier_data = sys.argv[2]
+            identifiant = sys.argv[2]
 
         # execute
         data = wav_to_data(nom_fichier_wav)
-        export_wav_data(data, nom_fichier_data)
+        export_wav_data(data, identifiant)
 
 
 if __name__ == "__main__":

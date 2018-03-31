@@ -8,13 +8,20 @@
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
 #include "lecteur_wav.h"
-#include "wav_data.h"
+#include "data_tinkywinky.h"
+#include "data_laalaa.h"
 
 
 int main(void)
 {
     LecteurWav::init();
-    LecteurWav::setWav(pcm_samples, pcm_length);
+    
+    LecteurWav::setWav(tinkywinky_data, tinkywinky_longueur);
+    LecteurWav::play(false);
+
+    while(LecteurWav::isPlaying());
+
+    LecteurWav::setWav(laalaa_data, laalaa_longueur);
     LecteurWav::play(false);
     
     while(true);

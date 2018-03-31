@@ -1,6 +1,6 @@
-const uint16_t pcm_length = 8437;
+const uint16_t tinkywinky_longueur = 8437;
 
-const uint8_t pcm_samples[] PROGMEM = {
+const uint8_t tinkywinky_data[] PROGMEM = {
 	127, 126, 127, 126, 127,
 	126, 127, 127, 126, 127,
 	126, 127, 126, 126, 127,
