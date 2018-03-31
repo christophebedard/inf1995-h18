@@ -16,8 +16,9 @@
 /**
  * \class Timer1
  * \brief classe qui definit un timer1
+ * 
  * Utilise pour :
- *          * PWM
+ *          * PWM moteurs
  */
 class Timer1
 {

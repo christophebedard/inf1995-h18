@@ -16,8 +16,11 @@
 /**
  * \class Timer0
  * \brief classe qui definit un timer0
+ * 
  * Utilise pour :
  *          * la duree des notes d'une chanson
+ *          OU
+ *          * update des valeurs WAV
  */
 class Timer0
 {

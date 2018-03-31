@@ -16,8 +16,11 @@
 /**
  * \class Timer2
  * \brief classe qui definit un Timer2
+ * 
  * Utilise pour :
  *          * jouer les notes MIDI avec le buzzer
+ *          OU
+ *          * lecture de WAV avec le buzzer
  */
 class Timer2
 {
