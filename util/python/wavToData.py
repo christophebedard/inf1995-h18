@@ -6,6 +6,7 @@
 @date: 2018-03-29
 """
 from __future__ import print_function # pour avoir print() de python 3
+import sys
 import itertools
 import wave
 
@@ -64,11 +65,22 @@ def formatWavData(data, file):
 
 
 def main():
-    data = wavToData("t.wav")
-    
-    formatWavData(data, "samples.h")
+    # verifie le nombre d'arguments
+    narg = len(sys.argv)
+    if narg <= 1:
+        print("erreur : specifiez au moins le nom du fichier .wav avec l'extension")
+    elif narg >= 2:
+        # condition normale
+        # parse les arguments des noms de fichier
+        nom_fichier_wav = sys.argv[1]
+        if narg == 2:
+            nom_fichier_data = "samples.h"
+        else:
+            nom_fichier_data = sys.argv[2]
 
-
+        # execute
+        data = wavToData(nom_fichier_wav)
+        formatWavData(data, nom_fichier_data)
 
 
 if __name__ == "__main__":
