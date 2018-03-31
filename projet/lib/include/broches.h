@@ -24,6 +24,11 @@
 #define BROCHE_BUZZER 7
 
 /**
+ * Broche sur laquelle le buzzer pour WAV est connecte (1-8)
+ */
+#define BROCHE_BUZZER_WAV 8
+
+/**
  * Broche PWM associee au moteur gauche (OC1B)
  */
 #define BROCHE_MOTEUR_GAUCHE_PWM 5

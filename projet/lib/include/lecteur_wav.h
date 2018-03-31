@@ -10,8 +10,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
+#include "broches.h"
 #include "timer0.h"
-#include "timer1.h"
+#include "timer2.h"
 
 ///< constante pour l'intervalle d'upate de la valeur
 #define INTERVALLE_MISE_A_JOUR 2

@@ -33,6 +33,7 @@ D:
 4 direction droite
 5 PWM roue gauche   TIMER1 A
 6 PWM roue droite   TIMER1 B
+8 PWM buzzer WAV    TIMER2 A
 
 Diagnostic:
 

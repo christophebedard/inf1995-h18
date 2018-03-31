@@ -31,7 +31,7 @@ void callbackDonnee()
             LecteurWav::compteurUpdate_ = INTERVALLE_MISE_A_JOUR;
             
             // update la valeur
-            OCR1A = pgm_read_byte(&LecteurWav::donnees_[LecteurWav::position_++]);
+            OCR2A = pgm_read_byte(&LecteurWav::donnees_[LecteurWav::position_++]);
             
             // verification fin des donnees
             if(LecteurWav::position_ >= LecteurWav::longueurDonnees_)
@@ -54,8 +54,8 @@ void callbackDonnee()
 
 void LecteurWav::init()
 {
-    // pin OC1A en sortie pour le buzzer (broche D6)
-    DDRD = _BV(PD5);
+    // pin OC2A en sortie pour le buzzer
+    DDRD |= _BV(_BROCHE_TO_PIN(BROCHE_BUZZER_WAV));
 }
 
 void LecteurWav::setWav(const uint8_t* donnees, uint16_t longueur)
@@ -72,11 +72,11 @@ void LecteurWav::play(bool loop)
     {
         cli();
 
-        // initialise le timer1 pour PWM
-        Timer1::setCompareOutputMode(COM::Clear, COM::Normal);
-        Timer1::setWaveformGenerationMode(WGM::Mode_5);
-        Timer1::setPrescaler(Prescaler::Div_1);
-        Timer1::setOCRnA(0);
+        // initialise le timer2 pour PWM sur A
+        Timer2::setCompareOutputMode(COM::Set, COM::Normal);
+        Timer2::setWaveformGenerationMode(WGM::Mode_1);
+        Timer2::setPrescaler(Prescaler::Div_1);
+        Timer2::setOCRnA(0);
 
         // initialise le timer0 pour la mise a jour des notes
         Timer0::setOverflowCallback(&callbackDonnee);
@@ -98,7 +98,7 @@ void LecteurWav::play(bool loop)
 
 void LecteurWav::stop()
 {
-    Timer1::stop();
+    Timer2::stop();
     Timer0::stop();
     isPlaying_ = false;
 }
