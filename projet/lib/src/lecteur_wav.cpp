@@ -70,22 +70,7 @@ void LecteurWav::play(bool loop)
 
     if(donnees_ != nullptr)
     {
-        cli();
-
-        // initialise le timer2 pour PWM sur A
-        Timer2::setCompareOutputMode(COM::Set, COM::Normal);
-        Timer2::setWaveformGenerationMode(WGM::Mode_1);
-        Timer2::setPrescaler(Prescaler::Div_1);
-        Timer2::setOCRnA(0);
-
-        // initialise le timer0 pour la mise a jour des notes
-        Timer0::setOverflowCallback(&callbackDonnee);
-        Timer0::setWaveformGenerationMode(WGM::Mode_1);
-        Timer0::setPrescaler(Prescaler::Div_1);
-        Timer0::setInterruptEnable(false, false, true);
-        Timer0::resetTCNTn();
-
-        sei();
+        startTimers();
 
         // initialisation du compteur de mise a jour
         compteurUpdate_ = INTERVALLE_MISE_A_JOUR;
@@ -108,3 +93,22 @@ bool LecteurWav::isPlaying()
     return isPlaying_;
 }
 
+void LecteurWav::startTimers()
+{
+    cli();
+
+    // initialise le timer2 pour PWM sur A
+    Timer2::setCompareOutputMode(COM::Set, COM::Normal);
+    Timer2::setWaveformGenerationMode(WGM::Mode_1);
+    Timer2::setPrescaler(Prescaler::Div_1);
+    Timer2::setOCRnA(0);
+
+    // initialise le timer0 pour la mise a jour des notes
+    Timer0::setOverflowCallback(&callbackDonnee);
+    Timer0::setWaveformGenerationMode(WGM::Mode_1);
+    Timer0::setPrescaler(Prescaler::Div_1);
+    Timer0::setInterruptEnable(false, false, true);
+    Timer0::resetTCNTn();
+
+    sei();
+}

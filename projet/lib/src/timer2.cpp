@@ -28,21 +28,9 @@ ISR(TIMER2_OVF_vect)
     if (timer2OverflowCallback != nullptr) timer2OverflowCallback();
 }
 
-void Timer2::start()
-{
-    cli();
-
-    resetTCNTn();
-    setWaveformGenerationMode(WGM::Mode_2);
-    setCompareOutputMode(COM::Set, COM::Normal);
-    setInterruptEnable(true, false, false);
-    setPrescaler(Prescaler::Div_128);
-
-    sei();
-}
-
 void Timer2::stop()
 {
+    cli();
     setOCRnA(0);
     setOCRnB(0);
     resetTCNTn();
@@ -50,6 +38,7 @@ void Timer2::stop()
     setCompareOutputMode(COM::Normal, COM::Normal);
     setInterruptEnable(false, false, false);
     setPrescaler(Prescaler::No_clk);
+    sei();
 }
 
 void Timer2::setCompareOutputMode(COM a, COM b)

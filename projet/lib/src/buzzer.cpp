@@ -68,9 +68,14 @@ void Buzzer::play(uint8_t note)
         uint8_t val_ocrn = note_midi.val_ocrn;
 
         // execute
-        Timer2::start();
+        cli();
+        Timer2::resetTCNTn();
+        Timer2::setWaveformGenerationMode(WGM::Mode_2);
+        Timer2::setCompareOutputMode(COM::Set, COM::Normal);
+        Timer2::setInterruptEnable(true, false, false);
         Timer2::setPrescaler(pre);
         Timer2::setOCRnA(val_ocrn);
+        sei();
     }
     else
     {

@@ -78,7 +78,13 @@ void LecteurChanson::play()
                         chansonCourante_.tempo);
 
     // part le timer pour la note
-    Timer0::start();
+    cli();
+    Timer0::resetTCNTn();
+    Timer0::setWaveformGenerationMode(WGM::Mode_2);
+    Timer0::setCompareOutputMode(COM::Set, COM::Normal);
+    Timer0::setInterruptEnable(true, false, false);
+    Timer0::setPrescaler(Prescaler::Div_1024);
+    sei();
 
     // set le flag de lecture en cours
     isPlaying_ = true;

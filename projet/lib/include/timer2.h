@@ -26,11 +26,6 @@ class Timer2
 {
 public:
     /**
-     * Part le timer2
-     */
-    static void start();
-
-    /**
      * Stop le timer2
      */
     static void stop();

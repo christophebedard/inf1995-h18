@@ -64,7 +64,10 @@ public:
     static uint16_t longueurDonnees_;           ///< le nombre de donnees
 
 private:
-
+    /**
+     * Reglage et activation des timers
+     */
+    static void startTimers();
 };
 
 #endif // LIB_LECTEUR_WAV_H
