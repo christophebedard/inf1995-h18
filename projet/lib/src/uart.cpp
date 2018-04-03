@@ -88,25 +88,27 @@ void UART::transmettre(int id)
             UART::transmission(INFO_NOM_ROBOT[i]);
             waitForMs(5);
         }
-        UART::transmission(instruction + 1); //Equipe
+        UART::transmission(++instruction); //Equipe
         waitForMs(5);
         for (uint8_t i = 0; i < 5; i++){
             UART::transmission(INFO_EQUIPE[i]);
             waitForMs(5);
         }
-        UART::transmission(instruction + 2); //Groupe
+        UART::transmission(++instruction); //Groupe
         waitForMs(5);
-        for (uint8_t i = 0; i < 2; i++){
-            UART::transmission(INFO_GROUPE[i]);
-            waitForMs(5);
-        }
-        UART::transmission(instruction + 3); //Session
+        //UART::transmission(0x03); // ==> "031" 
+        //UART::transmission('3');  // ==> "051"  dec 3
+        //UART::transmission(0x03); // ==> "031 
+        //UART::transmission('9');  // ==> "057" 57 is dec of char 9
+        UART::transmission(INFO_GROUPE);  // ==> prend une valeur decimale"
+        waitForMs(5);
+        UART::transmission(++instruction); //Session
         waitForMs(5);
         for (uint8_t i = 0; i < 4; i++){
             UART::transmission(INFO_SESSION[i]);
             waitForMs(5);
         }
-        UART::transmission(instruction + 4); //Couleur
+        UART::transmission(++instruction); //Couleur
         waitForMs(5);
         if (id == 1)
             UART::transmission(COULEUR_ROBOT1);

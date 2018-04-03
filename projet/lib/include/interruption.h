@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "enums_structs.h"
-
+#include "defines.h"
 
 
 
@@ -32,11 +32,20 @@ enum Interrupteur
  */
 void initInterruption(func_t func, const TypesTriggerInterrupt type = FallingEdge);
 
-
+/**
+ * Interruption qui fait faire un virage de 180 degre au robot
+ * 
+ */
 void trajetInterrupt();
 
+/**
+ * Interruption qui modifie l'etat de l'interrupteur 
+ */
 void diagnosticInterrupt();
 
+/**
+ * Fonction qui retourne la valeur de la variable globale etat
+ */
 Interrupteur getEtat();
 
 #endif // LIB_INTERRUPTION_H

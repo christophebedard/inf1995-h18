@@ -23,7 +23,6 @@ for(;;){
         UART::transmission(bouton);
     else
         UART::transmission(bouton + 1); 
-    //Si la transmission faite avant ne fonctionne pas on utilisera celle la
     waitForMs(5);
     UART::transmission(instruction + 1);
     waitForMs(5);

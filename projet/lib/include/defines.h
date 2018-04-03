@@ -25,7 +25,7 @@ const uint8_t VERT = 0x01;
 // Informations sur l'equipe
 const char INFO_NOM_ROBOT[] = "Thinky Winky";   ///< le nom du robot
 const char INFO_EQUIPE[] = "68116";             ///< le numero de l'equipe
-const char INFO_GROUPE[] = "03";                ///< le numero du groupe
+const int INFO_GROUPE = 3;                ///< le numero du groupe
 const char INFO_SESSION[] = "18-1";             ///< l'annee-session
 const uint8_t COULEUR_ROBOT1 = 1;
 const uint8_t COULEUR_ROBOT2 = 4;

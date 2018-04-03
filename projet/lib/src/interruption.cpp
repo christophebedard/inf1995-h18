@@ -1,5 +1,6 @@
 #include "interruption.h"
 #include "enums_structs.h"
+#include "defines.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 volatile Interrupteur etat = Relache;
