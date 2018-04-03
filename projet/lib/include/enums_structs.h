@@ -23,11 +23,9 @@ enum class DirectionMoteur
 /**
  *
  */
-enum class Interrupteur
-{
-    Enfonce,
-    Relache
-};
+
+
+
 
 /**
  * Represente COMNAx et COMNBx (voir doc pour precisions selon mode)

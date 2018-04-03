@@ -32,13 +32,6 @@ public:
     static void init(uint16_t rate);
     
     /**
-     * Initialisation de l'interruption pour le UART
-     * 
-     *  \param func : la fonction qui gère l'interruption
-     */
-    static void initInterruption(func_t func);
-    
-    /**
      * Transmission UART
      * 
      * \param donnee : l'octet a transmettre
@@ -52,6 +45,12 @@ public:
      */
     static void transmission(const char* str);
 
+    /**
+     * Transmission des informations du robot
+     *
+     * \param id : identificateur du robot
+     */
+    static void transmettre(int id);
     /**
      * Reception UART
      * 

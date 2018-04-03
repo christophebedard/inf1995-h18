@@ -1,5 +1,8 @@
 #include "interruption.h"
-
+#include "enums_structs.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+volatile Interrupteur etat = Relache;
 func_t int0FuncPtr = nullptr; /**< variable du pointeur vers le callback INT0 */
 
 ISR(INT0_vect)
@@ -17,7 +20,7 @@ void initInterruption(func_t func, const TypesTriggerInterrupt type)
     int0FuncPtr = func;
 
     cli();
-
+    etat = Relache;
     // interruption externe sur INT0
     EIMSK |= (1 << INT0);
 
@@ -39,4 +42,23 @@ void initInterruption(func_t func, const TypesTriggerInterrupt type)
     }
 
     sei();
+}
+
+Interrupteur getEtat()
+{
+    return etat;
+}
+
+void diagnosticInterrupt()
+{
+    if (etat == Relache)
+        etat = Enfonce;
+    else
+        etat = Relache;
+}
+
+
+void trajetInterrupt()
+{
+    //vide avant trajet
 }
