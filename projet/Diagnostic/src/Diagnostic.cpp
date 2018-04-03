@@ -8,19 +8,20 @@
 #include "can.h"
 
 int main()
-{
+{   
     uint8_t bouton = 0x00;
     uint8_t instruction = 0xf5;
     UART::init();
     initInterruption(diagnosticInterrupt, RisingOrFallingEdge);
     Moteurs::init();
+    CapteursDistance::init()
     UART::transmettre(1);
 for(;;){
     UART::transmission(instruction);
     waitForMs(5);
     //etat interrupt
     if (getEtat() == Enfonce)
-        UART::transmission(bouton);
+        UART::transmission(bouton); //semble considerer que l'interrupteur est utilise sans qu'il soit appuye, aucun changement lorsqu'appuye
     else
         UART::transmission(bouton + 1); 
     waitForMs(5);

@@ -21,7 +21,6 @@ void initInterruption(func_t func, const TypesTriggerInterrupt type)
     int0FuncPtr = func;
 
     cli();
-    etat = Relache;
     // interruption externe sur INT0
     EIMSK |= (1 << INT0);
 
