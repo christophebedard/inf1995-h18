@@ -5,6 +5,8 @@
  * \file buzzer.h
  * \brief declaration de la classe Buzzer
  * \author 
+ * 
+ * Brancher le buzzer entre BROCHE_BUZZER et GND (port C)
  */
 
 #include <avr/io.h>
@@ -12,10 +14,15 @@
 #include "defines.h"
 #include "broches.h"
 #include "enums_structs.h"
-
 #include "timer2.h"
 #include "debug.h"
 
+///< le numero de la note qui represente un silence
+#define NOTE_NULLE 0
+///< la note MIDI minimale valide
+#define NOTE_MIN 12
+///< la note MIDI maximale valide
+#define NOTE_MAX 127
 
 /**
  * \class Buzzer
@@ -41,11 +48,13 @@ public:
      */
     static void stop();
 
-    static const uint8_t NOTE_NULLE; /**< le numero de la note qui represente un silence */
+    /**
+     * Callback pour la note
+     * \todo typedef pour pointeur vers methode de classe
+     */
+    friend void callbackNote();
 
 private:
-    static const uint8_t NOTE_MIN; /**< la note MIDI minimale valide */
-    static const uint8_t NOTE_MAX; /**< la note MIDI maximale valide */
     static const NoteMidi DATA_NOTES[]; /**< les informations pour les notes (prescaler et valeur de OCRn) */
 
 };
