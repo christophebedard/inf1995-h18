@@ -6,26 +6,24 @@
 
 #include "timer1.h"
 
-/// \todo deplacer vers classe static
-func_t timer1CompACallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER1_COMPA
-func_t timer1CompBCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER1_COMPB
-func_t timer1OverflowCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER1_OVF
-
+func_t Timer1::timer1CompACallback = nullptr;
+func_t Timer1::timer1CompBCallback = nullptr;
+func_t Timer1::timer1OverflowCallback = nullptr;
 Prescaler Timer1::timPres = Prescaler::No_clk;
 
 ISR(TIMER1_COMPA_vect)
 {
-    if (timer1CompACallback != nullptr) timer1CompACallback();
+    if (Timer1::timer1CompACallback != nullptr) Timer1::timer1CompACallback();
 }
 
 ISR(TIMER1_COMPB_vect)
 {
-    if (timer1CompBCallback != nullptr) timer1CompBCallback();
+    if (Timer1::timer1CompBCallback != nullptr) Timer1::timer1CompBCallback();
 }
 
 ISR(TIMER1_OVF_vect)
 {
-    if (timer1OverflowCallback != nullptr) timer1OverflowCallback();
+    if (Timer1::timer1OverflowCallback != nullptr) Timer1::timer1OverflowCallback();
 }
 
 void Timer1::stop()

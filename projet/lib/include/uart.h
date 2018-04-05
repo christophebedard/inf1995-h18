@@ -12,6 +12,7 @@
 #include "defines.h"
 #include "memoire_24.h"
 
+// declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void USART0_RX_vect(void) __attribute__((signal));
 extern "C" void USART0_TX_vect(void) __attribute__((signal));
 
@@ -74,7 +75,14 @@ public:
      */
     static void stop();
 
+    /**
+     * Ami : interruption du RX du USART0
+     */
     friend void ::USART0_RX_vect(void);
+
+    /**
+     * Ami : interruption du RX du USART0
+     */
     friend void ::USART0_TX_vect(void);
 
 private:
