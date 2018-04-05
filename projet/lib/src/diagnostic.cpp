@@ -12,44 +12,55 @@ uint8_t Diagnostic::instruction = 0xf5;
 
 void callbackRx() {
     cli();
+    
+    // pour LED
     DDRA = SORTIE;
-    DDRD = SORTIE;
+
+    // reception de l'instruction
     uint8_t instruction[2] = {0x00, 0x00};
-    for (int i = 0; i < 2; i++){
+    for (uint8_t i = 0; i < 2; i++)
+    {
         instruction[i] = UART::reception();
         waitForMs(5);
     }
-    switch (instruction[0]){
-        case 0xfb:
-            Diagnostic::transmettre(1); 
-            //Changer parametre à 0 si on utilise le robot vert, 1 pour gris
+
+    // selon le message
+    switch (instruction[0])
+    {
+        case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
+            // Changer parametre a 0 si on utilise le robot vert, 1 pour gris
+            Diagnostic::transmettreInfos(1);
             break;
-            
-        case 0xfa:
+        case (uint8_t)MessagesLogicielRobot::CouleurDel:
+            // Valeur assignee au port A
             PORTA = instruction[1];
-            //Valeur assignée au port A
             break;
-            
-        case 0xf9://droite
-            if (instruction[1] >> 7 == 1){ 
+        case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
+            if ((instruction[1] >> 7) == 1)
+            { 
                 instruction[1] = ~instruction[1] + 0x01;
                 Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);            
             }
             else
+            {
                 Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
+            }
             Moteurs::setPourcentageDroite(instruction[1]);
             break;
-    
-        case 0xf8://gauche
-            if (instruction[1] >> 7 == 1){ 
+        case (uint8_t)MessagesLogicielRobot::VitesseRoueGauche:
+            if ((instruction[1] >> 7) == 1)
+            { 
                 instruction[1] = ~instruction[1] + 0x01;
                 Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere); 
             }
             else
+            {
                 Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
+            }
             Moteurs::setPourcentageGauche(instruction[1]);
             break;
     }
+
     sei();
 }
 
@@ -61,38 +72,42 @@ void Diagnostic::init() {
     Moteurs::init();
     CapteursDistance::init();
 
-    transmettre(1);
+    // commencer par transmettre infos du robot
+    transmettreInfos(1);
 }
 
 void Diagnostic::execute() {
     // init
     init();
 
-    // loop
+    // envoyer les informations sur les capteurs en continu
     while(true)
     {
-        UART::transmission(instruction);
-        waitForMs(5);
-        //etat interrupt
-        if (getEtat() == Enfonce)
-            UART::transmission(bouton); //semble considerer que l'interrupteur est utilise sans qu'il soit appuye, aucun changement lorsqu'appuye
-        else
-            UART::transmission(bouton + 1); 
-        waitForMs(5);
-        UART::transmission(instruction + 1);
-        waitForMs(5);
-        //distance gauche
-        UART::transmission(CapteursDistance::getDistanceDroit());
-        waitForMs(5);
-        UART::transmission(instruction + 2);
-        waitForMs(5);
-        //distance droite
-        UART::transmission(CapteursDistance::getDistanceGauche());
-        waitForMs(5);
+        // etat du bouton
+        // semble considerer que l'interrupteur est utilise sans qu'il soit appuye, aucun changement lorsqu'appuye
+        uint8_t etatBouton = (PIND & 0x04) ? 0x0 : 0x1;
+        transmissionMessage((uint8_t)MessagesRobotLogiciel::EtatBoutonInterrupt,
+                            etatBouton);
+        
+        // distance capteur gauche
+        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurGauche,
+                            CapteursDistance::getDistanceDroit());
+        
+        // distance capteur droit
+        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurDroit,
+                            CapteursDistance::getDistanceGauche());
     }
 }
 
-void Diagnostic::transmettre(int id)
+void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
+{
+    UART::transmission(type);
+    waitForMs(5);
+    UART::transmission(donnee);
+    waitForMs(5);
+}
+
+void Diagnostic::transmettreInfos(int id)
 {
         uint8_t instruction = 0xf0;
         UART::transmission(instruction); //Nom

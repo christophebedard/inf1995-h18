@@ -50,11 +50,20 @@ private:
     static void init();
 
     /**
+     * Transmission d'un message
+     * 
+     * \param type : le type du message (selon les enums)
+     * \param donnee : la donnee du message
+     */
+    static void transmissionMessage(uint8_t type, uint8_t donnee);
+
+    /**
      * Transmission des informations du robot
      *
-     * \param id : l'identificateur du robot, 0 pour le robot 2 et 1 pour le robot 1 
+     * \param id : l'identificateur du robot
+     *              (0 pour le robot 2; 1 pour le robot 1)
      */
-    static void transmettre(int id);
+    static void transmettreInfos(int id);
 
 
 };
