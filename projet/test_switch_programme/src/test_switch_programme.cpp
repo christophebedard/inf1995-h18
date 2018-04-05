@@ -31,9 +31,11 @@ int main()
     {
         case 0:
             Debug::out("diagnostic\n");
+            //Diagnostic::execute();
             break;
         case 1:
             Debug::out("trajet\n");
+            //Trajet::execute();
             break;
         default:
             Debug::out("erreur\n");

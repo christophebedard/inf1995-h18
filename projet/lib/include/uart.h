@@ -12,6 +12,9 @@
 #include "defines.h"
 #include "memoire_24.h"
 
+extern "C" void USART0_RX_vect(void) __attribute__((signal));
+extern "C" void USART0_TX_vect(void) __attribute__((signal));
+
 /**
  * \class UART
  * \brief classe qui enveloppe (wrap) le UART
@@ -30,6 +33,20 @@ public:
      * \param rate : le baud rate
      */
     static void init(uint16_t rate);
+
+    /**
+     * Reglage de la fonction de callback pour RX
+     * 
+     * \param func : le pointeur vers la fonction de callback
+     */
+    static void setRxCallback(func_t func);
+
+    /**
+     * Reglage de la fonction de callback pour TX
+     * 
+     * \param func : le pointeur vers la fonction de callback
+     */
+    static void setTxCallback(func_t func);
     
     /**
      * Transmission UART
@@ -46,12 +63,6 @@ public:
     static void transmission(const char* str);
 
     /**
-     * Transmission des informations du robot
-     *
-     * \param id : identificateur du robot
-     */
-    static void transmettre(int id);
-    /**
      * Reception UART
      * 
      * \return la donnee recue
@@ -62,6 +73,13 @@ public:
      * Arret du UART
      */
     static void stop();
+
+    friend void ::USART0_RX_vect(void);
+    friend void ::USART0_TX_vect(void);
+
+private:
+    static func_t uart0RxCallback; ///< le pointeur vers la fonction de rappel pour RX
+    static func_t uart0TxCallback; ///< le pointeur vers la fonction de rappel pour TX
 
 };
 
