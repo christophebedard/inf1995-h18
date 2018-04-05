@@ -5,6 +5,8 @@
  * \file lecteur_chanson.h
  * \brief declaration de la classe LecteurChanson
  * \author 
+ * 
+ * Voir buzzer.h pour la connexion
  */
 
 #include <avr/io.h>
