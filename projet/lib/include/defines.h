@@ -12,6 +12,9 @@
 #define F_CPU 8000000
 #endif
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
 /// pointeur vers fonction sans argument et retour void
 typedef void (*func_t)();
 
