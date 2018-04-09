@@ -143,16 +143,6 @@ void Diagnostic::transmettreInfos()
                             4);
 
         // couleur robot
-        switch(NUMERO_ROBOT)
-        {
-            default:
-            case 1:
-                transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                                    COULEUR_ROBOT1);
-                break;
-            case 2:
-                transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                                    COULEUR_ROBOT2);
-                break;
-        }
+        transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                            (NUMERO_ROBOT == 1) ? COULEUR_ROBOT1 : COULEUR_ROBOT2);
 }
