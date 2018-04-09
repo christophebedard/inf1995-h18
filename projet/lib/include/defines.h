@@ -26,16 +26,14 @@ const uint8_t ETEINT = 0x00;
 const uint8_t ROUGE = 0x02;
 const uint8_t VERT = 0x01;
 
-// informations sur l'equipe
-const char INFO_NOM_ROBOT[] = "Thinky Winky";   ///< le nom du robot
-const char INFO_EQUIPE[] = "68116";             ///< le numero de l'equipe
-#define INFO_GROUPE 3                           ///< le numero du groupe
-const char INFO_SESSION[] = "18-1";             ///< l'annee-session
-#define COULEUR_ROBOT1 1                        ///< la couleur du premier robot (gris/noir)
-#define COULEUR_ROBOT2 4                        ///< la couleur du deuxieme robot (vert)
-
-///< le numero du robot actuel (1 ou 2)
-#define NUMERO_ROBOT 1
+// informations sur l'equipe et le robot
+#define NUMERO_ROBOT   1                ///< le numero du robot actuel (1 ou 2)
+#define INFO_NOM_ROBOT "Thinky Winky"   ///< le nom du robot
+#define INFO_EQUIPE    "68116"          ///< le numero de l'equipe
+#define INFO_GROUPE    3                ///< le numero du groupe
+#define INFO_SESSION   "18-1"           ///< l'annee-session
+#define COULEUR_ROBOT1 1                ///< la couleur du premier robot (gris/noir)
+#define COULEUR_ROBOT2 4                ///< la couleur du deuxieme robot (vert)
 
 
 #endif // LIB_DEFINES_H
