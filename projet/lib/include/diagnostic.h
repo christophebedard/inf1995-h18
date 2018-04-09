@@ -72,11 +72,8 @@ private:
 
     /**
      * Transmission des informations du robot
-     *
-     * \param id : l'identificateur du robot
-     *              (0 pour le robot 2; 1 pour le robot 1)
      */
-    static void transmettreInfos(int id);
+    static void transmettreInfos();
 
 };
 

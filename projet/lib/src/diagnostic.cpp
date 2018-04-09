@@ -23,11 +23,10 @@ void callbackRx()
     switch (instruction[0])
     {
         case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
-            // Changer parametre a 0 si on utilise le robot vert, 1 pour gris
-            Diagnostic::transmettreInfos(1);
+            Diagnostic::transmettreInfos();
             break;
         case (uint8_t)MessagesLogicielRobot::CouleurDel:
-            // Valeur assignee au port A
+            // valeur assignee au port A
             PORTA &= ~(0x3);
             PORTA |= instruction[1];
             break;
@@ -73,7 +72,7 @@ void Diagnostic::init()
     CapteursDistance::init();
 
     // commencer par transmettre infos du robot
-    transmettreInfos(1);
+    transmettreInfos();
 }
 
 void Diagnostic::execute()
@@ -122,7 +121,7 @@ void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
     waitForMs(5);
 }
 
-void Diagnostic::transmettreInfos(int id)
+void Diagnostic::transmettreInfos()
 {
         // nom du robot
         transmissionMessage(MessagesRobotLogiciel::NomRobot,
@@ -144,14 +143,16 @@ void Diagnostic::transmettreInfos(int id)
                             4);
 
         // couleur robot
-        if (id == 1)
+        switch(NUMERO_ROBOT)
         {
-            transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                                COULEUR_ROBOT1);
-        }
-        else if (id == 0)
-        {
-            transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                                COULEUR_ROBOT2);
+            default:
+            case 1:
+                transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                                    COULEUR_ROBOT1);
+                break;
+            case 2:
+                transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                                    COULEUR_ROBOT2);
+                break;
         }
 }

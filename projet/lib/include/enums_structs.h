@@ -47,13 +47,6 @@ enum class DirectionMoteur
 };
 
 /**
- *
- */
-
-
-
-
-/**
  * Represente COMNAx et COMNBx (voir doc pour precisions selon mode)
  */
 enum class COM
