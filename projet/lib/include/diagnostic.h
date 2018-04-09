@@ -40,10 +40,6 @@ public:
     friend void callbackRx();
 
 private:
-    static uint8_t bouton;
-    
-    //static const uint8_t d; ///< 
-
     /**
      * Initialisation
      */
@@ -81,7 +77,6 @@ private:
      *              (0 pour le robot 2; 1 pour le robot 1)
      */
     static void transmettreInfos(int id);
-
 
 };
 

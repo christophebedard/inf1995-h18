@@ -6,15 +6,10 @@
 
 #include "diagnostic.h"
 
-uint8_t Diagnostic::bouton = 0x00;
-
 
 void callbackRx()
 {
     cli();
-    
-    // pour LED
-    DDRA = SORTIE;
 
     // reception de l'instruction
     uint8_t instruction[2] = {0x00, 0x00};
@@ -33,7 +28,8 @@ void callbackRx()
             break;
         case (uint8_t)MessagesLogicielRobot::CouleurDel:
             // Valeur assignee au port A
-            PORTA = instruction[1];
+            PORTA &= ~(0x3);
+            PORTA |= instruction[1];
             break;
         case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
             if ((instruction[1] >> 7) == 1)
@@ -66,6 +62,9 @@ void callbackRx()
 
 void Diagnostic::init()
 {
+    // LED (en sortie)
+    DDRA |= 0x3;
+
     UART::init();
     UART::setRxCallback(&callbackRx);
 
