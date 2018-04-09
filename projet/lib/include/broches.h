@@ -41,12 +41,12 @@
 /**
  * Broche de direction associee au moteur gauche
  */
-#define BROCHE_MOTEUR_GAUCHE_DIRECTION 3
+#define BROCHE_MOTEUR_GAUCHE_DIRECTION 7
 
 /**
  * Broche de direction associee au moteur droit
  */
-#define BROCHE_MOTEUR_DROIT_DIRECTION 4
+#define BROCHE_MOTEUR_DROIT_DIRECTION 8
 
 /**
  * Broche CAN pour le Vo du capteur de distance gauche
