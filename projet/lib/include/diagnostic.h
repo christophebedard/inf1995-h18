@@ -12,6 +12,7 @@
 #include "defines.h"
 #include "broches.h"
 #include "enums_structs.h"
+#include "delai.h"
 #include "uart.h"
 #include "can.h"
 #include "capteurs_distance.h"
@@ -40,7 +41,6 @@ public:
 
 private:
     static uint8_t bouton;
-    static uint8_t instruction;
     
     //static const uint8_t d; ///< 
 
@@ -50,9 +50,26 @@ private:
     static void init();
 
     /**
+     * Transmission d'un message via enum
+     * 
+     * \param type : le type du message (selon l'enum MessagesRobotLogiciel)
+     * \param donnee : la donnee du message
+     */
+    static void transmissionMessage(MessagesRobotLogiciel msg, uint8_t donnee);
+
+    /**
+     * Transmission d'un message string via enum
+     * 
+     * \param type : le type du message (selon l'enum MessagesRobotLogiciel)
+     * \param donnee : le char* pour le string du message
+     * \param longueur : la longueur du string
+     */
+    static void transmissionMessage(MessagesRobotLogiciel msg, const char* donnees, const uint8_t longueur);
+
+    /**
      * Transmission d'un message
      * 
-     * \param type : le type du message (selon les enums)
+     * \param type : le type du message
      * \param donnee : la donnee du message
      */
     static void transmissionMessage(uint8_t type, uint8_t donnee);

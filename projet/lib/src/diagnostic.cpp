@@ -7,10 +7,10 @@
 #include "diagnostic.h"
 
 uint8_t Diagnostic::bouton = 0x00;
-uint8_t Diagnostic::instruction = 0xf5;
 
 
-void callbackRx() {
+void callbackRx()
+{
     cli();
     
     // pour LED
@@ -64,7 +64,8 @@ void callbackRx() {
     sei();
 }
 
-void Diagnostic::init() {
+void Diagnostic::init()
+{
     UART::init();
     UART::setRxCallback(&callbackRx);
 
@@ -76,7 +77,8 @@ void Diagnostic::init() {
     transmettreInfos(1);
 }
 
-void Diagnostic::execute() {
+void Diagnostic::execute()
+{
     // init
     init();
 
@@ -84,18 +86,32 @@ void Diagnostic::execute() {
     while(true)
     {
         // etat du bouton
-        // semble considerer que l'interrupteur est utilise sans qu'il soit appuye, aucun changement lorsqu'appuye
         uint8_t etatBouton = (PIND & 0x04) ? 0x0 : 0x1;
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::EtatBoutonInterrupt,
+        transmissionMessage(MessagesRobotLogiciel::EtatBoutonInterrupt,
                             etatBouton);
         
         // distance capteur gauche
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurGauche,
+        transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
                             CapteursDistance::getDistanceDroit());
         
         // distance capteur droit
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurDroit,
+        transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
                             CapteursDistance::getDistanceGauche());
+    }
+}
+
+void Diagnostic::transmissionMessage(MessagesRobotLogiciel msg, uint8_t donnee)
+{
+    transmissionMessage((uint8_t)msg, donnee);
+}
+
+void Diagnostic::transmissionMessage(MessagesRobotLogiciel msg, const char* donnees, const uint8_t longueur)
+{
+    UART::transmission((uint8_t)msg);
+    waitForMs(5);
+    for (uint8_t i = 0; i < longueur; i++){
+        UART::transmission(donnees[i]);
+        waitForMs(5);
     }
 }
 
@@ -109,38 +125,34 @@ void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
 
 void Diagnostic::transmettreInfos(int id)
 {
-        uint8_t instruction = 0xf0;
-        UART::transmission(instruction); //Nom
-        waitForMs(5);
-        for (uint8_t i = 0; i < 12; i++){
-            UART::transmission(INFO_NOM_ROBOT[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Equipe
-        waitForMs(5);
-        for (uint8_t i = 0; i < 5; i++){
-            UART::transmission(INFO_EQUIPE[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Groupe
-        waitForMs(5);
-        //UART::transmission(0x03); // ==> "031" 
-        //UART::transmission('3');  // ==> "051"  dec 3
-        //UART::transmission(0x03); // ==> "031 
-        //UART::transmission('9');  // ==> "057" 57 is dec of char 9
-        UART::transmission(INFO_GROUPE);  // ==> prend une valeur decimale"
-        waitForMs(5);
-        UART::transmission(++instruction); //Session
-        waitForMs(5);
-        for (uint8_t i = 0; i < 4; i++){
-            UART::transmission(INFO_SESSION[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Couleur
-        waitForMs(5);
+        // nom du robot
+        transmissionMessage(MessagesRobotLogiciel::NomRobot,
+                            INFO_NOM_ROBOT,
+                            12);
+        
+        // equipe
+        transmissionMessage(MessagesRobotLogiciel::NumeroEquipe,
+                            INFO_EQUIPE,
+                            5);
+
+        // groupe
+        transmissionMessage(MessagesRobotLogiciel::NumeroSection,
+                            INFO_GROUPE); // prend une valeur decimale
+
+        // session
+        transmissionMessage(MessagesRobotLogiciel::Session,
+                            INFO_SESSION,
+                            4);
+
+        // couleur robot
         if (id == 1)
-            UART::transmission(COULEUR_ROBOT1);
+        {
+            transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                                COULEUR_ROBOT1);
+        }
         else if (id == 0)
-            UART::transmission(COULEUR_ROBOT2);
-        waitForMs(5);
+        {
+            transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                                COULEUR_ROBOT2);
+        }
 }
