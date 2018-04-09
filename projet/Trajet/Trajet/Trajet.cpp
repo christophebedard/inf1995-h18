@@ -1,11 +1,4 @@
-#include "pwm.h"
-#include "uart.h"
-#include "buzzer.h"
-#include "delai.h"
-#include "memoire_24.h"
-#include "defines.h"
-#include "capteurs_distance.h"
-#include "moteurs.h"
+#include "trajet.h"
 
 int main()
 {
