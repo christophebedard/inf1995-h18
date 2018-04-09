@@ -5,10 +5,6 @@
  */
 
 #include "uart.h"
-#include "delai.h"
-#include "moteurs.h"
-#include "defines.h"
-#include "enums_structs.h"
 
 
 func_t UART::uart0RxCallback = nullptr;
@@ -26,23 +22,23 @@ ISR(USART0_TX_vect)
 
 void UART::init()
 {
-	init(2400);
+    init(2400);
 }
 
 void UART::init(uint16_t rate)
 {
-	// selon le baud rate specifie
-	// attention : >2400 semble causer trop d'erreurs de transmission
-	UBRR0H = ((F_CPU / (16 * rate)) - 1) >> 8;
-	UBRR0L = ((F_CPU / (16 * rate)) - 1);
+    // selon le baud rate specifie
+    // attention : >2400 semble causer trop d'erreurs de transmission
+    UBRR0H = ((F_CPU / (16 * rate)) - 1) >> 8;
+    UBRR0L = ((F_CPU / (16 * rate)) - 1);
 
-	// reception et transmission
-	UCSR0A = 0;
-	UCSR0B |= _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);
+    // reception et transmission
+    UCSR0A = 0;
+    UCSR0B |= _BV(RXEN0) | _BV(TXEN0) | _BV(RXCIE0);
 
-	// format des trames : 8 bits
-	// (asynchronous, 1 stop bit, none parity)
-	UCSR0C |= _BV(UCSZ01) | _BV(UCSZ00);
+    // format des trames : 8 bits
+    // (asynchronous, 1 stop bit, none parity)
+    UCSR0C |= _BV(UCSZ01) | _BV(UCSZ00);
 }
 
 void UART::setRxCallback(func_t func)
@@ -57,31 +53,33 @@ void UART::setTxCallback(func_t func)
 
 void UART::transmission(const uint8_t& donnee)
 {
-	while(!(UCSR0A & _BV(UDRE0)));
-	UDR0 = donnee;
+    while(!(UCSR0A & _BV(UDRE0)));
+    UDR0 = donnee;
+    waitForMs(DELAI_UART_RX_TX);
 }
 
 void UART::transmission(const char* str)
 {
-	// transmission des caracteres un par un
-	while (*str != '\0')
-	{
-		transmission((uint8_t)*str);
-		++str;
-	}
+    // transmission des caracteres un par un
+    while (*str != '\0')
+    {
+        transmission((uint8_t)*str);
+        ++str;
+    }
 }
 
 uint8_t UART::reception()
 {
     while(!(UCSR0A & _BV(RXC0)));
+    //waitForMs(DELAI_UART_RX_TX);
     return UDR0;
 }
 
 void UART::stop()
 {
-	UBRR0H = 0;
-	UBRR0L = 0;
-	UCSR0A = 0;
-	UCSR0B &= ~(_BV(RXEN0) | _BV(TXEN0));
-	UCSR0C &= ~(_BV(UCSZ01) | _BV(UCSZ00));
+    UBRR0H = 0;
+    UBRR0L = 0;
+    UCSR0A = 0;
+    UCSR0B &= ~(_BV(RXEN0) | _BV(TXEN0));
+    UCSR0C &= ~(_BV(UCSZ01) | _BV(UCSZ00));
 }

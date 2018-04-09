@@ -10,7 +10,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
-#include "memoire_24.h"
+#include "enums_structs.h"
+#include "delai.h"
+
+///< delai apres reception ou transmission (ms)
+#define DELAI_UART_RX_TX 5
 
 // declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void USART0_RX_vect(void) __attribute__((signal));

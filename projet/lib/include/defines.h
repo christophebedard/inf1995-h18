@@ -34,6 +34,9 @@ const uint8_t VERT = 0x01;
 #define INFO_SESSION   "18-1"           ///< l'annee-session
 #define COULEUR_ROBOT1 1                ///< la couleur du premier robot (gris/noir)
 #define COULEUR_ROBOT2 4                ///< la couleur du deuxieme robot (vert)
+#define LONGUEUR_INFO_NOM_ROBOT 12      ///< la longueur du string pour le nom du robot
+#define LONGUEUR_INFO_EQUIPE    5       ///< la longueur du string pour le numero de l'equipe
+#define LONGUEUR_INFO_SESSION   4       ///< la longueur du string pour l'annee-session
 
 
 #endif // LIB_DEFINES_H

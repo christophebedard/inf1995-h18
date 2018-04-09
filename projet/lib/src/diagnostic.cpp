@@ -9,18 +9,12 @@
 
 void callbackRx()
 {
-    cli();
-
     // reception de l'instruction
-    uint8_t instruction[2] = {0x00, 0x00};
-    for (uint8_t i = 0; i < 2; i++)
-    {
-        instruction[i] = UART::reception();
-        waitForMs(5);
-    }
+    uint8_t msg = UART::reception();
+    uint8_t donnee = UART::reception();
 
     // selon le message
-    switch (instruction[0])
+    switch (msg)
     {
         case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
             Diagnostic::transmettreInfos();
@@ -28,35 +22,33 @@ void callbackRx()
         case (uint8_t)MessagesLogicielRobot::CouleurDel:
             // valeur assignee au port A
             PORTA &= ~(0x3);
-            PORTA |= instruction[1];
+            PORTA |= donnee;
             break;
         case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
-            if ((instruction[1] >> 7) == 1)
+            if ((donnee >> 7) == 1)
             { 
-                instruction[1] = ~instruction[1] + 0x01;
+                donnee = ~donnee + 0x01;
                 Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);            
             }
             else
             {
                 Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
             }
-            Moteurs::setPourcentageDroite(instruction[1]);
+            Moteurs::setPourcentageDroite(donnee);
             break;
         case (uint8_t)MessagesLogicielRobot::VitesseRoueGauche:
-            if ((instruction[1] >> 7) == 1)
+            if ((donnee >> 7) == 1)
             { 
-                instruction[1] = ~instruction[1] + 0x01;
+                donnee = ~donnee + 0x01;
                 Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere); 
             }
             else
             {
                 Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
             }
-            Moteurs::setPourcentageGauche(instruction[1]);
+            Moteurs::setPourcentageGauche(donnee);
             break;
     }
-
-    sei();
 }
 
 void Diagnostic::init()
@@ -84,9 +76,8 @@ void Diagnostic::execute()
     while(true)
     {
         // etat du bouton
-        uint8_t etatBouton = (PIND & 0x04) ? 0x0 : 0x1;
         transmissionMessage(MessagesRobotLogiciel::EtatBoutonInterrupt,
-                            etatBouton);
+                            (PIND & 0x04) ? 0x0 : 0x1);
         
         // distance capteur gauche
         transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
@@ -106,19 +97,15 @@ void Diagnostic::transmissionMessage(MessagesRobotLogiciel msg, uint8_t donnee)
 void Diagnostic::transmissionMessage(MessagesRobotLogiciel msg, const char* donnees, const uint8_t longueur)
 {
     UART::transmission((uint8_t)msg);
-    waitForMs(5);
     for (uint8_t i = 0; i < longueur; i++){
         UART::transmission(donnees[i]);
-        waitForMs(5);
     }
 }
 
 void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
 {
     UART::transmission(type);
-    waitForMs(5);
     UART::transmission(donnee);
-    waitForMs(5);
 }
 
 void Diagnostic::transmettreInfos()
@@ -126,12 +113,12 @@ void Diagnostic::transmettreInfos()
         // nom du robot
         transmissionMessage(MessagesRobotLogiciel::NomRobot,
                             INFO_NOM_ROBOT,
-                            12);
+                            LONGUEUR_INFO_NOM_ROBOT);
         
         // equipe
         transmissionMessage(MessagesRobotLogiciel::NumeroEquipe,
                             INFO_EQUIPE,
-                            5);
+                            LONGUEUR_INFO_EQUIPE);
 
         // groupe
         transmissionMessage(MessagesRobotLogiciel::NumeroSection,
@@ -140,7 +127,7 @@ void Diagnostic::transmettreInfos()
         // session
         transmissionMessage(MessagesRobotLogiciel::Session,
                             INFO_SESSION,
-                            4);
+                            LONGUEUR_INFO_SESSION);
 
         // couleur robot
         transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,

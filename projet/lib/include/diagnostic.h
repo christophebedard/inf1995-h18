@@ -28,7 +28,6 @@
 class Diagnostic
 {
 public:
-
     /**
      * Execution du diagnostic
      */
