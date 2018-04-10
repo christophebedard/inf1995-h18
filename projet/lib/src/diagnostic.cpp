@@ -21,14 +21,14 @@ void callbackRx()
             break;
         case (uint8_t)MessagesLogicielRobot::CouleurDel:
             // valeur assignee au port A
-            PORTA &= ~(0x3);
+            PORTA &= ~(BROCHES_LED);
             PORTA |= donnee;
             break;
         case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
             if ((donnee >> 7) == 1)
             { 
                 donnee = ~donnee + 0x01;
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);            
+                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);
             }
             else
             {
@@ -40,7 +40,7 @@ void callbackRx()
             if ((donnee >> 7) == 1)
             { 
                 donnee = ~donnee + 0x01;
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere); 
+                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere);
             }
             else
             {
@@ -54,12 +54,12 @@ void callbackRx()
 void Diagnostic::init()
 {
     // LED (en sortie)
-    DDRA |= 0x3;
+    DDRA |= BROCHES_LED;
 
     UART::init();
     UART::setRxCallback(&callbackRx);
 
-    initInterruption(diagnosticInterrupt, RisingOrFallingEdge);
+    Bouton::init();
     Moteurs::init();
     CapteursDistance::init();
 
@@ -77,7 +77,7 @@ void Diagnostic::execute()
     {
         // etat du bouton
         transmissionMessage(MessagesRobotLogiciel::EtatBoutonInterrupt,
-                            (PIND & 0x04) ? 0x0 : 0x1);
+                            (uint8_t)Bouton::getEtat());
         
         // distance capteur gauche
         transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,

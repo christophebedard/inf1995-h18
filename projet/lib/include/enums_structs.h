@@ -12,6 +12,25 @@
 #include "defines.h"
 
 /**
+ * Declaration des types de trigger d'interruption
+ */
+enum class TypesTriggerInterrupt
+{
+    RisingEdge,         ///< un front montant
+    FallingEdge,        ///< un front descendant
+    RisingOrFallingEdge ///< un front montant ou descendant
+};
+
+/**
+ * Declaration des etats pour le bouton
+ */
+enum class EtatBouton
+{
+    Enfonce = 0,        ///< l'etat enfonce/appuye/ON
+    Relache = 1         ///< l'etat relache/non appuye/OFF
+};
+
+/**
  * Represente les messages robot-->logiciel pour le diagnostic
  */
 enum class MessagesRobotLogiciel

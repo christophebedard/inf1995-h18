@@ -17,7 +17,7 @@
 #include "can.h"
 #include "capteurs_distance.h"
 #include "debug.h"
-#include "interruption.h"
+#include "bouton.h"
 #include "moteurs.h"
 
 
@@ -34,7 +34,7 @@ public:
     static void execute();
 
     /**
-     * Fonction de callback pour la reception
+     * Ami : fonction de callback pour la reception
      */
     friend void callbackRx();
 

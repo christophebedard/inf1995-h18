@@ -19,6 +19,26 @@
 #define _BROCHE_TO_PIN(b) (b - 1)
 
 /**
+ * Broche A sur laquelle la LED est connectee (1-8)
+ */
+#define BROCHE_LED_A 1
+
+/**
+ * Broche B sur laquelle la LED est connectee (1-8)
+ */
+#define BROCHE_LED_B 2
+
+/**
+ * Broches lesquelles la LED est connectee (1-8)
+ */
+#define BROCHES_LED (_BV(_BROCHE_TO_PIN(BROCHE_LED_A)) | _BV(_BROCHE_TO_PIN(BROCHE_LED_B)))
+
+/**
+ * Broche sur laquelle le bouton est connecte (1-8)
+ */
+#define BROCHE_BOUTON 3
+
+/**
  * Broche sur laquelle le buzzer est connecte (1-8)
  */
 #define BROCHE_BUZZER 7
