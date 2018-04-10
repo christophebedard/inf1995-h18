@@ -13,6 +13,11 @@
 #include "enums_structs.h"
 #include "debug.h"
 
+// declaration explicite des vecteurs d'interruption (afin de les friend)
+extern "C" void TIMER0_COMPA_vect(void) __attribute__((signal));
+extern "C" void TIMER0_COMPB_vect(void) __attribute__((signal));
+extern "C" void TIMER0_OVF_vect(void) __attribute__((signal));
+
 /**
  * \class Timer0
  * \brief classe qui definit un timer0
@@ -100,6 +105,26 @@ public:
      * Reset de TCNTn a 0
      */
     static void resetTCNTn();
+
+    /**
+     * Ami : interruption COMPA
+     */
+    friend void ::TIMER0_COMPA_vect(void);
+
+    /**
+     * Ami : interruption COMPB
+     */
+    friend void ::TIMER0_COMPB_vect(void);
+
+    /**
+     * Ami : interruption OVF
+     */
+    friend void ::TIMER0_OVF_vect(void);
+
+private:
+    static func_t timer0CompACallback; ///< le pointeur vers la fonction de callback pour TIMER0_COMPA
+    static func_t timer0CompBCallback; ///< le pointeur vers la fonction de callback pour TIMER0_COMPB
+    static func_t timer0OverflowCallback; ///< le pointeur vers la fonction de callback pour TIMER0_OVF
 
     static Prescaler timPres; ///< le prescaler utilise
 

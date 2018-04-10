@@ -6,26 +6,24 @@
 
 #include "timer2.h"
 
-/// \todo deplacer vers classe static
-func_t timer2CompACallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPA
-func_t timer2CompBCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_COMPB
-func_t timer2OverflowCallback = nullptr; ///< le pointeur vers la fonction de callback pour TIMER2_OVF
-
+func_t Timer2::timer2CompACallback = nullptr;
+func_t Timer2::timer2CompBCallback = nullptr;
+func_t Timer2::timer2OverflowCallback = nullptr;
 Prescaler Timer2::timPres = Prescaler::No_clk;
 
 ISR(TIMER2_COMPA_vect)
 {
-    if (timer2CompACallback != nullptr) timer2CompACallback();
+    if (Timer2::timer2CompACallback != nullptr) Timer2::timer2CompACallback();
 }
 
 ISR(TIMER2_COMPB_vect)
 {
-    if (timer2CompBCallback != nullptr) timer2CompBCallback();
+    if (Timer2::timer2CompBCallback != nullptr) Timer2::timer2CompBCallback();
 }
 
 ISR(TIMER2_OVF_vect)
 {
-    if (timer2OverflowCallback != nullptr) timer2OverflowCallback();
+    if (Timer2::timer2OverflowCallback != nullptr) Timer2::timer2OverflowCallback();
 }
 
 void Timer2::stop()

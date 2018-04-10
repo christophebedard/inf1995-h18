@@ -4,6 +4,7 @@
  * \author 
  */
 
+#include "delai.h"
 #include "debug.h"
 #include "buzzer.h"
 #include "capteurs_distance.h"
@@ -25,6 +26,8 @@ int main()
         Debug::out(", ");
         Debug::out(d);
         Debug::out("\n");
+
+        waitForMs(50);
     }
 
     return 0;

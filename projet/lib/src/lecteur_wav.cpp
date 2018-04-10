@@ -15,10 +15,6 @@ const uint8_t* LecteurWav::donnees_ = nullptr;
 uint16_t LecteurWav::longueurDonnees_ = 0;
 
 
-/**
- * Callback le timer de mise a jour des donnees
- * \todo typedef pour pointeur vers methode de classe
- */
 void callbackDonnee()
 {
     if(LecteurWav::isPlaying_)

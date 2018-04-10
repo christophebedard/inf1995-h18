@@ -5,6 +5,8 @@
  * \file lecteur_chanson.h
  * \brief declaration de la classe LecteurChanson
  * \author 
+ * 
+ * Voir buzzer.h pour la connexion
  */
 
 #include <avr/io.h>
@@ -16,10 +18,10 @@
 #include "buzzer.h"
 #include "debug.h"
 
-/**
- * Unite de temps standard pour une note (en millisecondes)
- */
+///< Unite de temps standard pour une note (en millisecondes)
 #define UNITE_TEMPS_MS 100
+///< la longueur maximale de la periode selon le prescaler choisi
+#define PERIODE_MAX 32
 
 /**
  * \class LecteurChanson
@@ -62,10 +64,17 @@ public:
      */
     static bool isPlaying();
 
+    /**
+     * Callback pour les notes de la chanson
+     * \todo typedef pour pointeur vers methode de classe
+     */
+    friend void callbackNoteChanson();
+
+private:
+    static bool isPlaying_;                 ///< l'etat de lecture
     static uint16_t compteurNotesChanson;   ///< le comcompteurMsNotepteur qui garde en memoire la note courante */
     static uint16_t compteurMsNote;         ///< le nombre de millisecondes restants a jouer pour la note courante */
     static ChansonMusique chansonCourante_; ///< la chanson courante
-    static const uint16_t PERIODE_MAX;      ///< la longueur maximale de la periode selon le prescaler choisi */
 
     /**
      * Lecture d'une note
@@ -90,7 +99,6 @@ public:
      */
     static uint16_t getDureeMsNoteSelonFigureDeNoteEtTempo(const FigureDeNote& note, const Tempo& tempo);
 
-private:
     /**
      * Calcule la valeur du registre OCRn selon le nombre de millisecondes
      * 
@@ -99,8 +107,6 @@ private:
      * \return la valeur du registre OCRn
      */
     static uint8_t getValOCRnFromMs(const uint8_t& ms);
-
-    static bool isPlaying_; ///< l'etat de lecture
 
 };
 

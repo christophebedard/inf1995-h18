@@ -41,17 +41,10 @@ void Moteurs::setDirectionMoteurDroit(const DirectionMoteur& dirD)
 
 void Moteurs::setDirectionBroche(const DirectionMoteur& dir, uint8_t b)
 {
-    /// \todo verifier directions selon sens de connexion des moteurs
-    switch(dir)
-    {
-        default:
-        case DirectionMoteur::Avant:
-            PORTD |= _BV(_BROCHE_TO_PIN(b));
-            break;
-        case DirectionMoteur::Arriere:
-            PORTD &= ~(_BV(_BROCHE_TO_PIN(b)));
-            break;
-    }
+    // reset
+    PORTD &= ~(_BV(_BROCHE_TO_PIN(b)));
+    // set
+    PORTD |= ((uint8_t)dir << _BROCHE_TO_PIN(b));
 }
 
 void Moteurs::setPourcentage(const uint8_t& pourcentage)

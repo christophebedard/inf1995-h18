@@ -5,6 +5,8 @@
  * \file lecteur_wav.h
  * \brief declaration de la classe LecteurWav
  * \author 
+ * 
+ * Connecter le buzzer entre BROCHE_BUZZER_WAV et GND (port D)
  */
 
 #include <avr/io.h>
@@ -56,6 +58,13 @@ public:
      */
     static bool isPlaying();
 
+    /**
+     * Callback le timer de mise a jour des donnees
+     * \todo typedef pour pointeur vers methode de classe
+     */
+    friend void callbackDonnee();
+
+private:
     static volatile uint16_t position_;         ///< la position actuelle de la lecture
     static volatile uint8_t compteurUpdate_;    ///< le compteur pour l'update de la valeur
     static bool loop_;                          ///< l'option de lecture en boucle
@@ -63,7 +72,6 @@ public:
     static const uint8_t* donnees_;             ///< le pointeur vers le tableau de donnees
     static uint16_t longueurDonnees_;           ///< le nombre de donnees
 
-private:
     /**
      * Reglage et activation des timers
      */

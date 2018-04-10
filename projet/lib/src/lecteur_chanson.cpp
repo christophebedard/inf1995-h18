@@ -6,16 +6,12 @@
 
 #include "lecteur_chanson.h"
 
-const uint16_t LecteurChanson::PERIODE_MAX = 32;
+
 uint16_t LecteurChanson::compteurNotesChanson = 0;
 uint16_t LecteurChanson::compteurMsNote = 0;
 ChansonMusique LecteurChanson::chansonCourante_ = Chansons::twentieth; // chanson par defaut
 bool LecteurChanson::isPlaying_ = false;
 
-/**
- * Callback pour les notes de la chanson
- * \todo typedef pour pointeur vers methode de classe
- */
 void callbackNoteChanson()
 {
     // si la chanson n'est pas finie
@@ -24,7 +20,7 @@ void callbackNoteChanson()
         // recupere la note
         NoteChanson note = LecteurChanson::chansonCourante_.notes[LecteurChanson::compteurNotesChanson];
         // calcule la duree instantanee
-        uint8_t duree = (LecteurChanson::compteurMsNote > LecteurChanson::PERIODE_MAX) ? LecteurChanson::PERIODE_MAX : LecteurChanson::compteurMsNote;
+        uint8_t duree = (LecteurChanson::compteurMsNote > PERIODE_MAX) ? PERIODE_MAX : LecteurChanson::compteurMsNote;
         // decremente le compteur de duree
         LecteurChanson::compteurMsNote -= duree;
 

@@ -8,9 +8,7 @@
 
 #include "buzzer.h"
 
-const uint8_t Buzzer::NOTE_NULLE = 0;
-const uint8_t Buzzer::NOTE_MIN = 12;
-const uint8_t Buzzer::NOTE_MAX = 127;
+
 const NoteMidi Buzzer::DATA_NOTES[] = {
     {Prescaler::Div_1024, 238}, {Prescaler::Div_1024, 225}, {Prescaler::Div_1024, 212}, {Prescaler::Div_1024, 200}, {Prescaler::Div_1024, 189},
     {Prescaler::Div_1024, 178}, {Prescaler::Div_1024, 168}, {Prescaler::Div_1024, 159}, {Prescaler::Div_1024, 150}, {Prescaler::Div_1024, 142},
@@ -37,10 +35,6 @@ const NoteMidi Buzzer::DATA_NOTES[] = {
     {Prescaler::Div_8, 53}, {Prescaler::Div_8, 50}, {Prescaler::Div_8, 47}, {Prescaler::Div_8, 44}, {Prescaler::Div_8, 42},
     {Prescaler::Div_8, 39}};
 
-/**
- * Callback pour la note
- * \todo typedef pour pointeur vers methode de classe
- */
 void callbackNote()
 {
     // inverse la broche

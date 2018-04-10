@@ -12,20 +12,58 @@
 #include "defines.h"
 
 /**
+ * Declaration des types de trigger d'interruption
+ */
+enum class TypesTriggerInterrupt
+{
+    RisingEdge,         ///< un front montant
+    FallingEdge,        ///< un front descendant
+    RisingOrFallingEdge ///< un front montant ou descendant
+};
+
+/**
+ * Declaration des etats pour le bouton
+ */
+enum class EtatBouton
+{
+    Enfonce = 0,        ///< l'etat enfonce/appuye/ON
+    Relache = 1         ///< l'etat relache/non appuye/OFF
+};
+
+/**
+ * Represente les messages robot-->logiciel pour le diagnostic
+ */
+enum class MessagesRobotLogiciel
+{
+    NomRobot = 0xf0,                ///< Nom du robot (maximum 13 octets)
+    NumeroEquipe = 0xf1,            ///< Numero d’equipe (maximum 9 octets)
+    NumeroSection = 0xf2,           ///< Numero de section (1 octet)
+    Session = 0xf3,                 ///< Session (4 octets)
+    CouleurBaseRobot = 0xf4,        ///< Couleur de la base du robot (1 octet)
+    EtatBoutonInterrupt = 0xf5,     ///< Etat du bouton Interrupt (1 octet : 0x00 pour enfonce, 0x01 pour relache)
+    DistanceCapteurGauche = 0xf6,   ///< Distance en cm detectee par le capteur gauche (1 octet)
+    DistanceCapteurDroit = 0xf7     ///< Distance en cm detectee par le capteur droit (1 octet)
+};
+
+/**
+ * Represente les messages logiciel-->robot pour le diagnostic
+ */
+enum class MessagesLogicielRobot
+{
+    VitesseRoueGauche = 0xf8, ///< Vitesse de la roue gauche
+    VitesseRoueDroite = 0xf9, ///< Vitesse de la roue droite
+    CouleurDel = 0xfa,        ///< Couleur de la Del libre
+    RequeteEnvoiInfos = 0xfb  ///< Requete d’envoi des informations d’identification
+};
+
+/**
  * Represente la direction des moteurs individuellement
  */
 enum class DirectionMoteur
 {
-    Avant,   ///< vers l'avant
-    Arriere  ///< vers l'arriere
+    Avant = 1,   ///< vers l'avant
+    Arriere = 0  ///< vers l'arriere
 };
-
-/**
- *
- */
-
-
-
 
 /**
  * Represente COMNAx et COMNBx (voir doc pour precisions selon mode)
