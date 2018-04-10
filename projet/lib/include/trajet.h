@@ -15,7 +15,7 @@
 #include "defines.h"
 #include "capteurs_distance.h"
 #include "moteurs.h"
-
+#include "enums_structs.h"
 
 /**
  * \class Trajet
@@ -25,23 +25,24 @@ class Trajet
 {
 public:
 
+
+
+void execute();
+friend void poteauDetecte();
+friend void demiTour();
+private:
 void changerCoteDroit(uint8_t PourcentageDroit,uint8_t PourcentageGauche);
 void changerCoteGauche(uint8_t PourcentageDroit,uint8_t PourcentageGauche);
-void PoteauDetecte();
+void init();
 void contournerPanneauDroit(uint8_t pourcentage);
 void contournerPanneauGauche(uint8_t pourcentage);
 void ajusterDistance(uint8_t pourcentage);
-void demiTour(uint8_t pourcentage);
 bool getDroitChangementCote();
 void setDroitChangementCote(bool droitChangementCote);
-CoteMur getCoteSuivi();
-void setCoteSuivi();
-void init();
-void execute();
-
-private:
-    bool droitChangementCote_;
-    CoteMur mur_;
+static CoteMur getCoteSuivi();
+static void setCoteSuivi(CoteMur mur);
+bool droitChangementCote_;
+static CoteMur mur_;
 
 };
 
