@@ -25,20 +25,23 @@ class Trajet
 {
 public:
 
-void changerCoteDroit();
-void changerCoteGauche();
-void jouerNote();
-void contournerPanneauDroit();
-void contournerPanneauGauche();
-void ajusterDistance();
-void demiTour();
+void changerCoteDroit(uint8_t PourcentageDroit,uint8_t PourcentageGauche);
+void changerCoteGauche(uint8_t PourcentageDroit,uint8_t PourcentageGauche);
+void PoteauDetecte();
+void contournerPanneauDroit(uint8_t pourcentage);
+void contournerPanneauGauche(uint8_t pourcentage);
+void ajusterDistance(uint8_t pourcentage);
+void demiTour(uint8_t pourcentage);
 bool getDroitChangementCote();
 void setDroitChangementCote(bool droitChangementCote);
-
+CoteMur getCoteSuivi();
+void setCoteSuivi();
+void init();
+void execute();
 
 private:
-    bool droitChangementCote;
-
+    bool droitChangementCote_;
+    CoteMur mur_;
 
 };
 

@@ -88,16 +88,3 @@ void Interruption::initInt1(func_t funcInt1, const TypesTriggerInterrupt typeInt
     sei();
 }
 
-// void diagnosticInterrupt()
-// {
-//     if (etat == Relache)
-//         etat = Enfonce;
-//     else
-//         etat = Relache;
-// }
-
-
-// void trajetInterrupt()
-// {
-//     //vide avant trajet
-// }

@@ -5,142 +5,159 @@
  */
 
 #include "trajet.h"
+#include "interruption.h"
+#include "bouton.h"
+#include "moteurs.h"
+#include "capteurs_distance.h"
+#include "buzzer.h"
+#include "enums_structs.h"
+#include "timer0.h"
 
-
-
-/*
-void callbackRx() {
-    cli();
-    
-    // pour LED
-    DDRA = SORTIE;
-
-    // reception de l'instruction
-    uint8_t instruction[2] = {0x00, 0x00};
-    for (uint8_t i = 0; i < 2; i++)
-    {
-        instruction[i] = UART::reception();
-        waitForMs(5);
+void Trajet::changerCoteGauche(uint8_t pourcentageDroit,uint8_t pourcentageGauche)
+{   
+    Moteurs::setPourcentageDroite(pourcentageDroit);
+    Moteurs::setPourcentageGauche(0);
+    waitForMs(100);
+    while(!(CapteursDistance::getDistanceGauche() == 20)){
+        Moteurs::setPourcentage(pourcentageDroit);
     }
-
-    // selon le message
-    switch (instruction[0])
-    {
-        case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
-            // Changer parametre a 0 si on utilise le robot vert, 1 pour gris
-            Diagnostic::transmettreInfos(1);
-            break;
-        case (uint8_t)MessagesLogicielRobot::CouleurDel:
-            // Valeur assignee au port A
-            PORTA = instruction[1];
-            break;
-        case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
-            if ((instruction[1] >> 7) == 1)
-            { 
-                instruction[1] = ~instruction[1] + 0x01;
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);            
-            }
-            else
-            {
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
-            }
-            Moteurs::setPourcentageDroite(instruction[1]);
-            break;
-        case (uint8_t)MessagesLogicielRobot::VitesseRoueGauche:
-            if ((instruction[1] >> 7) == 1)
-            { 
-                instruction[1] = ~instruction[1] + 0x01;
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere); 
-            }
-            else
-            {
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
-            }
-            Moteurs::setPourcentageGauche(instruction[1]);
-            break;
-    }
-
-    sei();
+    Moteurs::setPourcentageDroite(0);
+    Moteurs::setPourcentageGauche(pourcentageGauche);
+    waitForMs(100);
+    Trajet::ajusterDistance(pourcentageGauche);
 }
 
-void Diagnostic::init() {
-    UART::init();
-    UART::setRxCallback(&callbackRx);
+void Trajet::changerCoteDroit(uint8_t pourcentageDroit,uint8_t pourcentageGauche)
+{
+    Moteurs::setPourcentageDroite(0);
+    Moteurs::setPourcentageGauche([ourcentageGauche);
+    waitForMs(100);
+    while(!(CapteursDistance::getDistanceDroit() == 20)){
+        Moteurs::setPourcentage(pourcentageGauche);
+    }
+    Moteurs::setPourcentageDroite(pourcentageDroit);
+    Moteurs::setPourcentageGauche(0);
+    waitForMs(100);
+    Trajet::ajusterDistance(pourcentageDroit);
+}
 
-    initInterruption(diagnosticInterrupt, RisingOrFallingEdge);
+void Trajet::poteauDetecte()
+{   //5.1 cm
+    Timer0::stop();
+    for (uint8_t i = 0; i < 3; i++){
+        Buzzer::play(115);
+        waitForMs(200);
+        Buzzer::stop();
+        waitForMs(100);
+    }
+}
+
+void Trajet::contournerPanneauDroit(uint8_t pourcentage)
+{
+    Moteurs::virageDroit(60);
+    Moteurs::setPourcentage(pourcentage);
+    Trajet::ajusterDistance(pourcentage);
+}
+
+void Trajet::contournerPanneauGauche(uint8_t pourcentage)
+{
+    Moteurs::virageGauche(60);
+    Moteurs::setPourcentage(pourcentage);
+    Trajet::ajusterDistance(pourcentage);
+}
+
+void Trajet::ajusterDistance(uint8_t pourcentage)
+{
+   switch (mur_){
+   
+       case CoteMur::Droit:
+           while(!(CapteursDistance::getDistanceDroit() == 15)){
+                if (CapteursDistance::getDistanceDroit() < 15)
+                {
+                    Moteurs::setPourcentageDroite(0);
+                    Moteurs::setPourcentageGauche(pourcentage);
+                }
+                else if (CapteursDistance::getDistanceDroit() > 15)
+                {
+                    Moteurs::setPourcentageGauche(0);
+                    Moteurs::setPourcentageDroite(pourcentage);
+                }
+                
+            }
+            Moteurs::setPourcentage(pourcentage);
+       case CoteMur::Gauche:
+            while(!(CapteursDistance::getDistanceGauche() == 15)){
+                if (CapteursDistance::getDistanceGauche() < 15)
+                {
+                    Moteurs::setPourcentageGauche(0);
+                    Moteurs::setPourcentageDroite(pourcentage);
+                }
+                else if (CapteursDistance::getDistanceGauche() > 15)
+                {
+                    Moteurs::setPourcentageDroite(0);
+                    Moteurs::setPourcentageGauche(pourcentage);
+                }
+                
+            }
+            Moteurs::setPourcentage(pourcentage);
+}
+}
+
+void Trajet::demiTour(uint8_t pourcentage)
+{
+    switch (mur_){
+    
+        case CoteMur::Droit:
+            virageGauche(80);
+            
+        case CoteMur::Gauche:
+            virageDroit(80);
+    }
+}
+
+bool Trajet::getDroitChangementCote()
+{
+    return droitChangementCote_;
+}
+
+void Trajet::setDroitChangementCote(bool droitChangementCote)
+{
+    droitChangementCote_ = droitChangementCote
+}
+
+CoteMur getCoteSuivi()
+{
+    return mur_;
+}
+
+void setCoteSuivi(CoteMur mur)
+{
+    mur_ = mur;
+}
+
+void Trajet::init()
+{
+    Interruption::initInt1(demiTour, TypesTriggerInterrupt::RisingEdge);
     Moteurs::init();
     CapteursDistance::init();
-
-    // commencer par transmettre infos du robot
-    transmettreInfos(1);
+    Buzzer::init();
+    DDRA |= BROCHES_LED;
+    Timer0::setCompACallback(Trajet::poteauDetecte);
+    Timer0::setCompareOutputMode(COM::Clear, COM::Normal);
+    Timer0::setWaveformGenerationMode(WGM::Mode_2);
+    Timer0::setPrescaler(Prescaler::Div_256);
+    Timer0::setInterruptEnable(true, false, false);
+    //Attributs pour la situation initiale
+    droitChangementCote_ = true;
+    if(CapteursDistance::getDistanceDroit() == 15)
+        mur_ = CoteMur::Droit;
+    else if (CapteursDistance::getDistanceGauche() == 15)
+        mur_ = CoteMur::Gauche;
+    
+    
 }
-
-void Diagnostic::execute() {
-    // init
-    init();
-
-    // envoyer les informations sur les capteurs en continu
-    while(true)
-    {
-        // etat du bouton
-        // semble considerer que l'interrupteur est utilise sans qu'il soit appuye, aucun changement lorsqu'appuye
-        uint8_t etatBouton = (PIND & 0x04) ? 0x0 : 0x1;
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::EtatBoutonInterrupt,
-                            etatBouton);
-        
-        // distance capteur gauche
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurGauche,
-                            CapteursDistance::getDistanceDroit());
-        
-        // distance capteur droit
-        transmissionMessage((uint8_t)MessagesRobotLogiciel::DistanceCapteurDroit,
-                            CapteursDistance::getDistanceGauche());
-    }
-}
-
-void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
+void Trajet::execute()
 {
-    UART::transmission(type);
-    waitForMs(5);
-    UART::transmission(donnee);
-    waitForMs(5);
+    Trajet::init();
+    
 }
-
-void Diagnostic::transmettreInfos(int id)
-{
-        uint8_t instruction = 0xf0;
-        UART::transmission(instruction); //Nom
-        waitForMs(5);
-        for (uint8_t i = 0; i < 12; i++){
-            UART::transmission(INFO_NOM_ROBOT[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Equipe
-        waitForMs(5);
-        for (uint8_t i = 0; i < 5; i++){
-            UART::transmission(INFO_EQUIPE[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Groupe
-        waitForMs(5);
-        //UART::transmission(0x03); // ==> "031" 
-        //UART::transmission('3');  // ==> "051"  dec 3
-        //UART::transmission(0x03); // ==> "031 
-        //UART::transmission('9');  // ==> "057" 57 is dec of char 9
-        UART::transmission(INFO_GROUPE);  // ==> prend une valeur decimale"
-        waitForMs(5);
-        UART::transmission(++instruction); //Session
-        waitForMs(5);
-        for (uint8_t i = 0; i < 4; i++){
-            UART::transmission(INFO_SESSION[i]);
-            waitForMs(5);
-        }
-        UART::transmission(++instruction); //Couleur
-        waitForMs(5);
-        if (id == 1)
-            UART::transmission(COULEUR_ROBOT1);
-        else if (id == 0)
-            UART::transmission(COULEUR_ROBOT2);
-        waitForMs(5);
-}
-*/
