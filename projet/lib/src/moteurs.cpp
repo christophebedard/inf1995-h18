@@ -49,18 +49,31 @@ void Moteurs::setDirectionBroche(const DirectionMoteur& dir, uint8_t b)
 
 void Moteurs::setPourcentage(const uint8_t& pourcentage)
 {
+    if (pourcentage <= 30){
+    setPourcentageGauche(100);
+    setPourcentageDroite(100);
+    waitForMs(15);
+    }
     setPourcentageGauche(pourcentage);
     setPourcentageDroite(pourcentage);
 }
 
 void Moteurs::setPourcentageGauche(const uint8_t& pourcentage)
 {
+       if (pourcentage <= 30){
+        setPourcentageGauche(100);
+        waitForMs(15);
+    }
     pourcentageMoteurGauche_ = pourcentage;
     PWM::setPourcentageOCRnB(pourcentage);
 }
 
 void Moteurs::setPourcentageDroite(const uint8_t& pourcentage)
 {
+    if (pourcentage <= 30){
+        setPourcentageDroite(100);
+        waitForMs(15);
+    }
     pourcentageMoteurDroit_ = pourcentage;
     PWM::setPourcentageOCRnA(pourcentage);
 }

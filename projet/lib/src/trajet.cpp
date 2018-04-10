@@ -8,7 +8,7 @@
 
 
 
-
+/*
 void callbackRx() {
     cli();
     
@@ -143,3 +143,4 @@ void Diagnostic::transmettreInfos(int id)
             UART::transmission(COULEUR_ROBOT2);
         waitForMs(5);
 }
+*/

@@ -33,11 +33,11 @@ void contournerPanneauGauche();
 void ajusterDistance();
 void demiTour();
 bool getDroitChangementCote();
-void setDroitChangementCote(doitChangemntCote);
+void setDroitChangementCote(bool droitChangementCote);
 
 
 private:
-    void droitChangemntCote_;
+    bool droitChangementCote;
 
 
 };
