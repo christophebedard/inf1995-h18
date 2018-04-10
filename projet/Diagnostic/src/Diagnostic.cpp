@@ -14,7 +14,7 @@ int main()
     UART::init();
     initInterruption(diagnosticInterrupt, RisingOrFallingEdge);
     Moteurs::init();
-    CapteursDistance::init()
+    CapteursDistance::init();
     UART::transmettre(1);
 for(;;){
     UART::transmission(instruction);
