@@ -24,21 +24,18 @@ void CapteursDistance::init()
 
 uint8_t CapteursDistance::getDistanceGauche()
 {
-    uint16_t nouvelleVal = ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE)),
-                                        memCanGauche,
-                                        indexCanGauche,
-                                        totalCanGauche);
-    return canToDistance(nouvelleVal);
+    return canToDistance(ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE)),
+                                              memCanGauche,
+                                              indexCanGauche,
+                                              totalCanGauche));
 }
 
 uint8_t CapteursDistance::getDistanceDroit()
 {
-    //uint16_t nouvelleVal = ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)),
-    //                                    memCanDroit,
-    //                                    indexCanDroit,
-    //                                    totalCanDroit);
-    //return canToDistance(nouvelleVal);
-    return canToDistance(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)));
+    return canToDistance(ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)),
+                                              memCanDroit,
+                                              indexCanDroit,
+                                              totalCanDroit));
 }
 
 uint8_t CapteursDistance::canToDistance(const uint16_t canVal)
