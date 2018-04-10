@@ -61,8 +61,8 @@ enum class MessagesLogicielRobot
  */
 enum class DirectionMoteur
 {
-    Avant = 1,   ///< vers l'avant
-    Arriere = 0  ///< vers l'arriere
+    Avant = 0,   ///< vers l'avant
+    Arriere = 1  ///< vers l'arriere
 };
 
 /**
