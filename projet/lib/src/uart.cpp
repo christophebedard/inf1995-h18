@@ -71,7 +71,7 @@ void UART::transmission(const char* str)
 uint8_t UART::reception()
 {
     while(!(UCSR0A & _BV(RXC0)));
-    //waitForMs(DELAI_UART_RX_TX);
+    waitForMs(DELAI_UART_RX_TX);
     return UDR0;
 }
 
