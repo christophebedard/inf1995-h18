@@ -15,17 +15,21 @@
 
 
 /**
- *  distance [cm] minimale pour une lecture valide
+ * Distance [cm] minimale pour une lecture valide
  */
 #define CAPTEUR_DISTANCE_MIN 10
 /**
- * distance [cm] maximale pour une lecture valide
+ * Distance [cm] maximale pour une lecture valide
  */
 #define CAPTEUR_DISTANCE_MAX 80
 /**
- * distance [cm] maximale pour une lecture valide
+ * Distance [cm] maximale pour une lecture valide
  */
 #define CAPTEUR_DISTANCE_INVALIDE 0
+/**
+ * Longueur de la memoire des lectures de valeurs CAN
+ */
+#define LONGUEUR_MEMOIRE_LECTURES 10
 
 /**
  * \class CapteursDistance
@@ -54,7 +58,9 @@ public:
     static uint8_t getDistanceDroit();
 
 private:
-    static can can_;                                    ///< l'objet pour le CAN
+    static uint16_t memDistGauche[LONGUEUR_MEMOIRE_LECTURES];   ///< le buffer des dernieres lectures CAN pour moteur gauche
+    static uint16_t memDistDroit[LONGUEUR_MEMOIRE_LECTURES];    ///< le buffer des dernieres lectures CAN pour moteur droit
+    static can can_;                                            ///< l'objet pour le CAN
 
     /**
      * Conversion de la valeur de lecture du CAN vers la distance
@@ -64,6 +70,21 @@ private:
      * \return la distance [cm]
      */
     static uint8_t canToDistance(const uint16_t canVal);
+
+    /**
+     * Ajout d'une nouvelle lecture CAN dans la memoire
+     * 
+     * \param canLect : la nouvelle lecture CAN
+     * \param memDist : le tableau de memoire a utiliser
+     */
+    static void ajoutNouvelleLecture(uint16_t canLect, uint16_t* memDist);
+
+    /**
+     * Calcul de la moyenne des lectures CAN en memoire
+     * 
+     * \param memDist : le tableau de memoire a utiliser
+     */
+    static uint16_t getMoyenneLectures(uint16_t* memDist);
 
 };
 
