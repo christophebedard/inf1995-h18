@@ -25,10 +25,11 @@ class Trajet
 {
 public:
 
-void changerCote();
+void changerCoteDroit();
+void changerCoteGauche();
 void jouerNote();
-void avancer();
-void contournerPanneau();
+void contournerPanneauDroit();
+void contournerPanneauGauche();
 void ajusterDistance();
 void demiTour();
 bool getDroitChangementCote();
@@ -41,4 +42,4 @@ private:
 
 };
 
-#endif // LIB_DIAGNOSTIC_H
+#endif // LIB_TRAJET_H
