@@ -11,7 +11,6 @@ void callbackRx()
 {
     // reception de l'instruction
     uint8_t msg = UART::reception();
-    waitForMs(5);
     uint8_t donnee = UART::reception();
 
     // selon le message
