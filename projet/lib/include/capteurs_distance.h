@@ -58,8 +58,12 @@ public:
     static uint8_t getDistanceDroit();
 
 private:
-    static uint16_t memDistGauche[LONGUEUR_MEMOIRE_LECTURES];   ///< le buffer des dernieres lectures CAN pour moteur gauche
-    static uint16_t memDistDroit[LONGUEUR_MEMOIRE_LECTURES];    ///< le buffer des dernieres lectures CAN pour moteur droit
+    static uint16_t memCanGauche[LONGUEUR_MEMOIRE_LECTURES];    ///< le buffer des dernieres lectures CAN pour moteur gauche
+    static uint16_t memCanDroit[LONGUEUR_MEMOIRE_LECTURES];     ///< le buffer des dernieres lectures CAN pour moteur droit
+    static uint16_t totalCanGauche;                             ///< le total courant des lectures CAN pour moteur gauche
+    static uint16_t totalCanDroit;                              ///< le total courant des lectures CAN pour moteur droit
+    static uint8_t indexCanGauche;                              ///< l'index courant du tableau de memoire pour moteur gauche
+    static uint8_t indexCanDroit;                               ///< l'index courant du tableau de memoire pour moteur droit
     static can can_;                                            ///< l'objet pour le CAN
 
     /**
@@ -74,17 +78,14 @@ private:
     /**
      * Ajout d'une nouvelle lecture CAN dans la memoire
      * 
-     * \param canLect : la nouvelle lecture CAN
-     * \param memDist : le tableau de memoire a utiliser
-     */
-    static void ajoutNouvelleLecture(uint16_t canLect, uint16_t* memDist);
-
-    /**
-     * Calcul de la moyenne des lectures CAN en memoire
+     * \param lectCan : la nouvelle lecture CAN
+     * \param memCan : le tableau de memoire a utiliser
+     * \param indexMem : l'index du tableau de memoire a utiliser
+     * \param totCan : la moyenne de lectures CAN a utiliser
      * 
-     * \param memDist : le tableau de memoire a utiliser
+     * \return la nouvelle valeur filtree
      */
-    static uint16_t getMoyenneLectures(uint16_t* memDist);
+    static uint16_t ajoutNouvelleLecture(uint16_t lectCan, uint16_t* memCan, uint8_t& indexMem, uint16_t& totCan);
 
 };
 
