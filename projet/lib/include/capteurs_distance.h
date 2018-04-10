@@ -27,7 +27,6 @@
  */
 #define CAPTEUR_DISTANCE_INVALIDE 0
 
-
 /**
  * \class CapteursDistance
  * \brief classe qui pilote les capteurs de distance
@@ -55,7 +54,7 @@ public:
     static uint8_t getDistanceDroit();
 
 private:
-    static can can_; ///< l'objet pour le CAN
+    static can can_;                                    ///< l'objet pour le CAN
 
     /**
      * Conversion de la valeur de lecture du CAN vers la distance
@@ -64,7 +63,7 @@ private:
      * 
      * \return la distance [cm]
      */
-    static uint8_t canToDistance(const uint8_t canVal);
+    static uint8_t canToDistance(const uint16_t canVal);
 
 };
 
