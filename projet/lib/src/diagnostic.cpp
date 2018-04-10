@@ -81,11 +81,11 @@ void Diagnostic::execute()
         
         // distance capteur gauche
         transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
-                            CapteursDistance::getDistanceDroit());
+                            CapteursDistance::getDistanceGauche());
         
         // distance capteur droit
         transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
-                            CapteursDistance::getDistanceGauche());
+                            CapteursDistance::getDistanceDroit());
     }
 }
 
