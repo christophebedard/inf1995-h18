@@ -30,11 +30,14 @@ uint8_t CapteursDistance::getDistanceDroit()
 uint8_t CapteursDistance::canToDistance(const uint8_t canVal)
 {
     // voir util/python/interpolationCapteurDistance
-    uint8_t dist = (6787.0 / ((double)canVal - 3.0)) - 4.0;
+    uint8_t dist = (4.3 / 5.0) * ((6787.0 / ((double)canVal - 3.0)) - 4.0);
 
     // validation
-    dist = (CAPTEUR_DISTANCE_MIN <= dist && dist <= CAPTEUR_DISTANCE_MAX)
-            ? dist : CAPTEUR_DISTANCE_INVALIDE;
+    //dist = (CAPTEUR_DISTANCE_MIN <= dist && dist <= CAPTEUR_DISTANCE_MAX)
+    //        ? dist : CAPTEUR_DISTANCE_INVALIDE;
+    dist = (CAPTEUR_DISTANCE_MIN <= dist)
+            ? ((dist <= CAPTEUR_DISTANCE_MAX) ? dist : CAPTEUR_DISTANCE_MAX)
+              : CAPTEUR_DISTANCE_INVALIDE;
 
     return dist;
 }
