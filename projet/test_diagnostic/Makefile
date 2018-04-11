@@ -1,9 +1,9 @@
 ####################################################
-################# MAKEFILE PROJET ##################
+############ MAKEFILE TEST DIAGNOSTIC ##############
 ####################################################
 
 # nom du projet
-PROJECTNAME=projet
+PROJECTNAME=testdiagnostic
 # dossier include (.h)
 INCDIR=include
 # dossier build (output)
