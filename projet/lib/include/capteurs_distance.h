@@ -46,16 +46,20 @@ public:
     /**
      * Accesseur pour la distance la plus recente (gauche)
      * 
-     * \return la distance [cm]
+     * \param[out] dist : le pointeur dans lequel placer la distance [cm]
+     * 
+     * \return la validite de la mesure
      */
-    static uint8_t getDistanceGauche();
+    static bool getDistanceGauche(uint8_t* dist);
 
     /**
      * Accesseur pour la distance la plus recente (droit)
      * 
-     * \return la distance [cm]
+     * \param[out] dist : le pointeur dans lequel placer la distance [cm]
+     * 
+     * \return la validite de la mesure
      */
-    static uint8_t getDistanceDroit();
+    static bool getDistanceDroit(uint8_t* dist);
 
 private:
     static uint16_t memCanGauche[LONGUEUR_MEMOIRE_LECTURES];    ///< le buffer des dernieres lectures CAN pour moteur gauche
@@ -65,6 +69,15 @@ private:
     static uint8_t indexCanGauche;                              ///< l'index courant du tableau de memoire pour moteur gauche
     static uint8_t indexCanDroit;                               ///< l'index courant du tableau de memoire pour moteur droit
     static can can_;                                            ///< l'objet pour le CAN
+
+    /**
+     * Validation de la distance
+     * 
+     * \param dist : la distance a valider
+     * 
+     * \return le resultat (true : valide; false : invalide)
+     */
+    static bool isDistanceValide(uint8_t* dist);
 
     /**
      * Conversion de la valeur de lecture du CAN vers la distance

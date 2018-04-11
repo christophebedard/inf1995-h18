@@ -22,33 +22,44 @@ void CapteursDistance::init()
 	DDRA &= ~(_BV(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)));
 }
 
-uint8_t CapteursDistance::getDistanceGauche()
+bool CapteursDistance::getDistanceGauche(uint8_t* dist)
 {
-    return canToDistance(ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE)),
-                                              memCanGauche,
-                                              indexCanGauche,
-                                              totalCanGauche));
+    // lecture
+    *dist = canToDistance(
+                ajoutNouvelleLecture(
+                    can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_GAUCHE)),
+                    memCanGauche,
+                    indexCanGauche,
+                    totalCanGauche));
+
+    // validation
+    return isDistanceValide(dist);
 }
 
-uint8_t CapteursDistance::getDistanceDroit()
+bool CapteursDistance::getDistanceDroit(uint8_t* dist)
 {
-    return canToDistance(ajoutNouvelleLecture(can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)),
-                                              memCanDroit,
-                                              indexCanDroit,
-                                              totalCanDroit));
+    // lecture
+    *dist = canToDistance(
+                ajoutNouvelleLecture(
+                    can_.lecture(_BROCHE_TO_PIN(BROCHE_CAPTEUR_DISTANCE_DROIT)),
+                    memCanDroit,
+                    indexCanDroit,
+                    totalCanDroit));
+
+    // validation
+    return isDistanceValide(dist);
+}
+
+bool CapteursDistance::isDistanceValide(uint8_t* dist)
+{
+    return (CAPTEUR_DISTANCE_MIN <= *dist
+                                 && *dist <= CAPTEUR_DISTANCE_MAX);
 }
 
 uint8_t CapteursDistance::canToDistance(const uint16_t canVal)
 {
     // voir util/python/interpolationCapteurDistance
     uint8_t dist = (((7.0 / 5.0) * 6787.0 / ((double)canVal - 3.0)) - 4.0);
-
-    // validation
-    //dist = (CAPTEUR_DISTANCE_MIN <= dist && dist <= CAPTEUR_DISTANCE_MAX)
-    //        ? dist : CAPTEUR_DISTANCE_INVALIDE;
-    dist = (CAPTEUR_DISTANCE_MIN <= dist)
-            ? ((dist <= CAPTEUR_DISTANCE_MAX) ? dist : CAPTEUR_DISTANCE_MAX)
-              : CAPTEUR_DISTANCE_INVALIDE;
 
     return dist;
 }
