@@ -61,6 +61,14 @@ public:
      */
     static bool getDistanceDroit(uint8_t* dist);
 
+    /**
+     * Utilitaire pour restreindre la valeur de la distance
+     * pour pouvoir l'afficher meme si elle n'est pas valide
+     * 
+     * \param[out] dist : le pointeur qui contient la distance
+     */
+    static void formatDistance(uint8_t* dist);
+
 private:
     static uint16_t memCanGauche[LONGUEUR_MEMOIRE_LECTURES];    ///< le buffer des dernieres lectures CAN pour moteur gauche
     static uint16_t memCanDroit[LONGUEUR_MEMOIRE_LECTURES];     ///< le buffer des dernieres lectures CAN pour moteur droit

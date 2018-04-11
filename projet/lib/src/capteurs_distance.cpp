@@ -76,3 +76,13 @@ uint16_t CapteursDistance::ajoutNouvelleLecture(uint16_t lectCan, uint16_t* memC
     indexMemCan = (indexMemCan < (LONGUEUR_MEMOIRE_LECTURES - 1)) ? (indexMemCan + 1) : 0;
     return (uint16_t)((double)totCan / (double)LONGUEUR_MEMOIRE_LECTURES);
 }
+
+void CapteursDistance::formatDistance(uint8_t* dist)
+{
+    // si la distance est plus petite que le minimum, on lui donne 0
+    // si la distance est plus grande que le maximum, on lui donne le maximum
+    // sinon, on ne la modifie pas
+    *dist = (CAPTEUR_DISTANCE_MIN <= *dist)
+             ? ((*dist <= CAPTEUR_DISTANCE_MAX) ? *dist : CAPTEUR_DISTANCE_MAX)
+               : CAPTEUR_DISTANCE_INVALIDE;
+}
