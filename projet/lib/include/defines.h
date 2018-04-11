@@ -38,5 +38,7 @@ const uint8_t VERT = 0x01;
 #define LONGUEUR_INFO_EQUIPE    5       ///< la longueur du string pour le numero de l'equipe
 #define LONGUEUR_INFO_SESSION   4       ///< la longueur du string pour l'annee-session
 
+///< l'adresse pour l'etat du programme (pour l'alternance)
+#define ADRESSE_ETAT_PROGRAMME 0x0
 
 #endif // LIB_DEFINES_H
