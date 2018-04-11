@@ -29,9 +29,21 @@ class Diagnostic
 {
 public:
     /**
-     * Execution du diagnostic
+     * Initlialisation et execution du diagnostic en boucle inifinie
+     * (pour execution en standalone)
      */
     static void execute();
+
+    /**
+     * Initialisation
+     */
+    static void init();
+
+    /**
+     * Update
+     * (transmission des informations du robot)
+     */
+    static void update();
 
     /**
      * Ami : fonction de callback pour la reception
@@ -39,11 +51,6 @@ public:
     friend void callbackRx();
 
 private:
-    /**
-     * Initialisation
-     */
-    static void init();
-
     /**
      * Transmission d'un message via enum
      * 

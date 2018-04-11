@@ -13,6 +13,7 @@ void callbackRx()
     uint8_t msg = UART::reception();
     uint8_t donnee = UART::reception();
 
+    /// \todo garder le message en memoire et le traiter dans la prochaine boucle?
     // selon le message
     switch (msg)
     {
@@ -67,25 +68,30 @@ void Diagnostic::init()
     transmettreInfos();
 }
 
+void Diagnostic::update()
+{
+    // envoyer les informations sur les capteurs
+
+    // etat du bouton
+    transmissionMessage(MessagesRobotLogiciel::EtatBoutonInterrupt,
+                        (uint8_t)Bouton::getEtat());
+    
+    // distance capteur gauche
+    transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
+                        CapteursDistance::getDistanceGauche());
+    
+    // distance capteur droit
+    transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
+                        CapteursDistance::getDistanceDroit());
+}
+
 void Diagnostic::execute()
 {
-    // init
     init();
 
-    // envoyer les informations sur les capteurs en continu
     while(true)
     {
-        // etat du bouton
-        transmissionMessage(MessagesRobotLogiciel::EtatBoutonInterrupt,
-                            (uint8_t)Bouton::getEtat());
-        
-        // distance capteur gauche
-        transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
-                            CapteursDistance::getDistanceGauche());
-        
-        // distance capteur droit
-        transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
-                            CapteursDistance::getDistanceDroit());
+        update();
     }
 }
 
