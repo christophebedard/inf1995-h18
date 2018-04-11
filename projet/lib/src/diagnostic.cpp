@@ -77,12 +77,18 @@ void Diagnostic::update()
                         (uint8_t)Bouton::getEtat());
     
     // distance capteur gauche
+    uint8_t distGauche = 0;
+    CapteursDistance::getDistanceGauche(&distGauche);
+    CapteursDistance::formatDistance(&distGauche);
     transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
-                        CapteursDistance::getDistanceGauche());
+                        distGauche);
     
     // distance capteur droit
+    uint8_t distDroit = 0;
+    CapteursDistance::getDistanceDroit(&distDroit);
+    CapteursDistance::formatDistance(&distDroit);
     transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
-                        CapteursDistance::getDistanceDroit());
+                        distDroit);
 }
 
 void Diagnostic::execute()
