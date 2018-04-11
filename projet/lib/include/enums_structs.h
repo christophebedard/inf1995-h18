@@ -12,6 +12,15 @@
 #include "defines.h"
 
 /**
+ * Declaration des murs
+ */
+enum class Murs
+{
+    Gauche, ///< le mur gauche
+    Droit   ///< le mur droit
+};
+
+/**
  * Declaration des types de trigger d'interruption
  */
 enum class TypesTriggerInterrupt
