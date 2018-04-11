@@ -31,11 +31,35 @@ public:
     static void init();
 
     /**
-     * Mise a jour du suivi de mur
+     * Mise a jour des vitesses pour contourner le mur
      * \todo experimental
-     * \param 
+     * \param murSuivi : le mur a contourner
      */
-    static void updateSuiviMur(Murs mur, uint8_t cmd, uint8_t vitLin, uint8_t thresErr);
+    static void updateContournementMur(CoteMur murSuivi);
+
+    /**
+     * Mise a jour des vitesses pour changement de cote
+     * \todo experimental
+     * \param nouvMur : le nouveau mur vers lequel aller
+     */
+    static void updateChangementCote(CoteMur nouvMur);
+
+    /**
+     * Mise a jour des vitesses pour suivi de mur
+     * \todo experimental
+     * \param murSuivi : le mur suivi
+     * \param cmd : la commande (distance par rapport au mur voulue)
+     * \param vitLin : la vitesse lineaire a utiliser
+     * \param tolErr : la tolerance d'erreur
+     */
+    static void updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
+
+    /**
+     * Execution d'un demi tour
+     * \todo experimental
+     * \param mur : le mur suivi au moment du demi tour
+     */
+    static void doDemiTour(CoteMur mur);
 
     /**
      * Calcul des vitesses des moteurs et envoit des donnees aux moteurs

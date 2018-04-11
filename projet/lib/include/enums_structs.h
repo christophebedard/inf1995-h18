@@ -12,9 +12,9 @@
 #include "defines.h"
 
 /**
- * Declaration des murs
+ * Declaration des cotes de mur
  */
-enum class Murs
+enum class CoteMur
 {
     Gauche, ///< le mur gauche
     Droit   ///< le mur droit
@@ -179,11 +179,6 @@ enum class Tempo
     Prestissimo = 188 ///< un tempo tres rapide
 };
 
-enum class CoteMur
-{
-    Droit,
-    Gauche
-};
 /**
  * Definition d'une chanson
  */
