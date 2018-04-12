@@ -189,4 +189,16 @@ struct ChansonMusique
     Tempo tempo;            ///< le tempo
 };
 
+/**
+ * États possibles pour le trajet a suivre
+ */
+enum class Trajet
+{
+    Initial,
+    SuiviMur,
+    ChangementMur,
+    DemiTour,
+    ContournementMur,
+    
+};
 #endif // LIB_ENUMS_STRUCTS_H
