@@ -57,18 +57,46 @@ void Trajet::changerCoteDroit(uint8_t pourcentageDroit, uint8_t pourcentageGauch
     setCoteSuivi(CoteMur::Droit);
 }
 
+bool verifierDetection()
+{
+    switch (Trajet::getCoteSuivi())
+    {
+        case CoteMur::Droit:
+            if ((CapteursDistance::getDistanceGauche() < 10) || (CapteursDistance::getDistanceGauche() > 60))
+                return false;
+            else if ((CapteursDistance::getDistanceGauche() >= 10) && (CapteursDistance::getDistanceGauche() <= 60))
+                return true;
+            
+        case CoteMur::Gauche:
+            if ((CapteursDistance::getDistanceDroit() < 10) || (CapteursDistance::getDistanceDroit() > 60))
+                return false;
+            else if ((CapteursDistance::getDistanceDroit() >= 10) && (CapteursDistance::getDistanceDroit() <= 60))
+                return true;
+    }
+}
+
+void moitiePoteau()
+{
+    if (!(verifierDetection()))
+    {
+        Timer0::stop();
+        
+    }
+}
 /**
  * Termine la minuterie et joue une sequence de trois sons aigus
  */
 void poteauDetecte()
 {   //5.1 cm
-    Timer0::stop();
-    for (uint8_t i = 0; i < 3; i++)
-    {
-        Buzzer::play(115);
-        waitForMs(200);
-        Buzzer::stop();
-        waitForMs(100);
+    if (verifierDetection()){
+        Timer0::stop();
+        for (uint8_t i = 0; i < 3; i++)
+        {
+            Buzzer::play(115);
+            waitForMs(200);
+            Buzzer::stop();
+            waitForMs(100);
+        }
     }
 }
 
@@ -134,10 +162,11 @@ void Trajet::init()
     Buzzer::init();
     Interruption::initInt1(&demiTour, TypesTriggerInterrupt::RisingEdge);
     Timer0::setCompACallback(&poteauDetecte);
-    Timer0::setCompareOutputMode(COM::Clear, COM::Normal);
+    Timer0::setCompBCallback(&moitiePoteau);
+    Timer0::setCompareOutputMode(COM::Clear, COM::Clear);
     Timer0::setWaveformGenerationMode(WGM::Mode_2);
     Timer0::setPrescaler(Prescaler::Div_256);
-    Timer0::setInterruptEnable(true, false, false);
+    Timer0::setInterruptEnable(true, true, false);
     
     // attributs pour la situation initiale
 
