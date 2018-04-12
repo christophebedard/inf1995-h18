@@ -19,8 +19,6 @@ void ControleMoteurs::init()
 
 void ControleMoteurs::doDemiTour(CoteMur murSuivi)
 {
-    /// \todo experimental
-
     // determine le sens de rotation selon le mur suivi
     DirectionMoteur dirAng = DirectionMoteur::Avant;
     switch (murSuivi)
@@ -33,20 +31,32 @@ void ControleMoteurs::doDemiTour(CoteMur murSuivi)
             break;
     }
 
-    /// \todo #define DEMI_TOUR_VIT_ANG
-    setVitesses(0, DirectionMoteur::Avant, 50, dirAng);
-    /// \todo #define DEMI_TOUR_ATTENTE
-    waitForMs(2200);
-    /// \todo #define DEMI_TOUR_VIT_ANG_IMPULSION
-    setVitesses(0, DirectionMoteur::Avant, 50, ((dirAng == DirectionMoteur::Arriere) ? DirectionMoteur::Avant : DirectionMoteur::Arriere));
-    /// \todo #define DEMI_TOUR_ATTENTE_IMPULSION
-    waitForMs(100);
+    setVitesses(0, DirectionMoteur::Avant, DEMI_TOUR_VITESSE_ANG, dirAng);
+    waitForMs(DEMI_TOUR_ATTENTE);
+    setVitesses(0, DirectionMoteur::Avant, DEMI_TOUR_VIT_ANG_IMPULSION, ((dirAng == DirectionMoteur::Arriere) ? DirectionMoteur::Avant : DirectionMoteur::Arriere));
+    waitForMs(DEMI_TOUR_ATTENTE_IMPULSION);
     setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
 
-void ControleMoteurs::updateContournementMur(CoteMur murSuivi)
+void ControleMoteurs::doContournementMur(CoteMur murCont)
 {
     /// \todo experimental
+
+    // determine le sens de rotation selon le mur a contourner
+    DirectionMoteur dirAng = DirectionMoteur::Avant;
+    switch (murCont)
+    {
+        case CoteMur::Gauche:
+            dirAng = DirectionMoteur::Avant;
+            break;
+        case CoteMur::Droit:
+            dirAng = DirectionMoteur::Arriere;
+            break;
+    }
+
+    setVitesses(CONTOURNEMENT_VITESSE_LIN, DirectionMoteur::Avant, CONTOURNEMENT_VITESSE_ANG, dirAng);
+    waitForMs(CONTOURNEMENT_ATTENTE);
+    setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
 
 void ControleMoteurs::updateChangementCote(CoteMur nouvMur)

@@ -14,6 +14,22 @@
 #include "moteurs.h"
 #include "capteurs_distance.h"
 
+// constantes pour le suivi de mur
+#define SUIVI_MUR_DISTANCE  15  ///< la distance a laquelle on suit le mur
+#define SUIVI_MUR_VIT_LIN   20  ///< la vitesse lineaire avec laquelle on suit le mur
+#define SUIVI_MUR_TOL       3   ///< la tolerance sur l'erreur de la distance avec le mur
+
+// constantes pour le demi tour
+#define DEMI_TOUR_VITESSE_ANG           50      ///< la vitesse angulaire pour faire le demi tour
+#define DEMI_TOUR_ATTENTE               2200    ///< le delai d'attente pour effectuer le demi tour
+#define DEMI_TOUR_IMPULSION_VITESSE_ANG 50      ///< la vitesse angulaire pour l'impulsion d'arret
+#define DEMI_TOUR_ATTENTE_IMPULSION     100     ///< le delai d'attente pour l'impulsion d'arret
+
+// constantes pour le contournement
+#define CONTOURNEMENT_VITESSE_LIN       20      ///< la vitesse lineaire pour un contournement
+#define CONTOURNEMENT_VITESSE_ANG       10      ///< la vitesse angulaire absolue pour un contournement
+#define CONTOURNEMENT_ATTENTE           3000    ///< le delai d'attente pour effectuer le contournement
+
 /**
  * \class ControleMoteurs
  * \brief classe qui enveloppe (wrap) la classe Moteurs pour les controler
@@ -29,13 +45,6 @@ public:
      * Initialisation du controleur
      */
     static void init();
-
-    /**
-     * Mise a jour des vitesses pour contourner le mur
-     * \todo experimental
-     * \param murSuivi : le mur a contourner
-     */
-    static void updateContournementMur(CoteMur murSuivi);
 
     /**
      * Mise a jour des vitesses pour changement de cote
@@ -55,16 +64,20 @@ public:
     static void updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
 
     /**
+     * Execution du contournement d'un mur
+     * (bloquant)
+     * \todo experimental
+     * \param murCont : le mur a contourner
+     */
+    static void doContournementMur(CoteMur murCont;
+
+    /**
      * Execution d'un demi tour
+     * (bloquant)
      * \todo experimental
      * \param mur : le mur suivi au moment du demi tour
      */
     static void doDemiTour(CoteMur mur);
-
-    /**
-     * Calcul des vitesses des moteurs et envoit des donnees aux moteurs
-     */
-    static void updateMoteurs();
 
     /**
      * Reglage des vitesses et update
@@ -108,6 +121,10 @@ private:
      */
     static void calculVitessesMoteurs(uint8_t* vitGauche, uint8_t* vitDroit, DirectionMoteur* dirGauche, DirectionMoteur* dirDroit);
 
+    /**
+     * Calcul des vitesses des moteurs et envoit des donnees aux moteurs
+     */
+    static void updateMoteurs();
 };
 
 #endif // LIB_CONTROLE_MOTEURS_H
