@@ -132,6 +132,7 @@ void Trajet::init()
     CapteursDistance::init();
     ControleMoteurs::init();
     Buzzer::init();
+    Bouton::init();
     
     EtatTrajet EtatActuel = EtatTrajet::Initial;
     
@@ -297,33 +298,59 @@ for(;;)
 				}
 			}
 			
-			EtatActuel = EtatTrajet::SuiviMur
+			EtatActuel = EtatTrajet::SuiviMur;
         break;}
             
         case EtatTrajet::SuiviMur:{
-			if() //Si rien n'est détecté par le capteur opposé
+			if( Condition en fonction du capteur opposé au mus suivi)//Si rien n'est détecté par le capteur opposé
+			{
+				ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
+				SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, SUIVI_MUR_TOL);
+			}
+			 
 			else if() //Si un mur est détecté par le capteur opposé
-			else if() //Si un demitour est commandé
-			else if() //Si un mur doit etre contourné
+			{
+				EtatActuel = EtatTrajet::ChangementMur;
+			}
+			else if(Bouton::getEtat() == Enfonce) //Si un demitour est commandé
+			{
+				EtatActuel = EtatTrajet::DemiTour;
+			}
+			else if(Capteur) //Si un mur doit etre contourné
+			{
+				EtatActuel = EtatTrajet::ContournementMur;
+			}
 			else if() //Si un poteau est detecté
+			{
+				
+			}
 			
         break;}
             
         case EtatTrajet::ChangementMur:{
             //Changer de mur et activer l'interdiction de changer de mur
-            //Retourner à l'état SuiviMur 
+            //Retourner à l'état SuiviMur
+            ControleMoteurs::updateChangementCote(getCoteSuivi())
+            
+            EtatActuel = EtatTrajet::SuiviMur;
         break;}
             
         case EtatTrajet::DemiTour:{
             //En fonction du coté de mur suivi, faire le tour dans le
 				//bon sens
-            //Retourner à l'état SuiviMur   
+            //Retourner à l'état SuiviMur
+            ControleMoteurs::doDemiTour(getCoteSuivi());
+            
+            EtatActuel = EtatTrajet::SuiviMur;   
         break;}
         
         case EtatTrajet::ContournementMur:{
             //En fonction du coté de mur suivi, faire le contournement
 				//dans lebon sens
-            //Retourner à l'état SuiviMur   
+            //Retourner à l'état SuiviMur  
+            ControleMoteurs::doContournementMur(getCoteSuivi());
+            
+            EtatActuel = EtatTrajet::SuiviMur; 
         break;}
         
 	}
