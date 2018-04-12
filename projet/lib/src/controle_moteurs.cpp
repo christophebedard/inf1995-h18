@@ -33,7 +33,7 @@ void ControleMoteurs::doDemiTour(CoteMur murSuivi)
 
     setVitesses(0, DirectionMoteur::Avant, DEMI_TOUR_VITESSE_ANG, dirAng);
     waitForMs(DEMI_TOUR_ATTENTE);
-    setVitesses(0, DirectionMoteur::Avant, DEMI_TOUR_VIT_ANG_IMPULSION, ((dirAng == DirectionMoteur::Arriere) ? DirectionMoteur::Avant : DirectionMoteur::Arriere));
+    setVitesses(0, DirectionMoteur::Avant, DEMI_TOUR_IMPULSION_VITESSE_ANG, ((dirAng == DirectionMoteur::Arriere) ? DirectionMoteur::Avant : DirectionMoteur::Arriere));
     waitForMs(DEMI_TOUR_ATTENTE_IMPULSION);
     setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
@@ -62,6 +62,13 @@ void ControleMoteurs::doContournementMur(CoteMur murCont)
 void ControleMoteurs::updateChangementCote(CoteMur nouvMur)
 {
     /// \todo experimental
+    if (nouvMur == CoteMur::Droit){
+        ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Arriere);
+    }
+    else if (nouvMur == CoteMur::Gauche){
+        ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Avant);
+	}
+	setVitesses(CHANGEMENT_VITESSE_LIN,DirectionMoteur::Avant, 0, DirectionMoteur::Avant); 
 }
 
 void ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr)

@@ -30,6 +30,13 @@
 #define CONTOURNEMENT_VITESSE_ANG       10      ///< la vitesse angulaire absolue pour un contournement
 #define CONTOURNEMENT_ATTENTE           3000    ///< le delai d'attente pour effectuer le contournement
 
+// constantes pour le changement de mur
+#define CHANGEMENT_VITESSE_LIN 20
+
+#define CHANGEMENT_VITESSE_ANG 50
+
+#define CHANGEMENT_ATTENTE     550
+
 /**
  * \class ControleMoteurs
  * \brief classe qui enveloppe (wrap) la classe Moteurs pour les controler
@@ -69,7 +76,7 @@ public:
      * \todo experimental
      * \param murCont : le mur a contourner
      */
-    static void doContournementMur(CoteMur murCont;
+    static void doContournementMur(CoteMur murCont);
 
     /**
      * Execution d'un demi tour
