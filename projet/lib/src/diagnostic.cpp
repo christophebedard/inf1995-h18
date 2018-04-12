@@ -7,65 +7,78 @@
 #include "diagnostic.h"
 
 
+bool Diagnostic::modeDebug_ = false;
+
+
 void callbackRx()
 {
-    // reception de l'instruction
-    uint8_t msg = UART::reception();
-    uint8_t donnee = UART::reception();
-
-    /// \todo garder le message en memoire et le traiter dans la prochaine boucle?
-    // selon le message
-    switch (msg)
+    if (!Diagnostic::modeDebug_)
     {
-        case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
-            Diagnostic::transmettreInfos();
-            break;
-        case (uint8_t)MessagesLogicielRobot::CouleurDel:
-            // valeur assignee au port A
-            PORTA &= ~(BROCHES_LED);
-            PORTA |= donnee;
-            break;
-        case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
-            if ((donnee >> 7) == 1)
-            { 
-                donnee = ~donnee + 0x01;
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);
-            }
-            else
-            {
-                Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
-            }
-            Moteurs::setPourcentageDroite(donnee);
-            break;
-        case (uint8_t)MessagesLogicielRobot::VitesseRoueGauche:
-            if ((donnee >> 7) == 1)
-            { 
-                donnee = ~donnee + 0x01;
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere);
-            }
-            else
-            {
-                Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
-            }
-            Moteurs::setPourcentageGauche(donnee);
-            break;
+        // reception de l'instruction
+        uint8_t msg = UART::reception();
+        uint8_t donnee = UART::reception();
+
+        /// \todo garder le message en memoire et le traiter dans la prochaine boucle?
+        // selon le message
+        switch (msg)
+        {
+            case (uint8_t)MessagesLogicielRobot::RequeteEnvoiInfos:
+                Diagnostic::transmettreInfos();
+                break;
+            case (uint8_t)MessagesLogicielRobot::CouleurDel:
+                // valeur assignee au port A
+                PORTA &= ~(BROCHES_LED);
+                PORTA |= donnee;
+                break;
+            case (uint8_t)MessagesLogicielRobot::VitesseRoueDroite:
+                if ((donnee >> 7) == 1)
+                { 
+                    donnee = ~donnee + 0x01;
+                    Moteurs::setDirectionMoteurDroit(DirectionMoteur::Arriere);
+                }
+                else
+                {
+                    Moteurs::setDirectionMoteurDroit(DirectionMoteur::Avant);
+                }
+                Moteurs::setPourcentageDroite(donnee);
+                break;
+            case (uint8_t)MessagesLogicielRobot::VitesseRoueGauche:
+                if ((donnee >> 7) == 1)
+                { 
+                    donnee = ~donnee + 0x01;
+                    Moteurs::setDirectionMoteurGauche(DirectionMoteur::Arriere);
+                }
+                else
+                {
+                    Moteurs::setDirectionMoteurGauche(DirectionMoteur::Avant);
+                }
+                Moteurs::setPourcentageGauche(donnee);
+                break;
+        }
     }
 }
 
-void Diagnostic::init()
+void Diagnostic::init(bool modeDebug)
 {
+    // mode de fonctionnement
+    // (si true, les moteurs, les capteurs la LED sont desactives)
+    modeDebug_ = modeDebug;
+
     // LED (en sortie)
     DDRA |= BROCHES_LED;
 
     UART::init();
     UART::setRxCallback(&callbackRx);
-
     Bouton::init();
-    Moteurs::init();
-    CapteursDistance::init();
 
-    // commencer par transmettre infos du robot
-    transmettreInfos();
+    if (!modeDebug_)
+    {
+        Moteurs::init();
+        CapteursDistance::init();
+
+        // commencer par transmettre infos du robot
+        transmettreInfos();
+    }
 }
 
 void Diagnostic::update()
@@ -122,26 +135,26 @@ void Diagnostic::transmissionMessage(uint8_t type, uint8_t donnee)
 
 void Diagnostic::transmettreInfos()
 {
-        // nom du robot
-        transmissionMessage(MessagesRobotLogiciel::NomRobot,
-                            INFO_NOM_ROBOT,
-                            LONGUEUR_INFO_NOM_ROBOT);
-        
-        // equipe
-        transmissionMessage(MessagesRobotLogiciel::NumeroEquipe,
-                            INFO_EQUIPE,
-                            LONGUEUR_INFO_EQUIPE);
+    // nom du robot
+    transmissionMessage(MessagesRobotLogiciel::NomRobot,
+                        INFO_NOM_ROBOT,
+                        LONGUEUR_INFO_NOM_ROBOT);
+    
+    // equipe
+    transmissionMessage(MessagesRobotLogiciel::NumeroEquipe,
+                        INFO_EQUIPE,
+                        LONGUEUR_INFO_EQUIPE);
+    
+    // groupe
+    transmissionMessage(MessagesRobotLogiciel::NumeroSection,
+                        INFO_GROUPE); // prend une valeur decimale
 
-        // groupe
-        transmissionMessage(MessagesRobotLogiciel::NumeroSection,
-                            INFO_GROUPE); // prend une valeur decimale
+    // session
+    transmissionMessage(MessagesRobotLogiciel::Session,
+                        INFO_SESSION,
+                        LONGUEUR_INFO_SESSION);
 
-        // session
-        transmissionMessage(MessagesRobotLogiciel::Session,
-                            INFO_SESSION,
-                            LONGUEUR_INFO_SESSION);
-
-        // couleur robot
-        transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                            (NUMERO_ROBOT == 1) ? COULEUR_ROBOT1 : COULEUR_ROBOT2);
+    // couleur robot
+    transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
+                        (NUMERO_ROBOT == 1) ? COULEUR_ROBOT1 : COULEUR_ROBOT2);
 }

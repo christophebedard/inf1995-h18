@@ -37,7 +37,7 @@ public:
     /**
      * Initialisation
      */
-    static void init();
+    static void init(bool modeDebug = false);
 
     /**
      * Update
@@ -51,6 +51,8 @@ public:
     friend void callbackRx();
 
 private:
+    static bool modeDebug_; ///< le flag pour le mode debug (pas de controle des moteurs ou de la LED)
+    
     /**
      * Transmission d'un message via enum
      * 
