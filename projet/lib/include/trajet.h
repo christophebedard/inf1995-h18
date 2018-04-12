@@ -37,6 +37,7 @@ public:
      */
     friend void poteauDetecte();
 
+    friend void moitiePoteau();
     /**
      * Ami : le callback pour l'execution du demi tour
      */
@@ -46,6 +47,7 @@ private:
     static bool droitChangementCote_;   ///< le flag pour le droit de changer de cote
     static CoteMur mur_;                ///< le mur suivi actuellement
     
+    static bool verifierDetection();
     static bool getDroitChangementCote();
     static void setDroitChangementCote(bool droitChangementCote);
     static CoteMur getCoteSuivi();
