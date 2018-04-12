@@ -20,6 +20,28 @@ void ControleMoteurs::init()
 void ControleMoteurs::doDemiTour(CoteMur murSuivi)
 {
     /// \todo experimental
+
+    // determine le sens de rotation selon le mur suivi
+    DirectionMoteur dirAng = DirectionMoteur::Avant;
+    switch (murSuivi)
+    {
+        case CoteMur::Gauche:
+            dirAng = DirectionMoteur::Arriere;
+            break;
+        case CoteMur::Droit:
+            dirAng = DirectionMoteur::Avant;
+            break;
+    }
+
+    /// \todo #define DEMI_TOUR_VIT_ANG
+    setVitesses(0, DirectionMoteur::Avant, 50, dirAng);
+    /// \todo #define DEMI_TOUR_ATTENTE
+    waitForMs(2200);
+    /// \todo #define DEMI_TOUR_VIT_ANG_IMPULSION
+    setVitesses(0, DirectionMoteur::Avant, 50, ((dirAng == DirectionMoteur::Arriere) ? DirectionMoteur::Avant : DirectionMoteur::Arriere));
+    /// \todo #define DEMI_TOUR_ATTENTE_IMPULSION
+    waitForMs(100);
+    setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
 
 void ControleMoteurs::updateContournementMur(CoteMur murSuivi)
@@ -48,16 +70,16 @@ void ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t 
             isValide = CapteursDistance::getDistanceDroit(&lectDist);
             break;
     }
+    // initialise les variables de commande
+    uint8_t err = 0;
+    uint8_t vitAng = 0;
+    DirectionMoteur dirAng = DirectionMoteur::Avant;
 
     // si lecture valide
     if (isValide)
     {
         // selon la valeur de l'erreur
-        uint8_t err = (lectDist >= cmdDist) ? (lectDist - cmdDist) : (cmdDist - lectDist);
-
-        // initialise les variables de commande
-        uint8_t vitAng = 0;
-        DirectionMoteur dirAng = DirectionMoteur::Avant;
+        err = (lectDist >= cmdDist) ? (lectDist - cmdDist) : (cmdDist - lectDist);
 
         // si erreur de direction
         if (err > tolErr)
@@ -73,13 +95,99 @@ void ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t 
                     break;
             }
             
-            // determine la vitesse angulaire a appliquer proportionnellement a l'erreur
-            vitAng = err * 2;
+            // determine la vitesse angulaire a appliquer selon l'erreur
+            vitAng = (0 <= err && err <= 20) ? 8 : 12;
+            switch (err)
+            {
+                default: vitAng = 0; break;
+                case 0:
+                case 1:
+                case 2:
+                case 3: vitAng = 3; break;
+                case 4:
+                case 5: vitAng = 6; break;
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10: vitAng = 7; break;
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15: vitAng = 9; break;
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20: vitAng = 10; break;
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                case 25: vitAng = 10; break;
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30: vitAng = 12; break;
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                case 35: vitAng = 14; break;
+                case 36:
+                case 37:
+                case 38:
+                case 39:
+                case 40: vitAng = 16; break;
+                case 41:
+                case 42:
+                case 43:
+                case 44:
+                case 45:
+                case 46:
+                case 47:
+                case 48:
+                case 49:
+                case 50: vitAng = 20; break;
+            }
         }
-
-        setVitesses(vitLin, DirectionMoteur::Avant, vitAng, dirAng);
     }
-    /// \todo peut-etre donner une vitesse par defaut aux roues si la lecture n'est pas valide?
+    else
+    {
+        // si la lecture n'est pas valide et que l'on estime
+        // que c'est parce que le robot est trop proche
+        if (lectDist < 20)
+        {
+            vitAng = 25;
+            switch (murSuivi)
+            {
+                case CoteMur::Gauche:
+                    dirAng = DirectionMoteur::Arriere;
+                    break;
+                case CoteMur::Droit:
+                    dirAng = DirectionMoteur::Avant;
+                    break;
+            }
+        }
+    }
+
+    setVitesses(vitLin, DirectionMoteur::Avant, vitAng, dirAng);
+
+    Debug::out(lectDist);
+    Debug::out(", ");
+    Debug::out(err);
+    Debug::out(", ");
+    Debug::out(vitAng);
+    Debug::out("\n");
+}
+
+void ControleMoteurs::setVitesses(uint8_t vitLin, DirectionMoteur dirLin, uint8_t vitAng, DirectionMoteur dirAng)
+{
+    setVitesseLineaire(vitLin, dirLin);
+    setVitesseAngulaire(vitAng, dirAng);
+    updateMoteurs();
 }
 
 void ControleMoteurs::updateMoteurs()
@@ -96,13 +204,6 @@ void ControleMoteurs::updateMoteurs()
     Moteurs::setDirectionMoteurDroit(dirDroit);
     Moteurs::setPourcentageGauche(vitGauche);
     Moteurs::setPourcentageDroite(vitDroit);
-}
-
-void ControleMoteurs::setVitesses(uint8_t vitLin, DirectionMoteur dirLin, uint8_t vitAng, DirectionMoteur dirAng)
-{
-    setVitesseLineaire(vitLin, dirLin);
-    setVitesseAngulaire(vitAng, dirAng);
-    updateMoteurs();
 }
 
 void ControleMoteurs::calculVitessesMoteurs(uint8_t* vitGauche, uint8_t* vitDroit, DirectionMoteur* dirGauche, DirectionMoteur* dirDroit)
