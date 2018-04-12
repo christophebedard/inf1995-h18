@@ -76,6 +76,26 @@ bool verifierDetection()
     }
 }
 
+
+bool verifierDetection()
+{
+    switch (Trajet::getCoteSuivi())
+    {
+        case CoteMur::Droit:
+            if ((CapteursDistance::getDistanceGauche() < 10) || (CapteursDistance::getDistanceGauche() > 60))
+                return false;
+            else if ((CapteursDistance::getDistanceGauche() >= 10) && (CapteursDistance::getDistanceGauche() <= 60))
+                return true;
+            
+        case CoteMur::Gauche:
+            if ((CapteursDistance::getDistanceDroit() < 10) || (CapteursDistance::getDistanceDroit() > 60))
+                return false;
+            else if ((CapteursDistance::getDistanceDroit() >= 10) && (CapteursDistance::getDistanceDroit() <= 60))
+                return true;
+    }
+}
+
+
 void moitiePoteau()
 {
     if (!(verifierDetection()))
