@@ -192,7 +192,7 @@ struct ChansonMusique
 /**
  * États possibles pour le trajet a suivre
  */
-enum class Trajet
+enum class EtatTrajet
 {
     Initial,
     SuiviMur,
