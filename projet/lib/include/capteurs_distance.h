@@ -20,8 +20,9 @@
 #define CAPTEUR_DISTANCE_MIN 10
 /**
  * Distance [cm] maximale pour une lecture valide
+ * (selon le max de l'enonce du projet)
  */
-#define CAPTEUR_DISTANCE_MAX 80
+#define CAPTEUR_DISTANCE_MAX 60
 /**
  * Distance [cm] maximale pour une lecture valide
  */
@@ -29,7 +30,7 @@
 /**
  * Longueur de la memoire des lectures de valeurs CAN
  */
-#define LONGUEUR_MEMOIRE_LECTURES 10
+#define LONGUEUR_MEMOIRE_LECTURES 5
 
 /**
  * \class CapteursDistance
