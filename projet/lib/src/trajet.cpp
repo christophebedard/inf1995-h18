@@ -160,6 +160,10 @@ void Trajet::init()
     CapteursDistance::init();
     ControleMoteurs::init();
     Buzzer::init();
+    Bouton::init();
+    
+    EtatTrajet EtatActuel = EtatTrajet::Initial;
+    
     Interruption::initInt1(&demiTour, TypesTriggerInterrupt::RisingEdge);
     Timer0::setCompACallback(&poteauDetecte);
     Timer0::setCompBCallback(&moitiePoteau);
@@ -168,7 +172,7 @@ void Trajet::init()
     Timer0::setPrescaler(Prescaler::Div_256);
     Timer0::setInterruptEnable(true, true, false);
     
-    // attributs pour la situation initiale
+    /*// attributs pour la situation initiale
 
     // le robot ne devrait pas avoir le droit de changer de cote,
     // puisqu'il est suppose ne voir qu'un seul mur initialement
@@ -193,7 +197,7 @@ void Trajet::init()
         }
     }
     /// \todo attendre qu'il y ait vraiment un mur choisi?
-}
+}*/
 
 /**
  * Execute le trajet
@@ -286,4 +290,97 @@ CoteMur Trajet::getCoteSuivi()
 void Trajet::setCoteSuivi(CoteMur mur)
 {
     mur_ = mur;
+}
+
+
+/* Machine à états*/
+
+for(;;) 
+{
+    Switch (EtatActuel){
+		
+		case EtatTrajet::Initial:{
+			
+			// le robot ne devrait pas avoir le droit de changer de cote,
+			// puisqu'il est suppose ne voir qu'un seul mur initialement
+			setDroitChangementCote(false);
+
+			// selectionne le mur initial a suivre
+			uint8_t lectDist = 60;
+			CapteursDistance::getDistanceGauche(&lectDist);
+			
+			// si le mur gauche est assez proche
+			if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
+			{
+				setCoteSuivi(CoteMur::Gauche);
+			}
+			else
+			{
+				// sinon, on essaye avec le mur droit
+				uint8_t lectDist = 0;
+				
+				CapteursDistance::getDistanceDroit(&lectDist);
+				
+				if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
+				{
+					setCoteSuivi(CoteMur::Gauche);
+				}
+			}
+			
+			EtatActuel = EtatTrajet::SuiviMur;
+        break;}
+            
+        case EtatTrajet::SuiviMur:{
+			if( Condition en fonction du capteur opposé au mus suivi)//Si rien n'est détecté par le capteur opposé
+			{
+				ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
+				SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, SUIVI_MUR_TOL);
+			}
+			 
+			else if() //Si un mur est détecté par le capteur opposé
+			{
+				EtatActuel = EtatTrajet::ChangementMur;
+			}
+			else if(Bouton::getEtat() == Enfonce) //Si un demitour est commandé
+			{
+				EtatActuel = EtatTrajet::DemiTour;
+			}
+			else if(Capteur) //Si un mur doit etre contourné
+			{
+				EtatActuel = EtatTrajet::ContournementMur;
+			}
+			else if() //Si un poteau est detecté
+			{
+				
+			}
+			
+        break;}
+            
+        case EtatTrajet::ChangementMur:{
+            //Changer de mur et activer l'interdiction de changer de mur
+            //Retourner à l'état SuiviMur
+            ControleMoteurs::updateChangementCote(getCoteSuivi())
+            
+            EtatActuel = EtatTrajet::SuiviMur;
+        break;}
+            
+        case EtatTrajet::DemiTour:{
+            //En fonction du coté de mur suivi, faire le tour dans le
+				//bon sens
+            //Retourner à l'état SuiviMur
+            ControleMoteurs::doDemiTour(getCoteSuivi());
+            
+            EtatActuel = EtatTrajet::SuiviMur;   
+        break;}
+        
+        case EtatTrajet::ContournementMur:{
+            //En fonction du coté de mur suivi, faire le contournement
+				//dans lebon sens
+            //Retourner à l'état SuiviMur  
+            ControleMoteurs::doContournementMur(getCoteSuivi());
+            
+            EtatActuel = EtatTrajet::SuiviMur; 
+        break;}
+        
+	}
 }
