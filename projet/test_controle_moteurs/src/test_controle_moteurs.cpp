@@ -49,10 +49,10 @@ int main()
     // ControleMoteurs::setVitesses(0, DirectionMoteur::Avant,
     //                              0, DirectionMoteur::Avant);
 
-    ControleMoteurs::doDemiTour(CoteMur::Gauche);
-    waitForMs(DELAI_MS);
-    ControleMoteurs::doDemiTour(CoteMur::Droit);
-    waitForMs(DELAI_MS);
+    // ControleMoteurs::doDemiTour(CoteMur::Gauche);
+    // waitForMs(DELAI_MS);
+    // ControleMoteurs::doDemiTour(CoteMur::Droit);
+    // waitForMs(DELAI_MS);
 
     while(true)
     {

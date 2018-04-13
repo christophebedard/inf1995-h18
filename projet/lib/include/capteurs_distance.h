@@ -15,18 +15,40 @@
 
 
 /**
- * Distance [cm] minimale pour une lecture valide
+ * Valeur CAN valide minimale (tres grosse distance)
+ * selon etalonnage_capteur_distance.py
+ */
+#define CAPTEUR_DISTANCE_CAN_VAL_MIN 150
+/**
+ * Valeur CAN valide maximale (tres petite distance)
+ * selon etalonnage_capteur_distance.py
+ */
+#define CAPTEUR_DISTANCE_CAN_VAL_MAX 480
+/**
+ * Distance [cm] minimale valide
  */
 #define CAPTEUR_DISTANCE_MIN 10
 /**
- * Distance [cm] maximale pour une lecture valide
+ * Distance [cm] maximale valide
  * (selon le max de l'enonce du projet)
  */
 #define CAPTEUR_DISTANCE_MAX 60
 /**
- * Distance [cm] maximale pour une lecture valide
+ * Distance [cm] minimale a afficher si invalide
  */
-#define CAPTEUR_DISTANCE_INVALIDE 0
+#define CAPTEUR_DISTANCE_FORMAT_MIN 0
+/**
+ * Distance [cm] maximale a afficher si invalide
+ */
+#define CAPTEUR_DISTANCE_FORMAT_MAX 80
+/**
+ * Distance [cm] pour une lecture invalide (tres basse)
+ */
+#define CAPTEUR_DISTANCE_CAN_VAL_INVALIDE_MIN 100
+/**
+ * Distance [cm] pour une lecture invalide (tres haute)
+ */
+#define CAPTEUR_DISTANCE_CAN_VAL_INVALIDE_MAX 0
 /**
  * Longueur de la memoire des lectures de valeurs CAN
  */
@@ -80,7 +102,7 @@ private:
     static can can_;                                            ///< l'objet pour le CAN
 
     /**
-     * Validation de la distance
+     * Validation de la distance selon la plage de distance du capteur
      * 
      * \param dist : la distance a valider
      * 
@@ -91,11 +113,12 @@ private:
     /**
      * Conversion de la valeur de lecture du CAN vers la distance
      * 
-     * \param canVal : la valeur lue par le CAN [0, 2^10 - 1]
+     * \param canVal : la valeur CAN [0, 2^10 - 1]
+     * \param[out] dist : la distance
      * 
-     * \return la distance [cm]
+     * \return la validite de la valeur
      */
-    static uint8_t canToDistance(const uint16_t canVal);
+    static bool canToDistance(uint16_t canVal, uint8_t* dist);
 
     /**
      * Ajout d'une nouvelle lecture CAN dans la memoire
