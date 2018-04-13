@@ -1,41 +1,91 @@
-Capteur infrarouge Sharp GP2D12 (GP2Y0A21YK0F)
-Fil Blanc : Vo
-Fil Noir  : GND
-Fil Rouge : VCC
-Analog Output --> CAN nécessaire
-PIN de notre choix sur le port A
-Vo = HIGH pour 0.1 m
-
-Range : 0.1 - 0.8 m
-Response Time : 39 ms
-Start Up Delay : 44 ms
-
-Émetteur côté fil blanc  (Haut)
-Récepteur côté fil rouge (Bas)
-Fils vers l'avant 
-
-PORTS:
-
-A:
-1 et 2 Del
-3 Vo capteur gauche
-4 Vo capteur droit
-VCC GND Capteur gauche
-
-B:
-5 6 7 8 make install
-
-C:
-7 GND Piézo TIMER2 A
-
-D:
-5 PWM roue gauche   TIMER1 A
-6 PWM roue droite   TIMER1 B
-7 direction moteur gauche
-8 direction moteur droit
-[8 PWM buzzer WAV    TIMER2 A]
-
-Diagnostic:
+# INF1995 - H2018 - équipes 68 et 116
 
 
-Trajet:
+
+## Capteur de distance
+
+Modèle : capteur infrarouge Sharp GP2D12 (GP2Y0A21YK0F)
+
+Fils :  
+* blanc : Vo
+* noir  : GND
+* rouge : VCC
+
+Infos :  
+* Vo = HIGH pour 0.1 m (le voltage de Vo augmente quand la distance diminue)
+* Range : 0.1 - 0.8 m
+* Response time : 39 ms
+* Startup delay : 44 ms
+* Émetteur côté fil blanc (haut)
+* Récepteur côté fil rouge (bas)
+
+
+## Branchements
+
+Voici un résumé des branchements. Voir le fichier `projet/lib/include/broches.h` pour plus de détails.
+
+| Port | Broche | Fonctionnalité | Utilisation                 | Note                          |
+|:----:|:------:|:--------------:|-----------------------------|-------------------------------|
+|   A  |    1   |                | DEL                         | vérifier la polarité          |
+|   A  |    2   |                | DEL                         | vérifier la polarité          |
+|   A  |    3   |       CAN      | Vo capteur distance gauche  |                               |
+|   A  |    4   |       CAN      | Vo capteur distance droit   |                               |
+|   A  |    5   |                |                             |                               |
+|   A  |    6   |                |                             |                               |
+|   A  |    7   |                |                             |                               |
+|   A  |    8   |                |                             |                               |
+|   A  |   GND  |                | GND capteur distance gauche |                               |
+|   A  |   VCC  |                | VCC capteur distance gauche |                               |
+|   B  |    1   |                |                             |                               |
+|   B  |    2   |                |                             |                               |
+|   B  |    3   |                |                             |                               |
+|   B  |    4   |    Timer0 A    | buzzer                      | fil spécial pour la connexion |
+|   B  |    5   |        X       | réservé                     | réservé                       |
+|   B  |    6   |        X       | réservé                     | réservé                       |
+|   B  |    7   |        X       | réservé                     | réservé                       |
+|   B  |    8   |        X       | réservé                     | réservé                       |
+|   B  |   GND  |                | GND capteur distance droit  |                               |
+|   B  |   VCC  |                | VCC capteur distance droit  |                               |
+|   C  |    1   |                |                             |                               |
+|   C  |    2   |                |                             |                               |
+|   C  |    3   |                |                             |                               |
+|   C  |    4   |                |                             |                               |
+|   C  |    5   |                |                             |                               |
+|   C  |    6   |                |                             |                               |
+|   C  |    7   |                |                             |                               |
+|   C  |    8   |                |                             |                               |
+|   C  |   GND  |                | GND buzzer                  | fil spécial pour la connexion |
+|   C  |   VCC  |                |                             |                               |
+|   D  |    1   |                |                             |                               |
+|   D  |    2   |                |                             |                               |
+|   D  |    3   |                |                             |                               |
+|   D  |    4   |                |                             |                               |
+|   D  |    5   |    Timer1 A    | PWM moteur gauche           |                               |
+|   D  |    6   |    Timer1 B    | PWM moteur droit            |                               |
+|   D  |    7   |                | direction moteur gauche     |                               |
+|   D  |    8   |                | direction moteur droit      |                               |
+|   D  |   GND  |                |                             |                               |
+|   D  |   VCC  |                |                             |                               |
+
+
+## Fichiers
+
+### Librairie
+
+La librairie est située dans `projet/lib/`
+
+```
+cd ~/inf1995-68116/projet/lib/
+make clean
+make install
+```
+
+### Épreuve
+
+Le point d'entrée global pour le projet est situé dans `projet/src/src/projet.cpp`
+
+```
+cd ~/inf1995-68116/projet/src/
+make clean
+make install
+```

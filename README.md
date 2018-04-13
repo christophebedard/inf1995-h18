@@ -5,3 +5,7 @@
 ````
 sudo apt-get install gcc-avr binutils-avr avr-libc avrdude
 ````
+
+## Épreuve
+
+Voir le fichier [`projet/LISEZMOI.txt`](./projet/LISEZMOI.txt) pour plus de détails.
