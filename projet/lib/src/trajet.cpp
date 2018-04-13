@@ -13,6 +13,8 @@
 #include "enums_structs.h"
 #include "timer0.h"
 
+CoteMur Trajet::mur_ = CoteMur::Gauche;
+bool    Trajet::droitChangementCote_ = false; 
 /**
  * Change de cote vers la gauche
  * @pourcentageDroit : la vitesse presente du moteur droit
@@ -58,47 +60,34 @@ void Trajet::changerCoteDroit(uint8_t pourcentageDroit, uint8_t pourcentageGauch
     setCoteSuivi(CoteMur::Droit);
 }*/
 
-bool verifierDetection()
+bool Trajet::verifierDetection()
 {
+	uint8_t gauche = 0;
+    bool isValideDroit = CapteursDistance::getDistanceDroit(&gauche);
+    uint8_t droit = 0;
+    bool isValideGauche = CapteursDistance::getDistanceGauche(&droit);
     switch (Trajet::getCoteSuivi())
     {
-        case CoteMur::Droit:
-            if ((CapteursDistance::getDistanceGauche() < 10) || (CapteursDistance::getDistanceGauche() > 60))
+		
+        case CoteMur::Droit:{
+            if (gauche > 60)
                 return false;
-            else if ((CapteursDistance::getDistanceGauche() >= 10) && (CapteursDistance::getDistanceGauche() <= 60))
+            else if ((gauche >= 10) && (gauche <= 60))
                 return true;
-            
-        case CoteMur::Gauche:
-            if ((CapteursDistance::getDistanceDroit() < 10) || (CapteursDistance::getDistanceDroit() > 60))
+            break;}
+        case CoteMur::Gauche:{
+            if (droit > 60)
                 return false;
-            else if ((CapteursDistance::getDistanceDroit() >= 10) && (CapteursDistance::getDistanceDroit() <= 60))
+            else if ((droit >= 10) && (droit <= 60))
                 return true;
-    }
-}
-
-
-bool verifierDetection()
-{
-    switch (Trajet::getCoteSuivi())
-    {
-        case CoteMur::Droit:
-            if ((CapteursDistance::getDistanceGauche() < 10) || (CapteursDistance::getDistanceGauche() > 60))
-                return false;
-            else if ((CapteursDistance::getDistanceGauche() >= 10) && (CapteursDistance::getDistanceGauche() <= 60))
-                return true;
-            
-        case CoteMur::Gauche:
-            if ((CapteursDistance::getDistanceDroit() < 10) || (CapteursDistance::getDistanceDroit() > 60))
-                return false;
-            else if ((CapteursDistance::getDistanceDroit() >= 10) && (CapteursDistance::getDistanceDroit() <= 60))
-                return true;
+			break;}
     }
 }
 
 
 void moitiePoteau()
 {
-    if (!(verifierDetection()))
+    if (!(Trajet::verifierDetection()))
     {
         Timer0::stop();
         
@@ -109,7 +98,7 @@ void moitiePoteau()
  */
 void poteauDetecte()
 {   //5.1 cm
-    if (verifierDetection()){
+    if (Trajet::verifierDetection()){
         Timer0::stop();
         for (uint8_t i = 0; i < 3; i++)
         {
@@ -118,6 +107,7 @@ void poteauDetecte()
             Buzzer::stop();
             waitForMs(100);
         }
+        //ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
     }
 }
 
@@ -228,13 +218,18 @@ void Trajet::execute()
     init();
 	for(;;) 
 {
-	uint8_t gauche = 0;
+		uint8_t gauche = 0;
         bool isValideDroit = CapteursDistance::getDistanceDroit(&gauche);
         uint8_t droit = 0;
         bool isValideGauche = CapteursDistance::getDistanceGauche(&droit);
         
-        uint8_t pourcentage = 50;
-    EtatTrajet EtatActuel = EtatTrajet::Initial; 
+		/*ControleMoteurs::setVitesses(60, DirectionMoteur::Avant, 0,
+		 DirectionMoteur::Avant);
+        if (droit >= 10 && droit <= 60){
+            Timer0::setOCRnA(7812*2);
+            Timer0::setOCRnB(7812);
+		}
+    /*EtatTrajet EtatActuel = EtatTrajet::Initial; 
     switch (EtatActuel){
 		
 		case EtatTrajet::Initial:{
@@ -269,8 +264,8 @@ void Trajet::execute()
         break;}
             
         case EtatTrajet::SuiviMur:{
-			Timer0::setOCRnA(700);
-			Timer0::setOCRnB(350);
+			Timer0::setOCRnA(7812/2);
+			Timer0::setOCRnB(7812/4);
 			switch (getCoteSuivi())
 			{
 			

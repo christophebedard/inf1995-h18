@@ -31,11 +31,13 @@
 #define CONTOURNEMENT_ATTENTE           3000    ///< le delai d'attente pour effectuer le contournement
 
 // constantes pour le changement de mur
-#define CHANGEMENT_VITESSE_LIN 20
+#define CHANGEMENT_VITESSE_LIN    30
 
-#define CHANGEMENT_VITESSE_ANG 50
+#define CHANGEMENT_VITESSE_ANG    50
 
-#define CHANGEMENT_ATTENTE     550
+#define CHANGEMENT_ATTENTE        800
+
+#define CHANGEMENT_ATTENTE_RETOUR 700
 
 /**
  * \class ControleMoteurs
