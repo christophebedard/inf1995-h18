@@ -13,17 +13,13 @@
 
 int main()
 {
-    /* Sequence initiale */
-    DDRA |= 0x3;
-    PORTA = ROUGE;
-    waitForMs(250);
-    PORTA = VERT;
-    waitForMs(250);
-    PORTA = ROUGE;
-    waitForMs(250);
-    PORTA = VERT;
-    waitForMs(250);
-    PORTA = ETEINT;
+    // sequence initiale : lecture fichier wav
+    LecteurWav::init();
+    LecteurWav::setWav(tinkywinky_data, tinkywinky_longueur);
+    LecteurWav::play();
+    while(LecteurWav::isPlaying());
+
+    // ------------------------------------------------------------
 
     // initialisation du lecteur de memoire
     Memoire24CXXX mem;
