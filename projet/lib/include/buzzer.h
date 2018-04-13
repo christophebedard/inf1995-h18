@@ -6,7 +6,7 @@
  * \brief declaration de la classe Buzzer
  * \author 
  * 
- * Brancher le buzzer entre BROCHE_BUZZER et GND (port C)
+ * Brancher le buzzer entre BROCHE_BUZZER et GND (port B)
  */
 
 #include <avr/io.h>
@@ -55,7 +55,7 @@ public:
     friend void callbackNote();
 
 private:
-    static const NoteMidi DATA_NOTES[]; /**< les informations pour les notes (prescaler et valeur de OCRn) */
+    static const NoteMidi DATA_NOTES[]; ///< les informations pour les notes (prescaler et valeur de OCRn)
 
 };
 
