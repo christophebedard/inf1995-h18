@@ -98,7 +98,7 @@ void moitiePoteau()
  */
 void poteauDetecte()
 {   //5.1 cm
-    if (Trajet::verifierDetection()){
+    if (!(Trajet::verifierDetection())){
         Timer0::stop();
         for (uint8_t i = 0; i < 3; i++)
         {
@@ -107,7 +107,6 @@ void poteauDetecte()
             Buzzer::stop();
             waitForMs(100);
         }
-        //ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
     }
 }
 
@@ -236,7 +235,8 @@ void Trajet::execute()
 			
 			// le robot ne devrait pas avoir le droit de changer de cote,
 			// puisqu'il est suppose ne voir qu'un seul mur initialement
-			setDroitChangementCote(false);
+			PORTA = ROUGE;
+            setDroitChangementCote(false);
 
 			// selectionne le mur initial a suivre
 			uint8_t lectDist = 60;
@@ -264,6 +264,7 @@ void Trajet::execute()
         break;}
             
         case EtatTrajet::SuiviMur:{
+            PORTA = VERT;
 			Timer0::setOCRnA(7812/2);
 			Timer0::setOCRnB(7812/4);
 			switch (getCoteSuivi())
@@ -273,6 +274,7 @@ void Trajet::execute()
 					//Si rien n'est détecté par le capteur opposé
 					if(gauche > 60)
 					{
+                        PORTA = ROUGE;
 						ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
 						SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, 
 						SUIVI_MUR_TOL);
@@ -299,6 +301,7 @@ void Trajet::execute()
 				case CoteMur::Gauche:{
 					if(droit > 60)//Si rien n'est détecté par le capteur opposé
 					{
+                        PORTA = ROUGE;
 						ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
 						SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, SUIVI_MUR_TOL);
 					}
@@ -325,6 +328,7 @@ void Trajet::execute()
         case EtatTrajet::ChangementMur:{
             //Changer de mur et activer l'interdiction de changer de mur
             //Retourner à l'état SuiviMur
+            PORTA = ROUGE;
             if (Trajet::getCoteSuivi() == CoteMur::Droit)
 				Trajet::setCoteSuivi(CoteMur::Gauche);
 			else if (Trajet::getCoteSuivi() == CoteMur::Gauche)
@@ -337,6 +341,7 @@ void Trajet::execute()
             //En fonction du coté de mur suivi, faire le tour dans le
 				//bon sens
             //Retourner à l'état SuiviMur
+            PORTA = ROUGE;
             ControleMoteurs::doDemiTour(getCoteSuivi());
             
             EtatActuel = EtatTrajet::SuiviMur;   
@@ -345,7 +350,8 @@ void Trajet::execute()
         case EtatTrajet::ContournementMur:{
             //En fonction du coté de mur suivi, faire le contournement
 				//dans lebon sens
-            //Retourner à l'état SuiviMur  
+            //Retourner à l'état SuiviMur 
+            PORTA = ROUGE;
             ControleMoteurs::doContournementMur(getCoteSuivi());
             
             EtatActuel = EtatTrajet::SuiviMur; 
