@@ -29,7 +29,7 @@
 #define BROCHE_LED_B 2
 
 /**
- * Broches lesquelles la LED est connectee (1-8)
+ * Broches sur lesquelles la LED est connectee (1-8)
  */
 #define BROCHES_LED (_BV(_BROCHE_TO_PIN(BROCHE_LED_A)) | _BV(_BROCHE_TO_PIN(BROCHE_LED_B)))
 
