@@ -6,28 +6,28 @@
 
 #include "time.h"
 
+tm_t Time::relTime_ = {0, 0, 0, 0};
 
-Time::Time()
-	: dix_(0)
-	  sec_(0)
-	  min_(0)
+void callback1MHz()
 {
+	Time::systemTick();
 }
 
-Time::Time(uint8_t dix, uint8_t sec, uint8_t min)
-	: dix_(dix)
-	  sec_(sec)
-	  min_(min)
+void Time::init()
 {
+	cli();
+
+	Timer0::setWaveformGenerationMode(WGM::Mode_2);
+	Timer0::setPrescaler(Prescaler::Div_64);
+	Timer0::setInterruptEnable(true, false, false);
+	Timer0::setCompACallback(&callback1MHz);
+	Timer0::setOCRnA(125);
+	Timer0::resetTCNTn();
+
+	sei();
 }
 
-Time::~Time()
-{
-}
-
-
-
-void Time::tick()
+void Time::systemTick()
 {
 	// incremente millisecondes
 	relTime_.tm_dix++;
@@ -64,10 +64,16 @@ void Time::tick()
 	}
 }
 
-bool Time::operator>(Time d)
+bool Time::isEcoule(tm_t initTime, tm_t deltaTime)
 {
-	/// \todo modifier
+	// garde le temps momentane
+	tm_t refTime = getTime();
 
+	return isEcoule(initTime, deltaTime, refTime);
+}
+
+bool Time::isEcoule(tm_t initTime, tm_t deltaTime, tm_t refTime)
+{
 	// aditionne initTime et deltaTime
 	tm_t addTime = add(initTime, deltaTime);
 
@@ -102,10 +108,8 @@ bool Time::operator>(Time d)
 	return ecoule;
 }
 
-Time& Time::operator+(Time d)
+tm_t Time::add(tm_t t1, tm_t t2)
 {
-	/// \todo modifier
-
 	tm_t res = tm(0, 0, 0, 0);
 
 	/// \todo verifier
@@ -146,6 +150,10 @@ Time& Time::operator+(Time d)
 	}
 }
 
+tm_t Time::getTime()
+{
+	return relTime_;
+}
 
 tm_t Time::tm(uint8_t dix, uint8_t sec, uint8_t min, uint8_t heu)
 {
@@ -158,6 +166,11 @@ tm_t Time::tm(uint8_t dix, uint8_t sec, uint8_t min, uint8_t heu)
 }
 
 void Time::debug()
+{
+	debug(relTime_);
+}
+
+void Time::debug(tm_t t)
 {
 	Debug::out(t.tm_heure);
 	Debug::out(":");
