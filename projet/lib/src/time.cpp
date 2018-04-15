@@ -8,163 +8,160 @@
 
 
 Time::Time()
-	: dix_(0)
-	  sec_(0)
-	  min_(0)
 {
+	nDix_ = 0;
+	nSec_ = 0;
+	nMin_ = 0;
 }
 
 Time::Time(uint8_t dix, uint8_t sec, uint8_t min)
-	: dix_(dix)
-	  sec_(sec)
-	  min_(min)
 {
+	nDix_ = dix;
+	nSec_ = sec;
+	nMin_ = min;
+}
+
+Time::Time(const Time& t)
+{
+	operator=(t);
 }
 
 Time::~Time()
 {
 }
 
-
-
 void Time::tick()
 {
 	// incremente millisecondes
-	relTime_.tm_dix++;
+	nDix_++;
+
 	// verifie overflow millisecondes
-	if (relTime_.tm_dix >= TIME_NB_MS)
+	if (nDix_ >= TIME_NB_DIX)
 	{
 		// reset millisecondes
-		relTime_.tm_dix = 0;
+		nDix_ = 0;
 		// incremente secondes
-		relTime_.tm_sec++;
+		nSec_++;
 		// verifie overflow secondes
-		if (relTime_.tm_sec >= TIME_NB_SEC)
+		if (nSec_ >= TIME_NB_SEC)
 		{
 			// reset secondes
-			relTime_.tm_sec = 0;
+			nSec_ = 0;
 			// incremente minutes
-			relTime_.tm_min++;
+			nMin_++;
 			// verifie overflow minutes
-			if (relTime_.tm_min >= TIME_NB_MIN)
+			if (nMin_ >= TIME_NB_MIN)
 			{
 				// reset minutes
-				relTime_.tm_min = 0;
-				// incremente heures
-				relTime_.tm_heure++;
-				// verifie overflow heures
-				if (relTime_.tm_heure >= TIME_NB_HEU)
-				{
-					// reset heures
-					relTime_.tm_heure = 0;
-					// fin : pas de compteur pour jours
-				}
+				nMin_ = 0;
+				// fin : pas de compteur pour heures
 			}
 		}
 	}
 }
 
-bool Time::operator>(Time d)
+Time& Time::operator=(const Time& t)
 {
-	/// \todo modifier
-
-	// aditionne initTime et deltaTime
-	tm_t addTime = add(initTime, deltaTime);
-
-	// compare
-	bool ecoule = false;
-	if (refTime.tm_heure > addTime.tm_heure)
+	if (&t != this)
 	{
-		ecoule = true;
+		nDix_ = t.nDix_;
+		nSec_ = t.nSec_;
+		nMin_ = t.nMin_;
+	}
+
+	return *this;
+}
+
+bool operator<(const Time& g, const Time& d)
+{
+	/// \todo modifier/valider
+	Time cmp;
+
+	bool resultat = false;
+	if (g.nMin_ > d.nMin_)
+	{
+		resultat = true;
 	}
 	else
 	{
-		if (refTime.tm_min > addTime.tm_min)
+		cmp.nSec_ += g.nSec_ + (d.nMin_ * TIME_NB_SEC);
+
+		if (g.nSec_ > d.nSec_)
 		{
-			ecoule = true;
+			resultat = true;
 		}
 		else
 		{
-			if (refTime.tm_sec > addTime.tm_sec)
+			cmp.nDix_ += g.nDix_ + (d.nSec_ * TIME_NB_DIX);
+
+			if (g.nDix_ > d.nDix_)
 			{
-				ecoule = true;
-			}
-			else
-			{
-				if (refTime.tm_dix > addTime.tm_dix)
-				{
-					ecoule = true;
-				}
+				resultat = true;
 			}
 		}
 	}
-	
-	return ecoule;
+
+	return resultat;
 }
 
-Time& Time::operator+(Time d)
+bool operator>(const Time& g, const Time& d) { return d < g; }
+bool operator<=(const Time& g, const Time& d) { return !(g > d); }
+bool operator>=(const Time& g, const Time& d) { return !(g < d); }
+
+Time operator+(const Time& g, const Time& d)
 {
-	/// \todo modifier
+	/// \todo modifier/verifier
 
-	tm_t res = tm(0, 0, 0, 0);
+	// creer un objet pour l'adition
+	Time add;
 
-	/// \todo verifier
-
-	// add millisecondes
-	res.tm_dix = t1.tm_dix + t2.tm_dix;
-	// verifie overflow ms
-	if (res.tm_dix >= TIME_NB_MS)
+	// add dixiemes de secondes
+	add.nDix_ = g.nDix_ + d.nDix_;
+	// verifie overflow dixiemes de secondes
+	if (add.nDix_ >= TIME_NB_DIX)
 	{
-		res.tm_sec = res.tm_dix / TIME_NB_MS;
-		res.tm_dix %= TIME_NB_MS;
+		add.nSec_ = add.nDix_ / TIME_NB_DIX;
+		add.nDix_ %= TIME_NB_DIX;
 	}
 
 	// add secondes
-	res.tm_sec += t1.tm_sec + t2.tm_sec;
+	add.nSec_ += g.nSec_ + d.nSec_;
 	// verifie overflow sec
-	if (res.tm_sec >= TIME_NB_SEC)
+	if (add.nSec_ >= TIME_NB_SEC)
 	{
-		res.tm_min = res.tm_sec / TIME_NB_SEC;
-		res.tm_sec %= TIME_NB_SEC;
+		add.nMin_ = add.nSec_ / TIME_NB_SEC;
+		add.nSec_ %= TIME_NB_SEC;
 	}
 
 	// add minutes
-	res.tm_min += t1.tm_min + t2.tm_min;
+	add.nMin_ += g.nMin_ + d.nMin_;
 	// verifie overflow min
-	if (res.tm_min >= TIME_NB_MIN)
+	if (add.nMin_ >= TIME_NB_MIN)
 	{
-		res.tm_heure = res.tm_min / TIME_NB_MIN;
-		res.tm_min %= TIME_NB_MIN;
+		add.nMin_ %= TIME_NB_MIN;
 	}
 
-	// add heures
-	res.tm_heure += t1.tm_heure + t2.tm_heure;
-	// verifie overflow min
-	if (res.tm_heure >= TIME_NB_HEU)
-	{
-		res.tm_heure = 0;
-	}
+	return add;
 }
 
-
-tm_t Time::tm(uint8_t dix, uint8_t sec, uint8_t min, uint8_t heu)
+Time& Time::operator++(int)
 {
-	tm_t t;
-	t.tm_dix = dix;
-	t.tm_sec = sec;
-	t.tm_min = min;
-	t.tm_heure = heu;
-	return t;
+	tick();
+
+	return *this;
 }
 
-void Time::debug()
+uint8_t Time::getDix() const
 {
-	Debug::out(t.tm_heure);
-	Debug::out(":");
-	Debug::out(t.tm_min);
-	Debug::out(":");
-	Debug::out(t.tm_sec);
-	Debug::out(":");
-	Debug::out(t.tm_dix);
-	Debug::out("\n");
+	return nDix_;
+}
+
+uint8_t Time::getSec() const
+{
+	return nSec_;
+}
+
+uint8_t Time::getMin() const
+{
+	return nMin_;
 }

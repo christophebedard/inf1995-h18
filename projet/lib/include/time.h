@@ -21,7 +21,7 @@
  * \brief classe qui represente un temps
  *      plus ou moins inspire de timer.h :
  *          https://www.nongnu.org/avr-libc/user-manual/time_8h_source.html
- * supporte : +, >
+ * supporte : +, =, >, <, >=, <=
  */
 class Time
 {
@@ -41,6 +41,13 @@ public:
     Time(uint8_t dix, uint8_t sec, uint8_t min);
 
     /**
+     * Constructeur par copie
+     * 
+     * \param t : l'objet a copier
+     */
+    Time(const Time& t);
+
+    /**
      * Destructeur
      */
     ~Time();
@@ -48,35 +55,51 @@ public:
     /**
      * Incremente le temps de 1 ms
      */
-    static void tick();
+    void tick();
 
     /**
-     * Appelle Debug::out() pour afficher le temps
+     * Surcharge d'operateur = (assignation)
+     * 
+     * \param t : l'objet a assigner
      */
-    void debug();
+    Time& operator=(const Time& t);
+
+    /**
+     * Surcharge d'operateur < (plus petit)
+     * 
+     * \param g : l'objet de gauche
+     * \param d : l'objet de droite
+     * 
+     * \return le resultat de la comparaison
+     */
+    friend bool operator<(const Time& g, const Time& d);
+
+    friend bool operator>(const Time& g, const Time& d);
+    friend bool operator<=(const Time& g, const Time& d);
+    friend bool operator>=(const Time& g, const Time& d);
 
     /**
      * Surcharge d'operateur + (adition)
      * 
      * \param d : l'objet a droite
      * 
-     * \return le resultat de l'adition
+     * \return le resultat de l'adition (par copie)
      */
-    Time& operator+(Time d);
+    friend Time operator+(const Time& g, const Time& d);
 
     /**
-     * Surcharge d'operateur > (plus grand)
-     * 
-     * \param d : l'objet a droite
-     * 
-     * \return le resultat de la comparaison
+     * Surcharge d'operateur ++ (increment)
      */
-    bool operator>(Time d);
+    Time& operator++(int);
+
+    uint8_t getDix() const;
+    uint8_t getSec() const;
+    uint8_t getMin() const;
 
 private:
-    uint8_t dix_;   ///< nombre de dixiemes de seconde
-    uint8_t sec_;   ///< nombre de secondes
-    uint8_t min_;   ///< nombre de minutes
+    uint8_t nDix_;   ///< nombre de dixiemes de seconde
+    uint8_t nSec_;   ///< nombre de secondes
+    uint8_t nMin_;   ///< nombre de minutes
 
 };
 
