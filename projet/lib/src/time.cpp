@@ -1,24 +1,27 @@
 /**
  * \file time.cpp
- * \brief implementation de la classe Timer
+ * \brief implementation de la classe Time
  * \author 
  */
 
 #include "time.h"
 
-
 Time::Time()
 {
 	nDix_ = 0;
-	nSec_ = 0;
-	nMin_ = 0;
 }
 
 Time::Time(uint8_t dix, uint8_t sec, uint8_t min)
 {
+	// nombre total dixiemes
+	// = nb dixiemes
+	//   + (nb dixiemes/seconde * (nb secondes + (nb secondes/minutes * nb minutes)))
+	nDix_ = (uint16_t)(dix + (TIME_NB_DIX * (sec + (TIME_NB_SEC * min))));
+}
+
+Time::Time(uint16_t dix)
+{
 	nDix_ = dix;
-	nSec_ = sec;
-	nMin_ = min;
 }
 
 Time::Time(const Time& t)
@@ -32,32 +35,8 @@ Time::~Time()
 
 void Time::tick()
 {
-	// incremente millisecondes
+	// incremente dixiemes de seconde
 	nDix_++;
-
-	// verifie overflow millisecondes
-	if (nDix_ >= TIME_NB_DIX)
-	{
-		// reset millisecondes
-		nDix_ = 0;
-		// incremente secondes
-		nSec_++;
-		// verifie overflow secondes
-		if (nSec_ >= TIME_NB_SEC)
-		{
-			// reset secondes
-			nSec_ = 0;
-			// incremente minutes
-			nMin_++;
-			// verifie overflow minutes
-			if (nMin_ >= TIME_NB_MIN)
-			{
-				// reset minutes
-				nMin_ = 0;
-				// fin : pas de compteur pour heures
-			}
-		}
-	}
 }
 
 Time& Time::operator=(const Time& t)
@@ -65,83 +44,20 @@ Time& Time::operator=(const Time& t)
 	if (&t != this)
 	{
 		nDix_ = t.nDix_;
-		nSec_ = t.nSec_;
-		nMin_ = t.nMin_;
 	}
 
 	return *this;
 }
 
-bool operator<(const Time& g, const Time& d)
-{
-	/// \todo modifier/valider
-	Time cmp;
-
-	bool resultat = false;
-	if (g.nMin_ > d.nMin_)
-	{
-		resultat = true;
-	}
-	else
-	{
-		cmp.nSec_ += g.nSec_ + (d.nMin_ * TIME_NB_SEC);
-
-		if (g.nSec_ > d.nSec_)
-		{
-			resultat = true;
-		}
-		else
-		{
-			cmp.nDix_ += g.nDix_ + (d.nSec_ * TIME_NB_DIX);
-
-			if (g.nDix_ > d.nDix_)
-			{
-				resultat = true;
-			}
-		}
-	}
-
-	return resultat;
-}
-
-bool operator>(const Time& g, const Time& d) { return d < g; }
-bool operator<=(const Time& g, const Time& d) { return !(g > d); }
-bool operator>=(const Time& g, const Time& d) { return !(g < d); }
+bool operator<(const Time& g, const Time& d) { return (g.nDix_ < d.nDix_); }
+bool operator>(const Time& g, const Time& d) { return (g.nDix_ > d.nDix_); }
+bool operator<=(const Time& g, const Time& d) { return (g.nDix_ <= d.nDix_); }
+bool operator>=(const Time& g, const Time& d) { return (g.nDix_ >= d.nDix_); }
 
 Time operator+(const Time& g, const Time& d)
 {
-	/// \todo modifier/verifier
-
-	// creer un objet pour l'adition
-	Time add;
-
 	// add dixiemes de secondes
-	add.nDix_ = g.nDix_ + d.nDix_;
-	// verifie overflow dixiemes de secondes
-	if (add.nDix_ >= TIME_NB_DIX)
-	{
-		add.nSec_ = add.nDix_ / TIME_NB_DIX;
-		add.nDix_ %= TIME_NB_DIX;
-	}
-
-	// add secondes
-	add.nSec_ += g.nSec_ + d.nSec_;
-	// verifie overflow sec
-	if (add.nSec_ >= TIME_NB_SEC)
-	{
-		add.nMin_ = add.nSec_ / TIME_NB_SEC;
-		add.nSec_ %= TIME_NB_SEC;
-	}
-
-	// add minutes
-	add.nMin_ += g.nMin_ + d.nMin_;
-	// verifie overflow min
-	if (add.nMin_ >= TIME_NB_MIN)
-	{
-		add.nMin_ %= TIME_NB_MIN;
-	}
-
-	return add;
+	return Time(g.nDix_ + d.nDix_);
 }
 
 Time& Time::operator++(int)
@@ -151,17 +67,28 @@ Time& Time::operator++(int)
 	return *this;
 }
 
-uint8_t Time::getDix() const
+uint16_t Time::getDixTotal() const
 {
 	return nDix_;
 }
 
+uint8_t Time::getDix() const
+{
+	// nb dixiemes = 
+	//		nb dixiemes % (nb dixiemes / seconde)
+	return (nDix_ % TIME_NB_DIX);
+}
+
 uint8_t Time::getSec() const
 {
-	return nSec_;
+	// nb secondes = 
+	//		(nb dixiemes % (nb dixiemes / minute)) / (nb dixiemes / seconde)
+	return ((nDix_ % (TIME_NB_DIX * TIME_NB_SEC)) / TIME_NB_DIX);
 }
 
 uint8_t Time::getMin() const
 {
-	return nMin_;
+	// nb minutes =
+	//		nb dixiemes total / (nb dixiemes / minute)
+	return (nDix_ / (TIME_NB_DIX * TIME_NB_SEC));
 }

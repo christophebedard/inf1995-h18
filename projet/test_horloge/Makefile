@@ -1,9 +1,9 @@
 ####################################################
-################ MAKEFILE TEST TIME ################
+############### MAKEFILE TEST HORLOGE ##############
 ####################################################
 
 # nom du projet
-PROJECTNAME=testtime
+PROJECTNAME=testhorloge
 # dossier include (.h)
 INCDIR=include
 # dossier build (output)

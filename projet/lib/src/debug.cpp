@@ -158,7 +158,7 @@ void Debug::out(const Time& t)
 	out(t.getMin());
 	out(":");
 	out(t.getSec());
-	out(":");
+	out(".");
 	out(t.getDix());
 	out("\n");
 }

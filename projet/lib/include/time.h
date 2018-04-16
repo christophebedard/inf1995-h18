@@ -41,6 +41,13 @@ public:
     Time(uint8_t dix, uint8_t sec, uint8_t min);
 
     /**
+     * Constructeur par parametres
+     * 
+     * \param dix : le nombre de dixiemes de secondes au total
+     */
+    Time(uint16_t dix);
+
+    /**
      * Constructeur par copie
      * 
      * \param t : l'objet a copier
@@ -92,14 +99,36 @@ public:
      */
     Time& operator++(int);
 
+    /**
+     * Accesseur pour le nombre de dixiemes de seconde au total
+     * 
+     * \return le nombre de dixiemes de seconde au total
+     */
+    uint16_t getDixTotal() const;
+
+    /**
+     * Accesseur pour le nombre de dixiemes de seconde
+     * 
+     * \return le nombre de dixiemes de seconde
+     */
     uint8_t getDix() const;
+
+    /**
+     * Accesseur pour le nombre de secondes
+     * 
+     * \return le nombre de secondes
+     */
     uint8_t getSec() const;
+
+    /**
+     * Accesseur pour le nombre de minutes
+     * 
+     * \return le nombre de minutes
+     */
     uint8_t getMin() const;
 
 private:
-    uint8_t nDix_;   ///< nombre de dixiemes de seconde
-    uint8_t nSec_;   ///< nombre de secondes
-    uint8_t nMin_;   ///< nombre de minutes
+    uint16_t nDix_;   ///< nombre de dixiemes de seconde
 
 };
 
