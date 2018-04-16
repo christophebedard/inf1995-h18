@@ -7,15 +7,15 @@
  * \author 
  */
 
-#include "pwm.h"
-#include "uart.h"
-#include "buzzer.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 #include "delai.h"
-#include "memoire_24.h"
 #include "defines.h"
+#include "enums_structs.h"
 #include "capteurs_distance.h"
 #include "controle_moteurs.h"
-#include "enums_structs.h"
+#include "buzzer.h"
+#include "bouton.h"
 
 ///< la tolerance pour la distance du mur initial 
 #define MUR_INITIAL_DISTANCE_TOL 30
@@ -38,15 +38,13 @@ public:
     friend void poteauDetecte();
 
     friend void moitiePoteau();
-    /**
-     * Ami : le callback pour l'execution du demi tour
-     */
-    friend void demiTour();
 
 private:
+    static EtatTrajet etatActuel_;      ///< l'etat actuel du trajet
     static bool droitChangementCote_;   ///< le flag pour le droit de changer de cote
     static CoteMur mur_;                ///< le mur suivi actuellement
     
+    static void setEtat(EtatTrajet nouvEtat);
     static bool verifierDetection();
     static bool getDroitChangementCote();
     static void setDroitChangementCote(bool droitChangementCote);
@@ -58,9 +56,27 @@ private:
      */
     static void init();
 
-    static void changerCoteDroit(uint8_t PourcentageDroit, uint8_t PourcentageGauche);
-    static void changerCoteGauche(uint8_t PourcentageDroit, uint8_t PourcentageGauche);
-    static void ajusterDistance(uint8_t pourcentage);
+    /**
+     * Execution d'un demi tour
+     */
+    static void demiTour();
+
+    /**
+     * Selectionne le mur initial
+     * 
+     * \param gauche : la distance du capteur de distance gauche
+     * \param droit : la distance du capteur de distance droit
+     * 
+     * \return le mur choisit
+     */
+    static CoteMur selectionMurInitial(uint8_t gauche, uint8_t droit);
+
+    /**
+     * Mise a jour de la DEL selon l'etat d'ajustement de la position du robot
+     * 
+     * \param enCoursAjustement : booleen (true si le robot s'ajuste)
+     */
+    static void updateDelAjustement(bool enCoursAjustement);
 
 };
 

@@ -13,52 +13,9 @@
 #include "enums_structs.h"
 #include "timer0.h"
 
-CoteMur Trajet::mur_ = CoteMur::Gauche;
-bool    Trajet::droitChangementCote_ = false; 
-/**
- * Change de cote vers la gauche
- * @pourcentageDroit : la vitesse presente du moteur droit
- * @pourcentageGauche : la vitesse presente du moteur gauche
- */
-/*void Trajet::changerCoteGauche(uint8_t pourcentageDroit, uint8_t pourcentageGauche)
-{   
-    Moteurs::setPourcentageDroite(pourcentageDroit);
-    Moteurs::setPourcentageGauche(0);
-    waitForMs(100);
-    Moteurs::setPourcentage(pourcentageDroit);
-    while(!(CapteursDistance::getDistanceGauche() == 20))
-    {
-
-    }
-    Moteurs::setPourcentageDroite(0);
-    Moteurs::setPourcentageGauche(pourcentageGauche);
-    waitForMs(100);
-    ajusterDistance(pourcentageGauche);
-    setCoteSuivi(CoteMur::Gauche);
-}*/
-
-/**
- * Change de cote vers la droite
- * @pourcentageDroit : la vitesse presente du moteur droit
- * @pourcentageGauche : la vitesse presente du moteur gauche
- */
- /*
-void Trajet::changerCoteDroit(uint8_t pourcentageDroit, uint8_t pourcentageGauche)
-{
-    Moteurs::setPourcentageDroite(0);
-    Moteurs::setPourcentageGauche(pourcentageGauche);
-    waitForMs(100);
-    Moteurs::setPourcentage(pourcentageGauche);
-    while(!(CapteursDistance::getDistanceDroit() == 20))
-    {
-        
-    }
-    Moteurs::setPourcentageDroite(pourcentageDroit);
-    Moteurs::setPourcentageGauche(0);
-    waitForMs(100);
-    ajusterDistance(pourcentageDroit);
-    setCoteSuivi(CoteMur::Droit);
-}*/
+CoteMur     Trajet::mur_ = CoteMur::Gauche;
+bool        Trajet::droitChangementCote_ = false; 
+EtatTrajet  Trajet::etatActuel_ = EtatTrajet::Initial;
 
 bool Trajet::verifierDetection()
 {
@@ -110,60 +67,6 @@ void poteauDetecte()
     }
 }
 
-/**
- * Ajuste la distance au mur pour etre a 15 cm
- * @pourcentage: vitesse du robot
- *//*
-void Trajet::ajusterDistance(uint8_t pourcentage)
-{
-   switch (getCoteSuivi())
-   {
-       case CoteMur::Droit:
-           while(!(CapteursDistance::getDistanceDroit() == 15))
-           {
-                if (CapteursDistance::getDistanceDroit() < 15)
-                {
-                    Moteurs::setPourcentageDroite(0);
-                    Moteurs::setPourcentageGauche(pourcentage);
-                }
-                else if (CapteursDistance::getDistanceDroit() > 15)
-                {
-                    Moteurs::setPourcentageGauche(0);
-                    Moteurs::setPourcentageDroite(pourcentage);
-                }
-                
-            }
-            Moteurs::setPourcentage(pourcentage);
-       case CoteMur::Gauche:
-            while(!(CapteursDistance::getDistanceGauche() == 15))
-            {
-                if (CapteursDistance::getDistanceGauche() < 15)
-                {
-                    Moteurs::setPourcentageGauche(0);
-                    Moteurs::setPourcentageDroite(pourcentage);
-                }
-                else if (CapteursDistance::getDistanceGauche() > 15)
-                {
-                    Moteurs::setPourcentageDroite(0);
-                    Moteurs::setPourcentageGauche(pourcentage);
-                }
-                
-            }
-            Moteurs::setPourcentage(pourcentage);
-    }
-}
-*/
-/**
- * Robot fait un demi demiTour
- */
-void demiTour()
-{
-    ControleMoteurs::doDemiTour(Trajet::getCoteSuivi());
-}
-
-/**
- * initialisation pour le trajet
- */
 void Trajet::init()
 {
     DDRA |= BROCHES_LED;
@@ -171,257 +74,181 @@ void Trajet::init()
     ControleMoteurs::init();
     Buzzer::init();
     Bouton::init();
+    Horloge::init();
     
-    
-    
-    Interruption::initInt1(&demiTour, TypesTriggerInterrupt::RisingEdge);
-    Timer0::setCompACallback(&poteauDetecte);
-    Timer0::setCompBCallback(&moitiePoteau);
-    Timer0::setCompareOutputMode(COM::Clear, COM::Clear);
-    Timer0::setWaveformGenerationMode(WGM::Mode_2);
-    Timer0::setPrescaler(Prescaler::Div_256);
-    Timer0::setInterruptEnable(true, true, false);
-    
-    /*// attributs pour la situation initiale
-
-    // le robot ne devrait pas avoir le droit de changer de cote,
-    // puisqu'il est suppose ne voir qu'un seul mur initialement
     setDroitChangementCote(false);
+    etatActuel_ = 
 
-    // selectionne le mur initial a suivre
-    uint8_t lectDist = 60;
-    CapteursDistance::getDistanceGauche(&lectDist);
-    // si le mur gauche est assez proche
-    if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
-    {
-        setCoteSuivi(CoteMur::Gauche);
-    }
-    else
-    {
-        // sinon, on essaye avec le mur droit
-        uint8_t lectDist = 0;
-        CapteursDistance::getDistanceDroit(&lectDist);
-        if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
-        {
-            setCoteSuivi(CoteMur::Gauche);
-        }
-    }
-    /// \todo attendre qu'il y ait vraiment un mur choisi?*/
+    // autres initialisations de Horloge?
 }
 
-/**
- * Execute le trajet
- */
+
 void Trajet::execute()
 {
     init();
-	for(;;) 
-{
+
+	while(true)
+    {
+        // lecture des valeurs de distance
 		uint8_t gauche = 0;
         bool isValideDroit = CapteursDistance::getDistanceDroit(&gauche);
         uint8_t droit = 0;
         bool isValideGauche = CapteursDistance::getDistanceGauche(&droit);
-        
-		/*ControleMoteurs::setVitesses(60, DirectionMoteur::Avant, 0,
-		 DirectionMoteur::Avant);
-        if (droit >= 10 && droit <= 60){
-            Timer0::setOCRnA(7812*2);
-            Timer0::setOCRnB(7812);
-		}
-    /*EtatTrajet EtatActuel = EtatTrajet::Initial; 
-    switch (EtatActuel){
-		
-		case EtatTrajet::Initial:{
-			
-			// le robot ne devrait pas avoir le droit de changer de cote,
-			// puisqu'il est suppose ne voir qu'un seul mur initialement
-			PORTA = ROUGE;
-            setDroitChangementCote(false);
 
-			// selectionne le mur initial a suivre
-			uint8_t lectDist = 60;
-			CapteursDistance::getDistanceGauche(&lectDist);
-			
-			// si le mur gauche est assez proche
-			if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
-			{
-				setCoteSuivi(CoteMur::Gauche);
-			}
-			else
-			{
-				// sinon, on essaye avec le mur droit
-				uint8_t lectDist = 0;
-				
-				CapteursDistance::getDistanceDroit(&lectDist);
-				
-				if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
-				{
-					setCoteSuivi(CoteMur::Gauche);
-				}
-			}
-			
-			EtatActuel = EtatTrajet::SuiviMur;
-        break;}
-            
-        case EtatTrajet::SuiviMur:{
-            PORTA = VERT;
-			Timer0::setOCRnA(7812/2);
-			Timer0::setOCRnB(7812/4);
-			switch (getCoteSuivi())
-			{
-			
-				case CoteMur::Droit:{
-					//Si rien n'est détecté par le capteur opposé
-					if(gauche > 60)
-					{
-                        PORTA = ROUGE;
-						ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
-						SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, 
-						SUIVI_MUR_TOL);
-					}
-					//Si un mur est détecté par le capteur opposé
-					else if(gauche >= 10 && gauche <= 60) 
-					{
-						if(droitChangementCote_)
-							EtatActuel = EtatTrajet::ChangementMur;
-					}
-					//Si un demitour est commandé
-					else if(Bouton::getEtat() == EtatBouton::Enfonce) 
-					{
-						EtatActuel = EtatTrajet::DemiTour;
-					}
-					//Si un mur doit etre contourné
-					else if(droit > 60) 
-					{
-						EtatActuel = EtatTrajet::ContournementMur;
-					}
-					
-				break;}
-				
-				case CoteMur::Gauche:{
-					if(droit > 60)//Si rien n'est détecté par le capteur opposé
-					{
-                        PORTA = ROUGE;
-						ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
-						SUIVI_MUR_DISTANCE, SUIVI_MUR_VIT_LIN, SUIVI_MUR_TOL);
-					}
-			 
-					else if(droit >= 10 && droit <= 60) //Si un mur est détecté par le capteur opposé
-					{
-						if(droitChangementCote_)
-							EtatActuel = EtatTrajet::ChangementMur;
-					}
-					else if(Bouton::getEtat() == EtatBouton::Enfonce) //Si un demitour est commandé
-					{
-						EtatActuel = EtatTrajet::DemiTour;
-					}
-					else if(gauche > 60) //Si un mur doit etre contourné
-					{
-						EtatActuel = EtatTrajet::ContournementMur;
-					}
-					
-				break;}
-			
-						
-        break;}
-            
-        case EtatTrajet::ChangementMur:{
-            //Changer de mur et activer l'interdiction de changer de mur
-            //Retourner à l'état SuiviMur
-            PORTA = ROUGE;
-            if (Trajet::getCoteSuivi() == CoteMur::Droit)
-				Trajet::setCoteSuivi(CoteMur::Gauche);
-			else if (Trajet::getCoteSuivi() == CoteMur::Gauche)
-				Trajet::setCoteSuivi(CoteMur::Droit);
-            ControleMoteurs::updateChangementCote(getCoteSuivi());
-            EtatActuel = EtatTrajet::SuiviMur;
-        break;}
-            
-        case EtatTrajet::DemiTour:{
-            //En fonction du coté de mur suivi, faire le tour dans le
-				//bon sens
-            //Retourner à l'état SuiviMur
-            PORTA = ROUGE;
-            ControleMoteurs::doDemiTour(getCoteSuivi());
-            
-            EtatActuel = EtatTrajet::SuiviMur;   
-        break;}
+        // lecture du bouton
+        EtatBouton etatBouton = Bouton::getEtat();
         
-        case EtatTrajet::ContournementMur:{
-            //En fonction du coté de mur suivi, faire le contournement
-				//dans lebon sens
-            //Retourner à l'état SuiviMur 
-            PORTA = ROUGE;
-            ControleMoteurs::doContournementMur(getCoteSuivi());
-            
-            EtatActuel = EtatTrajet::SuiviMur; 
-        break;}
-        
-	}
-}
-    /*while (true)
-    {
-        uint8_t gauche = 0;
-        bool isValideDroit = CapteursDistance::getDistanceDroit(&gauche);
-        uint8_t droit = 0;
-        bool isValideGauche = CapteursDistance::getDistanceGauche(&droit);
-        
-        uint8_t pourcentage = 50;
-
-        switch (getCoteSuivi())
+        switch (EtatActuel)
         {
-            case CoteMur::Droit:
-                Moteurs::setPourcentage(pourcentage);
-                if(droit == 15)
+            case EtatTrajet::Initial:
+                // le robot ne devrait pas avoir le droit de changer de cote,
+                // puisqu'il est suppose ne voir qu'un seul mur initialement
+                setDroitChangementCote(false);
+
+                // selectionne le mur initial a suivre
+                setCoteSuivi(selectionMurInitial(gauche, droit));
+                
+                // change immediatement d'etat pour suivi mur
+                setEtat(EtatTrajet::SuiviMur);
+
+                break;
+            
+            case EtatTrajet::SuiviMur:
+                // verifier le robot pourrait changer de cote
+                setDroitChangementCote(true);
+
+                // effectue le suivi de mur
+                uint8_t err = ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
+                                                              SUIVI_MUR_DISTANCE,
+                                                              SUIVI_MUR_VIT_LIN,
+                                                              SUIVI_MUR_TOL);
+
+                switch (getCoteSuivi())
                 {
-                    
-                    if ((gauche > 10) && (gauche <= 60))
-                    {
-                        //Timer0::setOCRnA();//calculer valeurs
-                        if (getDroitChangementCote()){
-                            changerCoteGauche(pourcentage, pourcentage);
-                            setDroitChangementCote(false);
+                
+                    case CoteMur::Droit:
+                        //Si rien n'est détecté par le capteur opposé
+                        if(gauche > 60)
+                        {
+                            PORTA = ROUGE;
+                            ControleMoteurs::updateSuiviMur(getCoteSuivi(), 
+                                                            SUIVI_MUR_DISTANCE,
+                                                            SUIVI_MUR_VIT_LIN,
+                                                            SUIVI_MUR_TOL);
+                        }
+                        //Si un mur est détecté par le capteur opposé
+                        else if(gauche >= 10 && gauche <= 60) 
+                        {
+                            if(droitChangementCote_)
+                                EtatActuel = EtatTrajet::ChangementMur;
+                        }
+                        //Si un demitour est commandé
+                        else if(Bouton::getEtat() == EtatBouton::Enfonce) 
+                        {
+                            EtatActuel = EtatTrajet::DemiTour;
+                        }
+                        //Si un mur doit etre contourné
+                        else if(droit > 60) 
+                        {
+                            EtatActuel = EtatTrajet::ContournementMur;
                         }
                         
-                    }   
-                    //Timer0::stop();
+                    break;
                     
-                }
-                else if (droit < 15)
-                    ajusterDistance(pourcentage);
-                else if ((droit > 15) && (droit <= 60))
-                    ajusterDistance(pourcentage);
-                else if (droit > 60)
-                    ControleMoteurs::doContournementMur(CoteMur::Droit);
-                if (gauche > 60)
-                    setDroitChangementCote(true);
-                    
-            case CoteMur::Gauche:
-                Moteurs::setPourcentage(60);
-                if (gauche == 15)
-                {
-                    if ((droit > 10) && (droit <= 60))
-                    {
-                        //Timer0::setOCRnA();//calculer valeurs revoir gestion detection poteau
-                        if (getDroitChangementCote()){
-                            changerCoteDroit(pourcentage, pourcentage);
-                            setDroitChangementCote(false);
+                    case CoteMur::Gauche:
+                        if(droit > 60)//Si rien n'est détecté par le capteur opposé
+                        {
+                            PORTA = ROUGE;
+                            ControleMoteurs::updateSuiviMur(getCoteSuivi(),
+                                                            SUIVI_MUR_DISTANCE,
+                                                            SUIVI_MUR_VIT_LIN,
+                                                            SUIVI_MUR_TOL);
+                        }
+                
+                        else if(droit >= 10 && droit <= 60) //Si un mur est détecté par le capteur opposé
+                        {
+                            if(droitChangementCote_)
+                                EtatActuel = EtatTrajet::ChangementMur;
+                        }
+                        else if(Bouton::getEtat() == EtatBouton::Enfonce) //Si un demitour est commandé
+                        {
+                            EtatActuel = EtatTrajet::DemiTour;
+                        }
+                        else if(gauche > 60) //Si un mur doit etre contourné
+                        {
+                            EtatActuel = EtatTrajet::ContournementMur;
                         }
                         
-                    }
-                    //Timer0::stop();
-                }
-                else if (gauche < 15)
-                    ajusterDistance(pourcentage);
-                else if ((gauche > 15) && (gauche <= 60))
-                    ajusterDistance(pourcentage);
-                else if (gauche > 60)
-                    ControleMoteurs::doContournementMur(CoteMur::Gauche);
-                if (droit > 60)
-                    setDroitChangementCote(true);
+                    break;
+
+                break;
+                
+            case EtatTrajet::ChangementMur:
+                // interdiction de changer de mur
+                setDroitChangementCote(false);
+
+                // retourner à l'etat SuiviMur
+                if (Trajet::getCoteSuivi() == CoteMur::Droit)
+                    Trajet::setCoteSuivi(CoteMur::Gauche);
+                else if (Trajet::getCoteSuivi() == CoteMur::Gauche)
+                    Trajet::setCoteSuivi(CoteMur::Droit);
+                ControleMoteurs::updateChangementCote(getCoteSuivi());
+
+                setEtat(EtatTrajet::SuiviMur);
+                
+                break;
+                
+            case EtatTrajet::DemiTour:
+                // en fonction du cote de mur suivi, faire le tour dans le bon sens
+                demiTour();
+
+                // changer le cote du mur suivi
+                setCoteSuivi((mur_ == CoteMur::Gauche) ? CoteMur::Droit : CoteMur::Gauche);
+
+                // retour au suivi de mur
+                setEtat(EtatTrajet::SuiviMur);   
+            break;
+            
+            case EtatTrajet::ContournementMur:
+                //En fonction du coté de mur suivi, faire le contournement
+                    //dans lebon sens
+                //Retourner à l'état SuiviMur 
+                PORTA = ROUGE;
+                ControleMoteurs::doContournementMur(getCoteSuivi());
+                
+                setEtat(EtatTrajet::SuiviMur); 
+            break;
+            
         }
-    }*/
 }
+
+// ------------------------------------------------------------
+
+void Trajet::demiTour()
+{
+    ControleMoteurs::doDemiTour(Trajet::getCoteSuivi());
+}
+
+CoteMur Trajet::selectionMurInitial(uint8_t gauche, uint8_t droit)
+{
+    // assume qu'il y a au moins un mur assez proche
+    CoteMur cote = CoteMur::Gauche;
+
+    // si le mur gauche est assez proche
+    if (gauche <= MUR_INITIAL_DISTANCE_TOL)
+    {
+         cote = CoteMur::Gauche;
+    }
+    else
+    {
+        // sinon, on essaye avec le mur droit
+        if (lectDist <= MUR_INITIAL_DISTANCE_TOL)
+        {
+            cote = CoteMur::Gauche;
+        }
+    }
+
+    return cote;
 }
 
 // ------------------------------------------------------------
@@ -434,6 +261,18 @@ bool Trajet::getDroitChangementCote()
 void Trajet::setDroitChangementCote(bool droitChangementCote)
 {
     droitChangementCote_ = droitChangementCote;
+}
+
+void Trajet::updateDelAjustement(bool enCoursAjustement)
+{
+    // update la LED
+    PORTA &= ~(BROCHES_LED);
+    PORTA |= (enCoursAjustement) ? VERT : ROUGE;
+}
+
+void Trajet::setEtat(EtatTrajet nouvEtat)
+{
+    etatActuel_ = nouvEtat;
 }
 
 CoteMur Trajet::getCoteSuivi()

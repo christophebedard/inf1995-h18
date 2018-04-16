@@ -69,8 +69,10 @@ public:
      * \param cmd : la commande (distance par rapport au mur voulue)
      * \param vitLin : la vitesse lineaire a utiliser
      * \param tolErr : la tolerance d'erreur
+     * 
+     * \return l'erreur de distance
      */
-    static void updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
+    uint8_t void updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
 
     /**
      * Execution du contournement d'un mur

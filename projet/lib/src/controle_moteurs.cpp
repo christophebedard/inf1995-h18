@@ -71,7 +71,7 @@ void ControleMoteurs::updateChangementCote(CoteMur nouvMur)
 	setVitesses(CHANGEMENT_VITESSE_LIN,DirectionMoteur::Avant, 0, DirectionMoteur::Avant); 
 }
 
-void ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr)
+uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr)
 {
     /// \todo experimental
 
@@ -188,16 +188,22 @@ void ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t 
                     break;
             }
         }
+
+        // set l'erreur comme etant tres grand
+        // (pour signifier que le robot n'est evidemment pas dans la bonne position)
+        err = 50;
     }
 
     setVitesses(vitLin, DirectionMoteur::Avant, vitAng, dirAng);
 
-    Debug::out(lectDist);
-    Debug::out(", ");
-    Debug::out(err);
-    Debug::out(", ");
-    Debug::out(vitAng);
-    Debug::out("\n");
+    // Debug::out(lectDist);
+    // Debug::out(", ");
+    // Debug::out(err);
+    // Debug::out(", ");
+    // Debug::out(vitAng);
+    // Debug::out("\n");
+
+    return err;
 }
 
 void ControleMoteurs::setVitesses(uint8_t vitLin, DirectionMoteur dirLin, uint8_t vitAng, DirectionMoteur dirAng)

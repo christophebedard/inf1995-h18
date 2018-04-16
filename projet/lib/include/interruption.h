@@ -56,16 +56,4 @@ private:
 
 };
 
-// /**
-//  * Interruption qui fait faire un virage de 180 degre au robot
-//  * 
-//  */
-// void trajetInterrupt();
-
-// /**
-//  * Interruption qui modifie l'etat de l'interrupteur 
-//  */
-// void diagnosticInterrupt();
-
-
 #endif // LIB_INTERRUPTION_H
