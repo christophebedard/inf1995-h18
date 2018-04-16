@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include "defines.h"
 #include "enums_structs.h"
+#include "time.h"
 #include "uart.h"
 
 /**
@@ -64,6 +65,13 @@ public:
      * \param pre : le prescaler a transmettre
      */
     static void out(const Prescaler pre);
+
+    /**
+     * Affichage temps
+     * 
+     * \param t : le temps a transmettre
+     */
+    static void out(const Time& t);
 
     /**
      * Affichage string

@@ -153,6 +153,16 @@ void Debug::out(const Prescaler pre)
     }
 }
 
+void Debug::out(const Time& t)
+{
+	out(t.getMin());
+	out(":");
+	out(t.getSec());
+	out(".");
+	out(t.getDix());
+	out("\n");
+}
+
 void Debug::out(const char* str)
 {
     UART::transmission(str);
