@@ -141,7 +141,7 @@ void Trajet::execute()
                                 Time deltaT = Time(0, 2, 0);
                             
                             }
-                            if (Horloge::isEcoule(t, deltaT))
+                            if (!(Horloge::isEcoule(t, deltaT)))
                                 Trajet::poteauDetecte();
                         }
                         //Si un demitour est commandé
@@ -187,7 +187,7 @@ void Trajet::execute()
                                 Time deltaT = Time(0, 2, 0);
                                //timer
                             }
-                            if (Horloge::isEcoule(t, deltaT))
+                            if (!(Horloge::isEcoule(t, deltaT)))
                                 Trajet::poteauDetecte();
                             
                         }
