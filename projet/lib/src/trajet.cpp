@@ -78,6 +78,9 @@ void Trajet::init()
 void Trajet::execute()
 {
     init();
+    Time t = Time();//timer
+    Time deltaT = Time(0, 2, 0);
+    Time tMoitie = Time(0, 1, 0);
 	while(true)
     {
         // lecture des valeurs de distance
@@ -126,8 +129,7 @@ void Trajet::execute()
                         else if(gauche >= 10 && gauche <= 60) 
                         {   
                             uint8_t temp = gauche;
-                            Time t = Time();//timer
-                            Time deltaT = Time(0, 2, 0);
+                            Horloge::reinitialiser();
                             if(droitChangementCote_){
                                 etatActuel_ = EtatTrajet::ChangementMur;
                                 Trajet::setEnCoursAjustement(true);
@@ -137,13 +139,16 @@ void Trajet::execute()
                             uint8_t dTemp;
                             CapteursDistance::getDistanceGauche(&dTemp);
                             if (dTemp < temp){
-                                Time t = Time();//timer
-                                Time deltaT = Time(0, 2, 0);
-                            
+                                Horloge::reinitialiser();
                             }
-                            if (!(Horloge::isEcoule(t, deltaT)))
-                                Trajet::poteauDetecte();
+                            
                         }
+                            if (!(Horloge::isEcoule(t, deltaT))){
+                                if (Horloge::getTime() > tMoitie){
+                                    Trajet::poteauDetecte();
+                                }
+                            }
+                        
                         //Si un demitour est commandé
                         else if(Bouton::getEtat() == EtatBouton::Enfonce) 
                         {
@@ -171,11 +176,10 @@ void Trajet::execute()
                         }
                 
                         else if(droit >= 10 && droit <= 60) //Si un mur est détecté par le capteur opposé
-                        {
+                            {
                             uint8_t temp = droit;
-                            Time t = Time();//timer
-                            Time deltaT = Time(0, 2, 0);
-                            //timer
+                            Horloge::reinitialiser();
+                        //timer
                             if(droitChangementCote_){
                                 etatActuel_ = EtatTrajet::ChangementMur;
                                 Trajet::setEnCoursAjustement(true);
@@ -183,14 +187,16 @@ void Trajet::execute()
                             uint8_t dTemp;
                             CapteursDistance::getDistanceDroit(&dTemp);
                             if (dTemp < temp){
-                                Time t = Time();//timer
-                                Time deltaT = Time(0, 2, 0);
+                                Horloge::reinitialiser();
                                //timer
                             }
-                            if (!(Horloge::isEcoule(t, deltaT)))
-                                Trajet::poteauDetecte();
                             
                         }
+                            if (!(Horloge::isEcoule(t, deltaT))){
+                                if (Horloge::getTime() > tMoitie){
+                                    Trajet::poteauDetecte();
+                                }
+                            }
                         else if(Bouton::getEtat() == EtatBouton::Enfonce) //Si un demitour est commandé
                         {
                             etatActuel_ = EtatTrajet::DemiTour;

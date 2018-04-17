@@ -33,7 +33,11 @@ public:
      * Initialisation du timer
      */
     static void init();
-
+    
+    /**
+     * Reinitalisation du timer
+     */
+    static void reinitialiser();
     /**
      * Accesseur pour le temps absolu
      * (depuis l'appel a init(), probablement)

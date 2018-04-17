@@ -44,6 +44,11 @@ void Horloge::init()
 	sei();
 }
 
+void Horloge::reinitialiser()
+{
+    Timer0::stop();
+    Horloge::init();
+}
 
 void Horloge::systemTick()
 {
