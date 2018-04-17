@@ -105,7 +105,7 @@ def plot_data(degre, data, data_invalides, data_fit):
 
     # plot
     plt.rc('text', usetex=True)
-    #plt.rc('font', family='serif')
+    plt.rc('font', family='serif')
     plt.title(r'Interpolation des donn\'ees distance/valeur CAN', fontsize=20)
     plt.plot(val_can, distance, 'o-', label=r'mesures')
     plt.plot(data_invalides[:,0], data_invalides[:,1], 'o-r', label=r'mesures invalides')
