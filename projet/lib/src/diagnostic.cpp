@@ -92,14 +92,14 @@ void Diagnostic::update()
     // distance capteur gauche
     uint8_t distGauche = 0;
     CapteursDistance::getDistanceGauche(&distGauche);
-    CapteursDistance::formatDistance(&distGauche);
+    //CapteursDistance::formatDistance(&distGauche);
     transmissionMessage(MessagesRobotLogiciel::DistanceCapteurGauche,
                         distGauche);
     
     // distance capteur droit
     uint8_t distDroit = 0;
     CapteursDistance::getDistanceDroit(&distDroit);
-    CapteursDistance::formatDistance(&distDroit);
+    //CapteursDistance::formatDistance(&distDroit);
     transmissionMessage(MessagesRobotLogiciel::DistanceCapteurDroit,
                         distDroit);
 }
@@ -156,5 +156,5 @@ void Diagnostic::transmettreInfos()
 
     // couleur robot
     transmissionMessage(MessagesRobotLogiciel::CouleurBaseRobot,
-                        (NUMERO_ROBOT == 1) ? COULEUR_ROBOT1 : COULEUR_ROBOT2);
+                        (NUMERO_ROBOT == 0) ? COULEUR_ROBOT1 : COULEUR_ROBOT2);
 }
