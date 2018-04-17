@@ -72,7 +72,7 @@ public:
      * 
      * \return l'erreur de distance
      */
-    uint8_t void updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
+     static uint8_t updateSuiviMur(CoteMur murSuivi, uint8_t cmd, uint8_t vitLin, uint8_t tolErr);
 
     /**
      * Execution du contournement d'un mur

@@ -44,6 +44,7 @@ void Horloge::init()
 	sei();
 }
 
+
 void Horloge::systemTick()
 {
 	// incremente temps (dixieme de seconde)
