@@ -39,10 +39,13 @@ private:
     static bool droitChangementCote_;   ///< le flag pour le droit de changer de cote
     static CoteMur mur_;                ///< le mur suivi actuellement
     static bool enCoursAjustement_;
-    
+    static uint8_t distancePrecedenteGauche_;///< la distance precedente a gauche
+    static uint8_t distancePrecedenteDroit_;///< la distance precedente a gauche
+    static bool isObjetDetectePrecedemment_; ///< le flag pour se souvenir de si on avait detecte un objet precedemment
+
     static void poteauDetecte();
     static void setEtat(EtatTrajet nouvEtat);
-    static bool verifierDetection();
+    static bool isObjetDetecte(uint8_t dist, bool isValide);
     static bool getEnCoursAjustement();
     static void setEnCoursAjustement(bool ajustement);
     static bool getDroitChangementCote();

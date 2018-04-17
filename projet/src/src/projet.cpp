@@ -10,6 +10,8 @@
 #include "memoire_24.h"
 #include "diagnostic.h"
 #include "trajet.h"
+#include "lecteur_wav.h"
+#include "data_tinkywinky.h"
 
 int main()
 {

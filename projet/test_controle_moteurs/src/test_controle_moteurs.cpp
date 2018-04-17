@@ -57,10 +57,10 @@ int main()
     {
         //Diagnostic::update();
         
-        // ControleMoteurs::updateSuiviMur(CoteMur::Gauche,
-        //                                 SUIVI_MUR_DISTANCE,
-        //                                 SUIVI_MUR_VIT_LIN,
-        //                                 SUIVI_MUR_TOL);
+        ControleMoteurs::updateSuiviMur(CoteMur::Droit,
+                                        SUIVI_MUR_DISTANCE,
+                                        SUIVI_MUR_VIT_LIN,
+                                        SUIVI_MUR_TOL);
 
         // delai
         //waitForMs(10);

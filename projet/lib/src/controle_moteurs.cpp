@@ -188,6 +188,19 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                     break;
             }
         }
+        else if (lectDist > 20)
+        {
+            vitAng = 40;
+            switch (murSuivi)
+            {
+                case CoteMur::Gauche:
+                    dirAng = DirectionMoteur::Avant;
+                    break;
+                case CoteMur::Droit:
+                    dirAng = DirectionMoteur::Arriere;
+                    break;
+            }
+        }
 
         // set l'erreur comme etant tres grand
         // (pour signifier que le robot n'est evidemment pas dans la bonne position)

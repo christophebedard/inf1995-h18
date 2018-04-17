@@ -18,7 +18,7 @@
  * Valeur CAN valide minimale (tres grosse distance)
  * selon etalonnage_capteur_distance.py
  */
-#define CAPTEUR_DISTANCE_CAN_VAL_MIN 150
+#define CAPTEUR_DISTANCE_CAN_VAL_MIN 100
 /**
  * Valeur CAN valide maximale (tres petite distance)
  * selon etalonnage_capteur_distance.py
@@ -32,7 +32,7 @@
  * Distance [cm] maximale valide
  * (selon le max de l'enonce du projet)
  */
-#define CAPTEUR_DISTANCE_MAX 60
+#define CAPTEUR_DISTANCE_MAX 45
 /**
  * Distance [cm] minimale a afficher si invalide
  */
@@ -44,7 +44,7 @@
 /**
  * Distance [cm] pour une lecture invalide (tres basse)
  */
-#define CAPTEUR_DISTANCE_CAN_VAL_INVALIDE_MIN 100
+#define CAPTEUR_DISTANCE_CAN_VAL_INVALIDE_MIN 80
 /**
  * Distance [cm] pour une lecture invalide (tres haute)
  */
