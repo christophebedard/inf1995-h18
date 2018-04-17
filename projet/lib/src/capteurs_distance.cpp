@@ -69,6 +69,63 @@ void CapteursDistance::formatDistance(uint8_t* dist)
                : CAPTEUR_DISTANCE_FORMAT_MIN;
 }
 
+uint8_t constrain(uint8_t val, uint8_t min, uint8_t max)
+{
+    uint8_t res = val;
+
+    if (val < min)
+    {
+        res = min;
+    }
+    else if (val > max)
+    {
+        res = max;
+    }
+
+    return res;
+}
+
+bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
+{
+    if (canVal >= 730)
+        *dist = 5;
+    else if (canVal >= 700)
+        *dist = 6;
+    else if (canVal >= 680)
+        *dist = 7;
+    else if (canVal >= 610)
+        *dist = 8;
+    else if (canVal >= 550)
+        *dist = 9;
+    else if (canVal >= 490)
+        *dist = 10;
+    else if (canVal >= 440)
+        *dist = 11;
+    else if (canVal >= 410)
+        *dist = 12;
+    else if (canVal >= 390)
+        *dist = 13;
+    else if (canVal >= 365)
+        *dist = 14;
+    else if (canVal >= 345)
+        *dist = 15;
+    else if (canVal >= 330)
+        *dist = 16;
+    else if (canVal >= 320)
+        *dist = 17;
+    else if (canVal >= 310)
+        *dist = 18;
+    else if (canVal >= 300)
+        *dist = 19;
+    else if (canVal >= 290)
+        *dist = 20;
+    else
+        *dist = constrain((uint8_t)(16667 * pow((double)canVal, -1.176)), 21, 80);
+    
+    return true;
+}
+
+/*
 bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
 {
     // voir util/python/etalonnage_capteur_distance.py
@@ -92,13 +149,13 @@ bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
     {
         // valide
         isValide = true;
-        //*dist = ((6787.0 / ((double)canVal - 3.0)) - 4.0);
-        // // convertir en distance
+        // *dist = ((6787.0 / ((double)canVal - 3.0)) - 4.0);
+        // convertir en distance
          switch (canVal)
          {
-             case 150: *dist = 104; break;
-             case 151: *dist = 103; break;
-             case 152: *dist = 102; break;
+            case 150: *dist = 104; break;
+            case 151: *dist = 103; break;
+            case 152: *dist = 102; break;
             case 153: *dist = 101; break;
             case 154: *dist = 100; break;
             case 155: *dist = 99; break;
@@ -432,3 +489,4 @@ bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
 
     return isValide;
 }
+*/
