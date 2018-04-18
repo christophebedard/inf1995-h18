@@ -4,7 +4,10 @@
 /**
  * \file debug.h
  * \brief declaration de la classe Debug
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
