@@ -141,7 +141,7 @@ void Trajet::execute()
                             if(Bouton::getEtat() == EtatBouton::Enfonce) 
                             {
                                 etatActuel_ = EtatTrajet::DemiTour;
-                                Trajet::setEnCoursAjustement(true);
+                                setEnCoursAjustement(true);
                             }
                             //Si un mur doit etre contourné
 						
@@ -151,7 +151,8 @@ void Trajet::execute()
 									Buzzer::play(50);
 									waitForMs(200);
 									Buzzer::stop();
-									Trajet::setCoteSuivi(CoteMur::Gauche);
+									setCoteSuivi(CoteMur::Gauche);
+                                    setDroitChangementCote(false);
                                     //etatActuel_ = EtatTrajet::ChangementMur;
                                     //Trajet::setEnCoursAjustement(true);
                                      //\todo sortir directement apres ceci?
@@ -178,7 +179,7 @@ void Trajet::execute()
                                     if (!isObjetDetecte(gauche))
                                     {
                                         // on a bien detecte un poteau
-                                        Trajet::poteauDetecte();
+                                        poteauDetecte();
                                     }
                                 }
                             }
@@ -209,14 +210,15 @@ void Trajet::execute()
                             if(Bouton::getEtat() == EtatBouton::Enfonce) 
                             {
                                 etatActuel_ = EtatTrajet::DemiTour;
-                                Trajet::setEnCoursAjustement(true);
+                                setEnCoursAjustement(true);
                             }
 							else if(droitChangementCote_)
                                 {
 									Buzzer::play(50);
 									waitForMs(200);
 									Buzzer::stop();
-									Trajet::setCoteSuivi(CoteMur::Droit);
+									setCoteSuivi(CoteMur::Droit);
+                                    setDroitChangementCote(false);
                                     //etatActuel_ = EtatTrajet::ChangementMur;
                                     //Trajet::setEnCoursAjustement(true);
                                      //todo sortir directement apres ceci?
@@ -242,7 +244,7 @@ void Trajet::execute()
                                     if (!isObjetDetecte(droit))
                                     {
                                         // on a bien detecte un poteau
-                                        Trajet::poteauDetecte();
+                                        poteauDetecte();
                                     }
                                 }
                             }
@@ -256,30 +258,30 @@ void Trajet::execute()
                 case EtatTrajet::ChangementMur:{
                     // interdiction de changer de mur
                     Buzzer::play(50);
-                    Trajet::setDroitChangementCote(false);
+                    setDroitChangementCote(false);
 
                     // inverse le cote suivi
-                    if (Trajet::getCoteSuivi() == CoteMur::Droit)
-                        Trajet::setCoteSuivi(CoteMur::Gauche);
-                    else if (Trajet::getCoteSuivi() == CoteMur::Gauche)
-                        Trajet::setCoteSuivi(CoteMur::Droit);
+                    if (getCoteSuivi() == CoteMur::Droit)
+                        setCoteSuivi(CoteMur::Gauche);
+                    else if (getCoteSuivi() == CoteMur::Gauche)
+                        setCoteSuivi(CoteMur::Droit);
                     
                     ControleMoteurs::updateChangementCote(getCoteSuivi());
 
                     // retourner à l'etat SuiviMur et set le flag
-                    Trajet::setEtat(EtatTrajet::SuiviMur);
-                    Trajet::setEnCoursAjustement(false);
+                    setEtat(EtatTrajet::SuiviMur);
+                    setEnCoursAjustement(false);
                     break;}
                     
                 case EtatTrajet::DemiTour:{
                     // en fonction du cote de mur suivi, faire le tour dans le bon sens
-                    Trajet::demiTour();
+                    demiTour();
                     // changer le cote du mur suivi
                     setCoteSuivi((mur_ == CoteMur::Gauche) ? CoteMur::Droit : CoteMur::Gauche);
 
                     // retour au suivi de mur
-                    Trajet::setEtat(EtatTrajet::SuiviMur);
-                    Trajet::setEnCoursAjustement(false);
+                    setEtat(EtatTrajet::SuiviMur);
+                    setEnCoursAjustement(false);
                 break;}
                 
                 case EtatTrajet::ContournementMur:{
@@ -288,8 +290,8 @@ void Trajet::execute()
                         //dans lebon sens
                     //Retourner à l'état SuiviMur 
                     ControleMoteurs::doContournementMur(getCoteSuivi());
-                    Trajet::setEtat(EtatTrajet::SuiviMur);
-                    Trajet::setEnCoursAjustement(false);
+                    setEtat(EtatTrajet::SuiviMur);
+                    setEnCoursAjustement(false);
                     Buzzer::stop();
                 break;}
             }
