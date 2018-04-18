@@ -1,6 +1,6 @@
 /**
  * \file trajet.cpp
- * \brief implementation de la classe Diagnostic
+ * \brief implementation de la classe Trajet
  * \author Simon Moreau
  * \author Mohamed Saddik
  * \author Fares Ouaissa
