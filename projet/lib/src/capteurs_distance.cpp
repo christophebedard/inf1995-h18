@@ -120,12 +120,12 @@ bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
     else if (canVal >= 290)
         *dist = 20;
     else
-        *dist = constrain((uint8_t)(16667 * pow((double)canVal, -1.176)), 21, 80);
+        *dist = constrain(uint8_t(16667 * pow((double)canVal, -1.176)), 21, 80);
     
     return true;
 }
-
 /*
+
 bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
 {
     // voir util/python/etalonnage_capteur_distance.py
@@ -149,9 +149,9 @@ bool CapteursDistance::canToDistance(uint16_t canVal, uint8_t* dist)
     {
         // valide
         isValide = true;
-        // *dist = ((6787.0 / ((double)canVal - 3.0)) - 4.0);
+         *dist = ((6787.0 / ((double)canVal - 3.0)) - 4.0);
         // convertir en distance
-         switch (canVal)
+        /* switch (canVal)
          {
             case 150: *dist = 104; break;
             case 151: *dist = 103; break;

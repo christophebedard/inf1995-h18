@@ -5,6 +5,7 @@
  */
 
 #include "controle_moteurs.h"
+#include "debug.h"
 
 uint8_t ControleMoteurs::vitesseLineaire_ = 0;
 uint8_t ControleMoteurs::vitesseAngulaire_ = 0;
@@ -54,7 +55,7 @@ void ControleMoteurs::doContournementMur(CoteMur murCont)
             break;
     }
 
-    setVitesses(CONTOURNEMENT_VITESSE_LIN, DirectionMoteur::Avant, CONTOURNEMENT_VITESSE_ANG, dirAng);
+    setVitesses(0, DirectionMoteur::Avant, CONTOURNEMENT_VITESSE_ANG, dirAng);
     waitForMs(CONTOURNEMENT_ATTENTE);
     setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
@@ -64,11 +65,13 @@ void ControleMoteurs::updateChangementCote(CoteMur nouvMur)
     /// \todo experimental
     if (nouvMur == CoteMur::Droit){
         ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Arriere);
+        waitForMs(CHANGEMENT_ATTENTE);
     }
     else if (nouvMur == CoteMur::Gauche){
         ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Avant);
+        waitForMs(CHANGEMENT_ATTENTE);
 	}
-	setVitesses(CHANGEMENT_VITESSE_LIN,DirectionMoteur::Avant, 0, DirectionMoteur::Avant); 
+	//setVitesses(CHANGEMENT_VITESSE_LIN,DirectionMoteur::Avant, 0, DirectionMoteur::Avant); 
 }
 
 uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr)
@@ -113,7 +116,6 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
             }
             
             // determine la vitesse angulaire a appliquer selon l'erreur
-            vitAng = (0 <= err && err <= 20) ? 8 : 12;
             switch (err)
             {
                 default: vitAng = 0; break;
@@ -137,27 +139,27 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                 case 17:
                 case 18:
                 case 19:
-                case 20: vitAng = 10; break;
+                case 20: vitAng = 12; break;
                 case 21:
                 case 22:
                 case 23:
                 case 24:
-                case 25: vitAng = 10; break;
+                case 25: 
                 case 26:
                 case 27:
                 case 28:
                 case 29:
-                case 30: vitAng = 12; break;
+                case 30: vitAng = 14; break;
                 case 31:
                 case 32:
                 case 33:
                 case 34:
-                case 35: vitAng = 14; break;
+                case 35: vitAng = 16; break;
                 case 36:
                 case 37:
                 case 38:
                 case 39:
-                case 40: vitAng = 16; break;
+                case 40: vitAng = 18; break;
                 case 41:
                 case 42:
                 case 43:
@@ -234,6 +236,10 @@ void ControleMoteurs::updateMoteurs()
     DirectionMoteur dirGauche = DirectionMoteur::Avant;
     DirectionMoteur dirDroit = DirectionMoteur::Avant;
     calculVitessesMoteurs(&vitGauche, &vitDroit, &dirGauche, &dirDroit);
+	Debug::out(vitGauche);
+	Debug::out(",");
+	Debug::out(vitDroit);
+	Debug::out("\n");
 
     // set les vitesses
     Moteurs::setDirectionMoteurGauche(dirGauche);

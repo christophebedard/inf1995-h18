@@ -16,7 +16,7 @@
 
 // constantes pour le suivi de mur
 #define SUIVI_MUR_DISTANCE  15  ///< la distance a laquelle on suit le mur
-#define SUIVI_MUR_VIT_LIN   20  ///< la vitesse lineaire avec laquelle on suit le mur
+#define SUIVI_MUR_VIT_LIN   8  ///< la vitesse lineaire avec laquelle on suit le mur
 #define SUIVI_MUR_TOL       3   ///< la tolerance sur l'erreur de la distance avec le mur
 
 // constantes pour le demi tour
@@ -26,14 +26,14 @@
 #define DEMI_TOUR_ATTENTE_IMPULSION     100     ///< le delai d'attente pour l'impulsion d'arret
 
 // constantes pour le contournement
-#define CONTOURNEMENT_VITESSE_LIN       20      ///< la vitesse lineaire pour un contournement
-#define CONTOURNEMENT_VITESSE_ANG       10      ///< la vitesse angulaire absolue pour un contournement
-#define CONTOURNEMENT_ATTENTE           3000    ///< le delai d'attente pour effectuer le contournement
+#define CONTOURNEMENT_VITESSE_LIN       15      ///< la vitesse lineaire pour un contournement
+#define CONTOURNEMENT_VITESSE_ANG       12      ///< la vitesse angulaire absolue pour un contournement
+#define CONTOURNEMENT_ATTENTE           5000    ///< le delai d'attente pour effectuer le contournement
 
 // constantes pour le changement de mur
 #define CHANGEMENT_VITESSE_LIN    30
 
-#define CHANGEMENT_VITESSE_ANG    50
+#define CHANGEMENT_VITESSE_ANG    20
 
 #define CHANGEMENT_ATTENTE        800
 

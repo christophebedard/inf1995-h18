@@ -8,22 +8,30 @@
 #include "debug.h"
 #include "controle_moteurs.h"
 #include "diagnostic.h"
+#include "buzzer.h"
 
 #define DELAI_MS 2000
 
 int main()
 {
     Debug::init();
+    Buzzer::init();
     ControleMoteurs::init();
     CapteursDistance::init();
 
     //Diagnostic::init(true);
     // Debug::out("debut\n");
 
-    // Debug::out("l:80, a:0\n");
-    // ControleMoteurs::setVitesses(80, DirectionMoteur::Avant,
-    //                            0, DirectionMoteur::Avant);
-    // waitForMs(DELAI_MS);
+    //Debug::out("l:80, a:0\n");
+    //ControleMoteurs::setVitesses(35, DirectionMoteur::Avant,
+      //                         20, DirectionMoteur::Avant);
+    //waitForMs(DELAI_MS);
+    Buzzer::play(50);
+    ControleMoteurs::setVitesses(35, DirectionMoteur::Avant, 0, DirectionMoteur::Arriere);
+//     waitForMs(2000);
+//     Buzzer::play(70);
+//     ControleMoteurs::setVitesses(35, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Arriere);
+//     waitForMs(CHANGEMENT_ATTENTE*2);
     // Debug::out("l:-50, a:0\n");
     // ControleMoteurs::setVitesses(50, DirectionMoteur::Arriere,
     //                              0, DirectionMoteur::Avant);
@@ -53,7 +61,7 @@ int main()
     // ControleMoteurs::doDemiTour(CoteMur::Droit);
     // waitForMs(DELAI_MS);
 
-    while(true)
+    /*while(true)
     {
         //Diagnostic::update();
         
@@ -65,6 +73,6 @@ int main()
         // delai
         //waitForMs(10);
     }
-
+*/
     return 0;
 }

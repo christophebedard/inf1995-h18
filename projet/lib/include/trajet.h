@@ -45,7 +45,7 @@ private:
 
     static void poteauDetecte();
     static void setEtat(EtatTrajet nouvEtat);
-    static bool isObjetDetecte(uint8_t dist, bool isValide);
+    static bool isObjetDetecte(uint8_t dist);
     static bool getEnCoursAjustement();
     static void setEnCoursAjustement(bool ajustement);
     static bool getDroitChangementCote();

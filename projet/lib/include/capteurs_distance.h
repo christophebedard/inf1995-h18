@@ -52,7 +52,7 @@
 /**
  * Longueur de la memoire des lectures de valeurs CAN
  */
-#define LONGUEUR_MEMOIRE_LECTURES 5
+#define LONGUEUR_MEMOIRE_LECTURES 50
 
 /**
  * \class CapteursDistance
