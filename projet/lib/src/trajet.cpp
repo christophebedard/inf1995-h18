@@ -41,20 +41,6 @@ bool Trajet::isObjetDetecte(uint8_t dist)
     return res;
 }
 
-/**
- * Termine la minuterie et joue une sequence de trois sons aigus
- */
-void Trajet::poteauDetecte()
-{   //5.1 cm
-    for (uint8_t i = 0; i < 3; i++)
-    {
-        Buzzer::play(110);
-        waitForMs(200);
-        Buzzer::stop();
-        waitForMs(100);
-    }
-}
-
 void Trajet::init()
 {
     DDRA |= BROCHES_LED;
@@ -129,9 +115,7 @@ void Trajet::execute()
                             
                                 if(droitChangementCote_)
                                 {
-									Buzzer::play(50);
-									waitForMs(200);
-									Buzzer::stop();
+									buzzerChangementMur();
 									setCoteSuivi(CoteMur::Gauche);
                                     setDroitChangementCote(false);
                                 }
@@ -172,7 +156,7 @@ void Trajet::execute()
                                     if (!isObjetDetecte(gauche))
                                     {
                                         // on a bien detecte un poteau
-                                        poteauDetecte();
+                                        buzzerPoteauDetecte();
                                     }
                                 }
                             }
@@ -191,9 +175,7 @@ void Trajet::execute()
 
                                 if(droitChangementCote_)
                                 {
-									Buzzer::play(50);
-									waitForMs(200);
-									Buzzer::stop();
+									buzzerChangementMur();
 									setCoteSuivi(CoteMur::Droit);
                                     setDroitChangementCote(false);
                                 }
@@ -212,7 +194,7 @@ void Trajet::execute()
                                 etatActuel_ = EtatTrajet::DemiTour;
                                 setEnCoursAjustement(true);
                             }
-                            
+
                             // si un objet a ete detecte precedemment
                             if (isObjetDetectePrecedemment_)
                             {
@@ -234,7 +216,7 @@ void Trajet::execute()
                                     if (!isObjetDetecte(droit))
                                     {
                                         // on a bien detecte un poteau
-                                        poteauDetecte();
+                                        buzzerPoteauDetecte();
                                     }
                                 }
                             }
@@ -290,6 +272,47 @@ void Trajet::execute()
 
 // ------------------------------------------------------------
 
+void Trajet::buzzerPoteauDetecte()
+{   //5.1 cm
+    for (uint8_t i = 0; i < 3; i++)
+    {
+        Buzzer::play(110);
+        waitForMs(200);
+        Buzzer::stop();
+        waitForMs(100);
+    }
+}
+
+void Trajet::buzzerChangementMur()
+{
+    Buzzer::play(50);
+	waitForMs(200);
+    Buzzer::play(80);
+    waitForMs(200);
+	Buzzer::stop();
+}
+
+void Trajet::buzzerSelectionMur(CoteMur cote)
+{
+    switch (cote)
+    {
+        case CoteMur::Gauche:
+            Buzzer::play(100);
+            waitForMs(300);
+            Buzzer::stop();
+            break;
+        case CoteMur::Droit:
+            Buzzer::play(50);
+            waitForMs(100);
+			Buzzer::stop();
+			waitForMs(100);
+            Buzzer::play(50);
+            waitForMs(100);
+			Buzzer::stop();
+            break;
+    }
+}
+
 void Trajet::demiTour()
 {
     ControleMoteurs::doDemiTour(Trajet::getCoteSuivi());
@@ -303,23 +326,15 @@ CoteMur Trajet::selectionMurInitial(uint8_t gauche, uint8_t droit)
     // si le mur gauche est assez proche
     if (gauche <= droit)
     {
-         cote = CoteMur::Gauche;
-         Buzzer::play(100);
-         waitForMs(300);
-         Buzzer::stop();
+        cote = CoteMur::Gauche;
+         
     }
     else 
     {
-            cote = CoteMur::Droit;
-            Buzzer::play(50);
-            waitForMs(100);
-			Buzzer::stop();
-			waitForMs(100);
-            Buzzer::play(50);
-            waitForMs(100);
-			Buzzer::stop();
-       
+        cote = CoteMur::Droit;
     }
+
+    buzzerSelectionMur(cote);
 
     return cote;
 }

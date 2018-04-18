@@ -43,7 +43,6 @@ private:
     static uint8_t distancePrecedenteDroit_;///< la distance precedente a gauche
     static bool isObjetDetectePrecedemment_; ///< le flag pour se souvenir de si on avait detecte un objet precedemment
 
-    static void poteauDetecte();
     static void setEtat(EtatTrajet nouvEtat);
     static bool isObjetDetecte(uint8_t dist);
     static bool getEnCoursAjustement();
@@ -52,6 +51,10 @@ private:
     static void setDroitChangementCote(bool droitChangementCote);
     static CoteMur getCoteSuivi();
     static void setCoteSuivi(CoteMur mur);
+
+    static void buzzerPoteauDetecte();
+    static void buzzerChangementMur();
+    static void buzzerSelectionMur(CoteMur cote);
 
     /**
      * Initlialisation
