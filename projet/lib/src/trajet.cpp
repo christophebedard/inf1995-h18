@@ -46,8 +46,6 @@ void Trajet::init()
     Debug::init();
     setDroitChangementCote(false);
     etatActuel_ = EtatTrajet::Initial; 
-
-    // autres initialisations de Horloge?
 }
 
 
@@ -63,8 +61,7 @@ void Trajet::execute()
     Time deltaPoteau = Time(5, 2, 0);
     // le temps correspondant a une partie de la longueur d'un poteau
     Time deltaPoteauDebut = Time(4, 0, 0);
-	uint8_t gTemp = 0;
-	uint8_t dTemp = 0;
+	
     // lecture de valeurs pour remplir la memoire
     for (int i = 0; i < LONGUEUR_MEMOIRE_LECTURES; i++)
     {
@@ -73,9 +70,8 @@ void Trajet::execute()
         CapteursDistance::getDistanceGauche(&gauche);
         uint8_t droit = 0;
         CapteursDistance::getDistanceDroit(&droit);
-
 	}
-
+	
 	while(true)
     {
         // lecture des valeurs de distance
@@ -123,12 +119,12 @@ void Trajet::execute()
                             isObjetDetectePrecedemment_ = true;
                             tObjetDetecte = Horloge::getTime();
 							if(droitChangementCote_)
-								{
-									buzzerChangementMur();
-									setCoteSuivi(CoteMur::Gauche);
-									setDroitChangementCote(false);
-									changementEnCours = true;
-								}    
+							{
+								buzzerChangementMur();
+								setCoteSuivi(CoteMur::Gauche);
+								setDroitChangementCote(false);
+								changementEnCours = true;
+							}    
 						}
 						if (distancePrecedenteDroit_ + 5 >= gauche && distancePrecedenteDroit_ - 5 <= gauche)
 							changementEnCours = false;
@@ -190,13 +186,12 @@ void Trajet::execute()
                             isObjetDetectePrecedemment_ = true;
                             tObjetDetecte = Horloge::getTime();
 							if(droitChangementCote_)
-									{
-										buzzerChangementMur();
-										setCoteSuivi(CoteMur::Droit);
-										setDroitChangementCote(false);
-										changementEnCours = true;
-                           
-                            
+							{
+								buzzerChangementMur();
+								setCoteSuivi(CoteMur::Droit);
+								setDroitChangementCote(false);
+								changementEnCours = true;
+							}
                         }
 						if (distancePrecedenteGauche_ + 5 >= droit && distancePrecedenteGauche_ - 5 <= droit)
 							changementEnCours = false;
@@ -254,6 +249,7 @@ void Trajet::execute()
                         // update distancePrecedenteDroit_
                         distancePrecedenteDroit_ = droit;
                         
+                        }
                         break;
                     
                 }
