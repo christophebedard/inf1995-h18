@@ -139,7 +139,7 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                 case 17:
                 case 18:
                 case 19:
-                case 20: vitAng = 12; break;
+                case 20: vitAng = 10; break;
                 case 21:
                 case 22:
                 case 23:
@@ -208,6 +208,33 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
         // (pour signifier que le robot n'est evidemment pas dans la bonne position)
         err = 50;
     }
+    if (lectDist < 7)
+        {
+            vitAng = 25;
+            switch (murSuivi)
+            {
+                case CoteMur::Gauche:
+                    dirAng = DirectionMoteur::Arriere;
+                    break;
+                case CoteMur::Droit:
+                    dirAng = DirectionMoteur::Avant;
+                    break;
+            }
+        }
+     else if (lectDist > 60)
+        {
+            vitAng = 40;
+            switch (murSuivi)
+            {
+                case CoteMur::Gauche:
+                    dirAng = DirectionMoteur::Avant;
+                    break;
+                case CoteMur::Droit:
+                    dirAng = DirectionMoteur::Arriere;
+                    break;
+            }
+        }
+
 
     setVitesses(vitLin, DirectionMoteur::Avant, vitAng, dirAng);
 
