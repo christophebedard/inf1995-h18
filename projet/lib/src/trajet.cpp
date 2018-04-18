@@ -124,40 +124,33 @@ void Trajet::execute()
                             //Si un mur est détecté par le capteur opposé
                             if(gauche >= 10 && gauche <= 60)
                             {
-                                
-                                    isObjetDetectePrecedemment_ = true;
-                                    tObjetDetecte = Horloge::getTime();
+                                isObjetDetectePrecedemment_ = true;
+                                tObjetDetecte = Horloge::getTime();
                             
-                        
+                                if(droitChangementCote_)
+                                {
+									Buzzer::play(50);
+									waitForMs(200);
+									Buzzer::stop();
+									setCoteSuivi(CoteMur::Gauche);
+                                    setDroitChangementCote(false);
+                                }
                             }
+
                             // Si rien n'est détecté par le capteur opposé
                             if(gauche > 60)
                             {
                                 // on peut changer de cote la prochaine fois qu'on detecte un mur
-                              
-                                    setDroitChangementCote(true);
-                            }                        
+                                setDroitChangementCote(true);
+                            }    
+                                                
                             //Si un demitour est commandé
                             if(Bouton::getEtat() == EtatBouton::Enfonce) 
                             {
                                 etatActuel_ = EtatTrajet::DemiTour;
                                 setEnCoursAjustement(true);
                             }
-                            //Si un mur doit etre contourné
-						
-                            else if(droitChangementCote_)
-                                {
-									
-									Buzzer::play(50);
-									waitForMs(200);
-									Buzzer::stop();
-									setCoteSuivi(CoteMur::Gauche);
-                                    setDroitChangementCote(false);
-                                    //etatActuel_ = EtatTrajet::ChangementMur;
-                                    //Trajet::setEnCoursAjustement(true);
-                                     //\todo sortir directement apres ceci?
-                                }
-                        
+
                             // si un objet a ete detecte precedemment
                             if (isObjetDetectePrecedemment_)
                             {
@@ -193,36 +186,33 @@ void Trajet::execute()
                             //Si un mur est détecté par le capteur opposé
                             if(droit >= 10 && droit <= 60)
                             {
-                               
-                                    isObjetDetectePrecedemment_ = true;
-                                    tObjetDetecte = Horloge::getTime();
-                            
-                            
-                            }
-                            // Si rien n'est détecté par le capteur opposé
-                            if(droit > 60)
-                            {
-                                
-                                // on peut changer de cote la prochaine fois qu'on detecte un mur
-                                    setDroitChangementCote(true);
-                            }    
-                            //Si un demitour est commandé
-                            if(Bouton::getEtat() == EtatBouton::Enfonce) 
-                            {
-                                etatActuel_ = EtatTrajet::DemiTour;
-                                setEnCoursAjustement(true);
-                            }
-							else if(droitChangementCote_)
+                                isObjetDetectePrecedemment_ = true;
+                                tObjetDetecte = Horloge::getTime();
+
+                                if(droitChangementCote_)
                                 {
 									Buzzer::play(50);
 									waitForMs(200);
 									Buzzer::stop();
 									setCoteSuivi(CoteMur::Droit);
                                     setDroitChangementCote(false);
-                                    //etatActuel_ = EtatTrajet::ChangementMur;
-                                    //Trajet::setEnCoursAjustement(true);
-                                     //todo sortir directement apres ceci?
                                 }
+                            }
+
+                            // Si rien n'est détecté par le capteur opposé
+                            if(droit > 60)
+                            {
+                                // on peut changer de cote la prochaine fois qu'on detecte un mur
+                                setDroitChangementCote(true);
+                            }
+
+                            //Si un demitour est commandé
+                            if(Bouton::getEtat() == EtatBouton::Enfonce) 
+                            {
+                                etatActuel_ = EtatTrajet::DemiTour;
+                                setEnCoursAjustement(true);
+                            }
+                            
                             // si un objet a ete detecte precedemment
                             if (isObjetDetectePrecedemment_)
                             {
