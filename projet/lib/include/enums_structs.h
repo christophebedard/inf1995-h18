@@ -200,9 +200,7 @@ enum class EtatTrajet
 {
     Initial,
     SuiviMur,
-    ChangementMur,
-    DemiTour,
-    ContournementMur    
+    DemiTour
 };
 
 #endif // LIB_ENUMS_STRUCTS_H

@@ -14,7 +14,7 @@ uint8_t ControleMoteurs::vitesseLineaire_ = 0;
 uint8_t ControleMoteurs::vitesseAngulaire_ = 0;
 DirectionMoteur ControleMoteurs::directionLineaire_ = DirectionMoteur::Avant;
 DirectionMoteur ControleMoteurs::directionAngulaire_ = DirectionMoteur::Avant;
-
+int ControleMoteurs::typeUpdate_ = 4;
 
 void ControleMoteurs::init()
 {
@@ -42,45 +42,12 @@ void ControleMoteurs::doDemiTour(CoteMur murSuivi)
     setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
 }
 
-void ControleMoteurs::doContournementMur(CoteMur murCont)
+
+
+
+uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr,const bool& changementEnCours)
 {
     /// \todo experimental
-
-    // determine le sens de rotation selon le mur a contourner
-    DirectionMoteur dirAng = DirectionMoteur::Avant;
-    switch (murCont)
-    {
-        case CoteMur::Gauche:
-            dirAng = DirectionMoteur::Avant;
-            break;
-        case CoteMur::Droit:
-            dirAng = DirectionMoteur::Arriere;
-            break;
-    }
-
-    setVitesses(0, DirectionMoteur::Avant, CONTOURNEMENT_VITESSE_ANG, dirAng);
-    waitForMs(CONTOURNEMENT_ATTENTE);
-    setVitesses(0, DirectionMoteur::Avant, 0, DirectionMoteur::Avant);
-}
-
-void ControleMoteurs::updateChangementCote(CoteMur nouvMur)
-{
-    /// \todo experimental
-    if (nouvMur == CoteMur::Droit){
-        ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Arriere);
-        waitForMs(CHANGEMENT_ATTENTE);
-    }
-    else if (nouvMur == CoteMur::Gauche){
-        ControleMoteurs::setVitesses(0, DirectionMoteur::Avant, CHANGEMENT_VITESSE_ANG, DirectionMoteur::Avant);
-        waitForMs(CHANGEMENT_ATTENTE);
-	}
-	//setVitesses(CHANGEMENT_VITESSE_LIN,DirectionMoteur::Avant, 0, DirectionMoteur::Avant); 
-}
-
-uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8_t vitLin, uint8_t tolErr)
-{
-    /// \todo experimental
-
     // lecture
     uint8_t lectDist = 0;
     bool isValide = false;
@@ -125,24 +92,24 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                 case 0:
                 case 1:
                 case 2:
-                case 3: vitAng = 3; break;
+                case 3: 
                 case 4:
-                case 5: vitAng = 6; break;
+                case 5:
                 case 6:
-                case 7:
+                case 7: vitAng = 2; break;
                 case 8:
                 case 9:
-                case 10: vitAng = 7; break;
+                case 10: vitAng = 3; break;
                 case 11:
                 case 12:
                 case 13:
                 case 14:
-                case 15: vitAng = 9; break;
+                case 15: vitAng = 5; break;
                 case 16:
                 case 17:
                 case 18:
                 case 19:
-                case 20: vitAng = 10; break;
+                case 20: vitAng = 6; break;
                 case 21:
                 case 22:
                 case 23:
@@ -152,17 +119,17 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                 case 27:
                 case 28:
                 case 29:
-                case 30: vitAng = 14; break;
+                case 30: vitAng = 8; break;
                 case 31:
                 case 32:
                 case 33:
                 case 34:
-                case 35: vitAng = 16; break;
+                case 35: vitAng = 9; break;
                 case 36:
                 case 37:
                 case 38:
                 case 39:
-                case 40: vitAng = 18; break;
+                case 40: vitAng = 10; break;
                 case 41:
                 case 42:
                 case 43:
@@ -172,7 +139,7 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                 case 47:
                 case 48:
                 case 49:
-                case 50: vitAng = 20; break;
+                case 50: vitAng = 11; break;
             }
         }
     }
@@ -182,7 +149,7 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
         // que c'est parce que le robot est trop proche
         if (lectDist < 20)
         {
-            vitAng = 25;
+            vitAng = 8;
             switch (murSuivi)
             {
                 case CoteMur::Gauche:
@@ -195,7 +162,7 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
         }
         else if (lectDist > 20)
         {
-            vitAng = 40;
+            vitAng = 10;
             switch (murSuivi)
             {
                 case CoteMur::Gauche:
@@ -213,7 +180,7 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
     }
     if (lectDist < 7)
         {
-            vitAng = 25;
+            vitAng = 8;
             switch (murSuivi)
             {
                 case CoteMur::Gauche:
@@ -224,21 +191,23 @@ uint8_t ControleMoteurs::updateSuiviMur(CoteMur murSuivi, uint8_t cmdDist, uint8
                     break;
             }
         }
-     else if (lectDist > 60)
+     else if (lectDist > 60 && changementEnCours && typeUpdate_ == 4)
         {
-            vitAng = 40;
+			typeUpdate_ = 0;
+            vitAng = 15;
             switch (murSuivi)
             {
                 case CoteMur::Gauche:
-                    dirAng = DirectionMoteur::Avant;
+                    dirAng = DirectionMoteur::Arriere;
                     break;
                 case CoteMur::Droit:
-                    dirAng = DirectionMoteur::Arriere;
+                    dirAng = DirectionMoteur::Avant;
                     break;
             }
         }
 
-
+	if (typeUpdate_ < 4)
+		typeUpdate_++;
     setVitesses(vitLin, DirectionMoteur::Avant, vitAng, dirAng);
 
     // Debug::out(lectDist);
