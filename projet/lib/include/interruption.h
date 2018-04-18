@@ -4,7 +4,10 @@
 /**
  * \file interruption.h
  * \brief declaration de la classe Interruption
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
@@ -13,9 +16,11 @@
 #include "broches.h"
 #include "enums_structs.h"
 
+
 // declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void INT0_vect(void) __attribute__((signal));
 extern "C" void INT1_vect(void) __attribute__((signal));
+
 
 /**
  * \class Interruption

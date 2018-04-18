@@ -1,7 +1,10 @@
 /**
  * \file chansons.cpp
  * \brief definition de chansons
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "chansons.h"

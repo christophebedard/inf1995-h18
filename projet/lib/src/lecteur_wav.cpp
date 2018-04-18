@@ -1,7 +1,10 @@
 /**
  * \file lecteur_wav.cpp
  * \brief implementation de la classe LecteurWav
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "lecteur_wav.h"

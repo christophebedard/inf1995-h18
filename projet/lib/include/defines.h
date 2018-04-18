@@ -4,7 +4,10 @@
 /**
  * \file defines.h
  * \brief declaration de divers types et constantes globales
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #ifndef F_CPU

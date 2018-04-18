@@ -1,7 +1,10 @@
 /**
  * \file projet.cpp
  * \brief point d'entree du projet
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "defines.h"
@@ -13,15 +16,16 @@
 #include "lecteur_wav.h"
 #include "data_tinkywinky.h"
 
+
 int main()
 {
     // sequence initiale : lecture fichier wav
     LecteurWav::init();
     LecteurWav::setWav(tinkywinky_data, tinkywinky_longueur);
     LecteurWav::play();
-    while(LecteurWav::isPlaying());
+    //while(LecteurWav::isPlaying());
 
-    // ------------------------------------------------------------
+    // ========== execution du programme ========== 
 
     // initialisation du lecteur de memoire
     Memoire24CXXX mem;

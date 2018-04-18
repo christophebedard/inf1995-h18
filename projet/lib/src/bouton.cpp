@@ -1,7 +1,10 @@
 /**
  * \file bouton.cpp
  * \brief implementation de la classe Bouton
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "bouton.h"

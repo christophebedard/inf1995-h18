@@ -1,7 +1,10 @@
 /**
  * \file moteurs.cpp
  * \brief implementation de la classe Moteurs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "moteurs.h"

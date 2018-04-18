@@ -1,20 +1,14 @@
 /**
  * \file trajet.cpp
  * \brief implementation de la classe Diagnostic
- * \author 
+ * \author Simon Moreau
+ * \author Mohamed Saddik
+ * \author Fares Ouaissa
+ * \author Christophe Bourque Bedard
  */
 
 #include "trajet.h"
-#include "interruption.h"
-#include "bouton.h"
-#include "moteurs.h"
-#include "controle_moteurs.h"
-#include "capteurs_distance.h"
-#include "buzzer.h"
-#include "enums_structs.h"
-#include "time.h"
-#include "horloge.h"
-#include "debug.h"
+
 
 CoteMur     Trajet::mur_ = CoteMur::Gauche;
 bool        Trajet::droitChangementCote_ = false; 
@@ -60,9 +54,15 @@ void Trajet::init()
 void Trajet::execute()
 {
     init();
-    Time tObjetDetecte = Time();//timer
-    Time deltaPoteau = Time(50, 0, 0); // le temps correspondant a la longueur d'un poteau
-	for (int i = 0; i < LONGUEUR_MEMOIRE_LECTURES; i++){
+
+    // initialisation de la variable pour le temps detecte
+    Time tObjetDetecte = Time();
+    // le temps correspondant a la longueur d'un poteau
+    Time deltaPoteau = Time(50, 0, 0);
+	
+    // lecture de valeurs pour remplir la memoire
+    for (int i = 0; i < LONGUEUR_MEMOIRE_LECTURES; i++)
+    {
 		// lecture des valeurs de distance
 		uint8_t gauche = 0;
         CapteursDistance::getDistanceGauche(&gauche);
@@ -70,6 +70,7 @@ void Trajet::execute()
         CapteursDistance::getDistanceDroit(&droit);
 
 	}
+
 	while(true)
     {
         // lecture des valeurs de distance
@@ -80,193 +81,216 @@ void Trajet::execute()
 		
         Trajet::updateDelAjustement(Trajet::getEnCoursAjustement());
         
-            switch (etatActuel_)
+        switch (etatActuel_)
+        {
+            case EtatTrajet::Initial:
             {
-                case EtatTrajet::Initial:{
-                    // le robot ne devrait pas avoir le droit de changer de cote,
-                    // puisqu'il est suppose ne voir qu'un seul mur initialement
-                    Trajet::setDroitChangementCote(false);
-
-                    // selectionne le mur initial a suivre
-                    Trajet::setCoteSuivi(selectionMurInitial(gauche, droit));
-                    
-                    // change immediatement d'etat pour suivi mur
-                    Trajet::setEtat(EtatTrajet::SuiviMur);
-                    
-                    break;}
+                // le robot ne devrait pas avoir le droit de changer de cote,
+                // puisqu'il est suppose ne voir qu'un seul mur initialement
+                Trajet::setDroitChangementCote(false);
                 
-                case EtatTrajet::SuiviMur:{
+                // selectionne le mur initial a suivre
+                Trajet::setCoteSuivi(selectionMurInitial(gauche, droit));
+                
+                // change immediatement d'etat pour suivi mur
+                Trajet::setEtat(EtatTrajet::SuiviMur);
 
-                    // effectue le suivi de mur
-                    uint8_t err =ControleMoteurs::updateSuiviMur(Trajet::getCoteSuivi(), 
-                                                    SUIVI_MUR_DISTANCE,
-                                                    SUIVI_MUR_VIT_LIN,
-                                                    SUIVI_MUR_TOL);
-					Trajet::setEnCoursAjustement(!(err <= 3));
-                    
-                    switch (getCoteSuivi())
+                break;
+            }
+            case EtatTrajet::SuiviMur:
+            {
+                // effectue le suivi de mur
+                uint8_t err = ControleMoteurs::updateSuiviMur(Trajet::getCoteSuivi(), 
+                                                              SUIVI_MUR_DISTANCE,
+                                                              SUIVI_MUR_VIT_LIN,
+                                                              SUIVI_MUR_TOL);
+				
+                // update la LED
+                Trajet::setEnCoursAjustement(!(err <= 3));
+                
+                switch (getCoteSuivi())
+                {
+                    case CoteMur::Droit:
                     {
-                        case CoteMur::Droit:
-                            //Si un mur est détecté par le capteur opposé
-                            if(gauche >= 10 && gauche <= 60)
-                            {
-                                isObjetDetectePrecedemment_ = true;
-                                tObjetDetecte = Horloge::getTime();
+                        // si un mur est detecte par le capteur oppose
+                        if(gauche >= 10 && gauche <= 60)
+                        {
+                            isObjetDetectePrecedemment_ = true;
+                            tObjetDetecte = Horloge::getTime();
                             
-                                if(droitChangementCote_)
-                                {
-									buzzerChangementMur();
-									setCoteSuivi(CoteMur::Gauche);
-                                    setDroitChangementCote(false);
-                                }
+                            if(droitChangementCote_)
+                            {
+							    buzzerChangementMur();
+								setCoteSuivi(CoteMur::Gauche);
+                                setDroitChangementCote(false);
                             }
+                        }
 
-                            // Si rien n'est détecté par le capteur opposé
-                            if(gauche > 60)
-                            {
-                                // on peut changer de cote la prochaine fois qu'on detecte un mur
-                                setDroitChangementCote(true);
-                            }    
-                                                
-                            //Si un demitour est commandé
-                            if(Bouton::getEtat() == EtatBouton::Enfonce) 
-                            {
-                                etatActuel_ = EtatTrajet::DemiTour;
-                                setEnCoursAjustement(true);
-                            }
+                        // si rien n'est detecte par le capteur oppose
+                        if(gauche > 60)
+                        {
+                            // on peut changer de cote la prochaine fois qu'on detecte un mur
+                            setDroitChangementCote(true);
+                        }
 
-                            // si un objet a ete detecte precedemment
-                            if (isObjetDetectePrecedemment_)
-                            {
-                                // si le temps (de la longueur du poteau) n'est pas ecoule
-                                if (!(Horloge::isEcoule(tObjetDetecte, deltaPoteau)))
-                                {   
-                                    // on verifie qu'on continue toujours de voir un objet
-                                    // (avec une distance toujours similaire)
-                                    if (!((distancePrecedenteGauche_ - 1) <= gauche
-                                                && (gauche <= (distancePrecedenteGauche_ + 1))))
-                                    {
-                                        isObjetDetectePrecedemment_ = false;
-                                    }
-                                }
-                                else
+                        // si un demitour est commande
+                        if(Bouton::getEtat() == EtatBouton::Enfonce) 
+                        {
+                            etatActuel_ = EtatTrajet::DemiTour;
+                            setEnCoursAjustement(true);
+                        }
+                        
+                        // si un objet a ete detecte precedemment
+                        if (isObjetDetectePrecedemment_)
+                        {
+                            // si le temps (de la longueur du poteau) n'est pas ecoule
+                            if (!(Horloge::isEcoule(tObjetDetecte, deltaPoteau)))
+                            {   
+                                // on verifie qu'on continue toujours de voir un objet
+                                // (avec une distance toujours similaire)
+                                if (!((distancePrecedenteGauche_ - 1) <= gauche
+                                            && (gauche <= (distancePrecedenteGauche_ + 1))))
                                 {
                                     isObjetDetectePrecedemment_ = false;
-                                    // on verifie qu'on ne voit plus l'objet/poteau
-                                    if (!isObjetDetecte(gauche))
-                                    {
-                                        // on a bien detecte un poteau
-                                        buzzerPoteauDetecte();
-                                    }
                                 }
                             }
-                            
-                            // update distancePrecedenteGauche_
-                            distancePrecedenteGauche_ = gauche;
+                            else
+                            {
+                                isObjetDetectePrecedemment_ = false;
+
+                                // on verifie qu'on ne voit plus l'objet/poteau
+                                if (!isObjetDetecte(gauche))
+                                {
+                                    // on a bien detecte un poteau
+                                    buzzerPoteauDetecte();
+                                }
+                            }
+                        }
+                        
+                        // update distancePrecedenteGauche_
+                        distancePrecedenteGauche_ = gauche;
 
                         break;
+                    }
+                    case CoteMur::Gauche:
+                    {
+                        // si un mur est detecte par le capteur oppose
+                        if(droit >= 10 && droit <= 60)
+                        {
+                            isObjetDetectePrecedemment_ = true;
+                            tObjetDetecte = Horloge::getTime();
+
+                            if(droitChangementCote_)
+                            {
+							    buzzerChangementMur();
+								setCoteSuivi(CoteMur::Droit);
+                                setDroitChangementCote(false);
+                            }
+                        }
+
+                        // si rien n'est detecte par le capteur oppose
+                        if(droit > 60)
+                        {
+                            // on peut changer de cote la prochaine fois qu'on detecte un mur
+                            setDroitChangementCote(true);
+                        }
                         
-                        case CoteMur::Gauche:
-                            //Si un mur est détecté par le capteur opposé
-                            if(droit >= 10 && droit <= 60)
-                            {
-                                isObjetDetectePrecedemment_ = true;
-                                tObjetDetecte = Horloge::getTime();
+                        // si un demitour est commande
+                        if(Bouton::getEtat() == EtatBouton::Enfonce) 
+                        {
+                            etatActuel_ = EtatTrajet::DemiTour;
+                            setEnCoursAjustement(true);
+                        }
 
-                                if(droitChangementCote_)
-                                {
-									buzzerChangementMur();
-									setCoteSuivi(CoteMur::Droit);
-                                    setDroitChangementCote(false);
-                                }
-                            }
-
-                            // Si rien n'est détecté par le capteur opposé
-                            if(droit > 60)
-                            {
-                                // on peut changer de cote la prochaine fois qu'on detecte un mur
-                                setDroitChangementCote(true);
-                            }
-
-                            //Si un demitour est commandé
-                            if(Bouton::getEtat() == EtatBouton::Enfonce) 
-                            {
-                                etatActuel_ = EtatTrajet::DemiTour;
-                                setEnCoursAjustement(true);
-                            }
-
-                            // si un objet a ete detecte precedemment
-                            if (isObjetDetectePrecedemment_)
-                            {
-                                // si le temps (de la longueur du poteau) n'est pas ecoule
-                                if (!(Horloge::isEcoule(tObjetDetecte, deltaPoteau)))
-                                {   
-                                    // on verifie qu'on continue toujours de voir un objet
-                                    // (avec une distance toujours similaire)
-                                    if (!((distancePrecedenteDroit_ - 1) <= droit
-                                                && (droit <= (distancePrecedenteDroit_ + 1))))
-                                    {
-                                        isObjetDetectePrecedemment_ = false;
-                                    }
-                                }
-                                else
+                        // si un objet a ete detecte precedemment
+                        if (isObjetDetectePrecedemment_)
+                        {
+                            // si le temps (de la longueur du poteau) n'est pas ecoule
+                            if (!(Horloge::isEcoule(tObjetDetecte, deltaPoteau)))
+                            {   
+                                // on verifie qu'on continue toujours de voir un objet
+                                // (avec une distance toujours similaire)
+                                if (!((distancePrecedenteDroit_ - 1) <= droit
+                                         && (droit <= (distancePrecedenteDroit_ + 1))))
                                 {
                                     isObjetDetectePrecedemment_ = false;
-                                    // on verifie qu'on ne voit plus l'objet/poteau
-                                    if (!isObjetDetecte(droit))
-                                    {
-                                        // on a bien detecte un poteau
-                                        buzzerPoteauDetecte();
-                                    }
                                 }
                             }
-                            
-                            // update distancePrecedenteDroit_
-                            distancePrecedenteDroit_ = droit;
-                        break;}
+                            else
+                            {
+                                isObjetDetectePrecedemment_ = false;
 
-                    break;}
-                    
-                case EtatTrajet::ChangementMur:{
-                    // interdiction de changer de mur
-                    Buzzer::play(50);
-                    setDroitChangementCote(false);
-
-                    // inverse le cote suivi
-                    if (getCoteSuivi() == CoteMur::Droit)
-                        setCoteSuivi(CoteMur::Gauche);
-                    else if (getCoteSuivi() == CoteMur::Gauche)
-                        setCoteSuivi(CoteMur::Droit);
-                    
-                    ControleMoteurs::updateChangementCote(getCoteSuivi());
-
-                    // retourner à l'etat SuiviMur et set le flag
-                    setEtat(EtatTrajet::SuiviMur);
-                    setEnCoursAjustement(false);
-                    break;}
-                    
-                case EtatTrajet::DemiTour:{
-                    // en fonction du cote de mur suivi, faire le tour dans le bon sens
-                    demiTour();
-                    // changer le cote du mur suivi
-                    setCoteSuivi((mur_ == CoteMur::Gauche) ? CoteMur::Droit : CoteMur::Gauche);
-
-                    // retour au suivi de mur
-                    setEtat(EtatTrajet::SuiviMur);
-                    setEnCoursAjustement(false);
-                break;}
-                
-                case EtatTrajet::ContournementMur:{
-					Buzzer::play(50);
-                    //En fonction du coté de mur suivi, faire le contournement
-                        //dans lebon sens
-                    //Retourner à l'état SuiviMur 
-                    ControleMoteurs::doContournementMur(getCoteSuivi());
-                    setEtat(EtatTrajet::SuiviMur);
-                    setEnCoursAjustement(false);
-                    Buzzer::stop();
-                break;}
+                                // on verifie qu'on ne voit plus l'objet/poteau
+                                if (!isObjetDetecte(droit))
+                                {
+                                    // on a bien detecte un poteau
+                                    buzzerPoteauDetecte();
+                                }
+                            }
+                        }
+                        
+                        // update distancePrecedenteDroit_
+                        distancePrecedenteDroit_ = droit;
+                        
+                        break;
+                    }
+                }
+                break;
             }
+            case EtatTrajet::ChangementMur:
+            {
+                /*
+                // interdiction de changer de mur
+                Buzzer::play(50);
+                setDroitChangementCote(false);
+
+                // inverse le cote suivi
+                if (getCoteSuivi() == CoteMur::Droit)
+                {
+                    setCoteSuivi(CoteMur::Gauche);
+                }
+                else if (getCoteSuivi() == CoteMur::Gauche)
+                {
+                    setCoteSuivi(CoteMur::Droit);
+                }
+
+                ControleMoteurs::updateChangementCote(getCoteSuivi());
+
+                // retourner à l'etat SuiviMur et set le flag
+                setEtat(EtatTrajet::SuiviMur);
+                setEnCoursAjustement(false);
+                */
+                break;
+            }
+            case EtatTrajet::DemiTour:
+            {
+                // en fonction du cote de mur suivi, faire le tour dans le bon sens
+                demiTour();
+
+                // changer le cote du mur suivi
+                setCoteSuivi((mur_ == CoteMur::Gauche) ? CoteMur::Droit : CoteMur::Gauche);
+
+                // retour au suivi de mur
+                setEtat(EtatTrajet::SuiviMur);
+                setEnCoursAjustement(false);
+
+                break;
+            }
+            case EtatTrajet::ContournementMur:
+            {
+                /*
+				Buzzer::play(50);
+                // en fonction du cote de mur suivi, faire le contournement
+                // dans le bon sens
+                // retourner a l'etat SuiviMur
+                ControleMoteurs::doContournementMur(getCoteSuivi());
+                setEtat(EtatTrajet::SuiviMur);
+                setEnCoursAjustement(false);
+                Buzzer::stop();
+                */
+                break;
+            }
+        }
     }
 }
 

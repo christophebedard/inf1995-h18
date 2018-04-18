@@ -1,7 +1,10 @@
 /**
  * \file interruption.cpp
  * \brief implementation de la classe Interruption
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "interruption.h"

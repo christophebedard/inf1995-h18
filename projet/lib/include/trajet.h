@@ -4,7 +4,10 @@
 /**
  * \file trajet.h
  * \brief declaration de la classe Trajet
- * \author 
+ * \author Simon Moreau
+ * \author Mohamed Saddik
+ * \author Fares Ouaissa
+ * \author Christophe Bourque Bedard
  */
 
 #include <avr/io.h>
@@ -16,6 +19,8 @@
 #include "controle_moteurs.h"
 #include "buzzer.h"
 #include "bouton.h"
+#include "horloge.h"
+#include "debug.h"
 
 ///< la tolerance pour la distance du mur initial 
 #define MUR_INITIAL_DISTANCE_TOL 30

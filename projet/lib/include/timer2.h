@@ -13,10 +13,12 @@
 #include "enums_structs.h"
 #include "debug.h"
 
+
 // declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void TIMER2_COMPA_vect(void) __attribute__((signal));
 extern "C" void TIMER2_COMPB_vect(void) __attribute__((signal));
 extern "C" void TIMER2_OVF_vect(void) __attribute__((signal));
+
 
 /**
  * \class Timer2

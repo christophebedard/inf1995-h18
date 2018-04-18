@@ -4,13 +4,17 @@
 /**
  * \file moteurs.h
  * \brief declaration de la classe Moteurs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "enums_structs.h"
 #include "pwm.h"
+
 
 /**
  * \class Moteurs

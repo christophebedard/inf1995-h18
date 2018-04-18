@@ -4,7 +4,10 @@
 /**
  * \file pwm.h
  * \brief declaration de la classe PWM
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
@@ -13,6 +16,7 @@
 #include "broches.h"
 #include "delai.h"
 #include "timer1.h"
+
 
 /**
  * \class PWM
@@ -49,7 +53,6 @@ private:
      * \return la valeur de OCRn correspondante
      */
     static uint16_t getValOCRnFromPourcentage(const uint8_t& pourcentage);
-
 
 };
 

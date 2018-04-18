@@ -1,7 +1,10 @@
 /**
  * \file buzzer.cpp
  * \brief implementation de la classe Buzzer
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Brancher le buzzer entre la broche BROCHE_BUZZER et le GND.
  */

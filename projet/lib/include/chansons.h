@@ -4,7 +4,10 @@
 /**
  * \file chansons.h
  * \brief declaration de chansons
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>

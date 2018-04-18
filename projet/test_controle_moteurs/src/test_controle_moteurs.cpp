@@ -1,7 +1,10 @@
 /**
  * \file test_controle_moteurs.cpp
  * \brief programme pour tester le controle des moteurs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "delai.h"

@@ -1,7 +1,10 @@
 /**
  * \file diagnostic.cpp
  * \brief implementation de la classe Diagnostic
- * \author 
+ * \author Simon Moreau
+ * \author Mohamed Saddik
+ * \author Fares Ouaissa
+ * \author Christophe Bourque Bedard
  */
 
 #include "diagnostic.h"
