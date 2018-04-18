@@ -1,7 +1,10 @@
 /**
  * \file lecteur_chanson.cpp
  * \brief implementation de la classe LecteurChanson
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "lecteur_chanson.h"

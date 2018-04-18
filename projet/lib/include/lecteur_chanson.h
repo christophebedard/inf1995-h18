@@ -4,7 +4,10 @@
 /**
  * \file lecteur_chanson.h
  * \brief declaration de la classe LecteurChanson
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Voir buzzer.h pour la connexion
  */
@@ -18,10 +21,12 @@
 #include "buzzer.h"
 #include "debug.h"
 
+
 ///< Unite de temps standard pour une note (en millisecondes)
 #define UNITE_TEMPS_MS 100
 ///< la longueur maximale de la periode selon le prescaler choisi
 #define PERIODE_MAX 32
+
 
 /**
  * \class LecteurChanson

@@ -1,7 +1,10 @@
 /**
  * \file pwm.cpp
  * \brief implementation de la classe PWM
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Brancher le moteur gauche entre BROCHE_MOTEUR_GAUCHE_PWM et BROCHE_MOTEUR_GAUCHE_DIRECTION
  * Brancher le moteur droit entre BROCHE_MOTEUR_DROIT_PWM et BROCHE_MOTEUR_DROIT_DIRECTION

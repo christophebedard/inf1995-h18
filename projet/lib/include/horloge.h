@@ -4,7 +4,10 @@
 /**
  * \file horloge.h
  * \brief declaration de la classe Horloge
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>

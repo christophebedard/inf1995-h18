@@ -1,9 +1,19 @@
 #ifndef LIB_DELAI_H
 #define LIB_DELAI_H
 
+/**
+ * \file delai.h
+ * \brief declaration de fonctions de delai
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
+ */
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include "defines.h"
+
 
 /**
  * Delai en microsecondes

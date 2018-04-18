@@ -4,7 +4,10 @@
 /**
  * \file controleur_moteurs.h
  * \brief declaration de la classe ControleMoteurs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
@@ -13,6 +16,8 @@
 #include "enums_structs.h"
 #include "moteurs.h"
 #include "capteurs_distance.h"
+#include "debug.h"
+
 
 // constantes pour le suivi de mur
 #define SUIVI_MUR_DISTANCE  15  ///< la distance a laquelle on suit le mur

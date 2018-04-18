@@ -1,7 +1,10 @@
 /**
  * \file timer1.cpp
  * \brief implementation de la classe Timer1
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "timer1.h"

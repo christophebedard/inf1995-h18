@@ -1,7 +1,10 @@
 /**
  * \file time.cpp
  * \brief implementation de la classe Time
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "time.h"

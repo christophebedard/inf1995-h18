@@ -4,7 +4,10 @@
 /**
  * \file capteurs_distance.h
  * \brief declaration de la classe CapteursDistance
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>

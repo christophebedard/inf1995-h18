@@ -4,7 +4,10 @@
 /**
  * \file timer1.h
  * \brief declaration de la classe Timer1
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
@@ -13,10 +16,12 @@
 #include "enums_structs.h"
 #include "debug.h"
 
+
 // declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void TIMER1_COMPA_vect(void) __attribute__((signal));
 extern "C" void TIMER1_COMPB_vect(void) __attribute__((signal));
 extern "C" void TIMER1_OVF_vect(void) __attribute__((signal));
+
 
 /**
  * \class Timer1

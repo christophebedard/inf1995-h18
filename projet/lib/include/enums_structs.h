@@ -4,12 +4,16 @@
 /**
  * \file enums_structs.h
  * \brief declaration de divers enums et structs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "defines.h"
+
 
 /**
  * Declaration des cotes de mur
@@ -198,7 +202,7 @@ enum class EtatTrajet
     SuiviMur,
     ChangementMur,
     DemiTour,
-    ContournementMur,
-    
+    ContournementMur    
 };
+
 #endif // LIB_ENUMS_STRUCTS_H

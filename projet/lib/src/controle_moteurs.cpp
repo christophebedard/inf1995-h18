@@ -1,11 +1,14 @@
 /**
  * \file controle_moteurs.cpp
  * \brief implementation de la classe ControleMoteurs
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "controle_moteurs.h"
-#include "debug.h"
+
 
 uint8_t ControleMoteurs::vitesseLineaire_ = 0;
 uint8_t ControleMoteurs::vitesseAngulaire_ = 0;

@@ -4,7 +4,10 @@
 /**
  * \file uart.h
  * \brief declaration de la classe UART
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include <avr/io.h>
@@ -13,12 +16,15 @@
 #include "enums_structs.h"
 #include "delai.h"
 
+
 ///< delai apres reception ou transmission (ms)
 #define DELAI_UART_RX_TX 5
+
 
 // declaration explicite des vecteurs d'interruption (afin de les friend)
 extern "C" void USART0_RX_vect(void) __attribute__((signal));
 extern "C" void USART0_TX_vect(void) __attribute__((signal));
+
 
 /**
  * \class UART

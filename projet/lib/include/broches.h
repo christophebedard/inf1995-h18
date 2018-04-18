@@ -4,7 +4,10 @@
 /**
  * \file broches.h
  * \brief declaration des broches auxquelles les capteurs sont connectes
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Broches  : [1,8]
  * Pins     : [0,7]

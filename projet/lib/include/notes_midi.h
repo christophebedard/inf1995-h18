@@ -4,7 +4,10 @@
 /**
  * \file notes_midi.h
  * \brief definitions des notes pour la correspondance MIDI
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 // Definition des notes

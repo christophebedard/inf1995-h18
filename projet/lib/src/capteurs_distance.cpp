@@ -1,7 +1,10 @@
 /**
  * \file capteurs_distance.cpp
  * \brief implementation de la classe CapteursDistance
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "capteurs_distance.h"

@@ -1,7 +1,10 @@
 /**
  * \file debug.cpp
  * \brief implementation de la classe Debug
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  */
 
 #include "debug.h"

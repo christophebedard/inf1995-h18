@@ -4,7 +4,10 @@
 /**
  * \file diagnostic.h
  * \brief declaration de la classe Diagnostic
- * \author 
+ * \author Simon Moreau
+ * \author Mohamed Saddik
+ * \author Fares Ouaissa
+ * \author Christophe Bourque Bedard
  */
 
 #include <avr/io.h>

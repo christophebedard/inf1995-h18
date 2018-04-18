@@ -4,7 +4,10 @@
 /**
  * \file buzzer.h
  * \brief declaration de la classe Buzzer
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Brancher le buzzer entre BROCHE_BUZZER et GND (port B)
  */

@@ -4,7 +4,10 @@
 /**
  * \file lecteur_wav.h
  * \brief declaration de la classe LecteurWav
- * \author 
+ * \author Christophe Bourque Bedard
+ * \author Simon Moreau
+ * \author Fares Ouaissa
+ * \author Mohamed Saddik
  * 
  * Connecter le buzzer entre BROCHE_BUZZER_WAV et GND (port D)
  */
@@ -16,8 +19,10 @@
 #include "timer0.h"
 #include "timer2.h"
 
+
 ///< constante pour l'intervalle d'upate de la valeur
 #define INTERVALLE_MISE_A_JOUR 2
+
 
 /**
  * \class LecteurWav
