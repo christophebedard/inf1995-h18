@@ -89,3 +89,12 @@ cd ~/inf1995-68116/projet/src/
 make clean
 make install
 ```
+
+## Documentation
+
+Pour générer la documentation avec Doxygen
+
+```
+cd ~/inf1995-68116/projet/
+doxygen Doxyfile
+```

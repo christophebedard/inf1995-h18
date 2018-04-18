@@ -23,7 +23,6 @@ int main()
     LecteurWav::init();
     LecteurWav::setWav(tinkywinky_data, tinkywinky_longueur);
     LecteurWav::play();
-    //while(LecteurWav::isPlaying());
 
     // ========== execution du programme ========== 
 

@@ -19,25 +19,10 @@ uint8_t     Trajet::distancePrecedenteDroit_ = 0;
 bool        Trajet::isObjetDetectePrecedemment_ = false;
 
 
-bool Trajet::isObjetDetecte(uint8_t dist)
-{
-    bool res = false;
-
-    if (dist > 60)
-    {
-        res = false;
-    }
-    else if ((dist >= 10) && (dist <= 60))
-    {
-        res = true;
-    }
-
-    return res;
-}
-
 void Trajet::init()
 {
     DDRA |= BROCHES_LED;
+
     CapteursDistance::init();
     ControleMoteurs::init();
     Buzzer::init();
@@ -45,6 +30,8 @@ void Trajet::init()
     Horloge::init();
     Debug::init();
     setDroitChangementCote(false);
+
+    // etat initial
     etatActuel_ = EtatTrajet::Initial; 
 }
 
@@ -53,7 +40,8 @@ void Trajet::execute()
 {
     init();
     
-	bool changementEnCours = false;
+    // initialisation du flag de changement en cours a false
+    bool changementEnCours = false;
 	
     // initialisation de la variable pour le temps detecte
     Time tObjetDetecte = Time();
@@ -62,11 +50,10 @@ void Trajet::execute()
     // le temps correspondant a une partie de la longueur d'un poteau
     Time deltaPoteauDebut = Time(4, 0, 0);
 	
-    // lecture de valeurs pour remplir la memoire
+    // lecture de valeurs de distance pour remplir la memoire
     for (int i = 0; i < LONGUEUR_MEMOIRE_LECTURES; i++)
     {
-		// lecture des valeurs de distance
-		uint8_t gauche = 0;
+	    uint8_t gauche = 0;
         CapteursDistance::getDistanceGauche(&gauche);
         uint8_t droit = 0;
         CapteursDistance::getDistanceDroit(&droit);
@@ -80,6 +67,7 @@ void Trajet::execute()
         uint8_t droit = 0;
         CapteursDistance::getDistanceDroit(&droit);
 		
+        // update la LED
         Trajet::updateDelAjustement(Trajet::getEnCoursAjustement());
         
         switch (etatActuel_)
@@ -248,10 +236,8 @@ void Trajet::execute()
                         */
                         // update distancePrecedenteDroit_
                         distancePrecedenteDroit_ = droit;
-                        
-                        }
-                        break;
-                    
+                    }
+                    break;
                 }
                 break;
             }
@@ -275,6 +261,22 @@ void Trajet::execute()
 }
 
 // ------------------------------------------------------------
+
+bool Trajet::isObjetDetecte(uint8_t dist)
+{
+    bool res = false;
+
+    if (dist > 60)
+    {
+        res = false;
+    }
+    else if ((dist >= 10) && (dist <= 60))
+    {
+        res = true;
+    }
+
+    return res;
+}
 
 void Trajet::buzzerPoteauDetecte()
 {   //5.1 cm
